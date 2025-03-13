@@ -61,7 +61,7 @@
     }
     button:hover { background-color: #2ecc71; }
     .message { margin-top: 10px; font-weight: bold; }
-    
+
     /* Mobile Styles */
     @media (max-width: 768px) {
       body {
@@ -73,16 +73,17 @@
         position: fixed;
         top: 0;
         left: 0;
-        transform: translateY(-100%);
+        /* Show sidebar by default */
+        transform: translateY(0);
         z-index: 1000;
       }
-      .sidebar.active {
-        transform: translateY(0);
+      /* When hidden, move sidebar out of view */
+      .sidebar.hidden {
+        transform: translateY(-100%);
       }
       .content {
-        margin-top: 60px; /* space for the mobile menu button */
+        margin-top: 60px; /* space for the sidebar/menu button */
       }
-      /* Menu toggle button visible on mobile */
       .menu-toggle {
         display: block;
         background-color: #2c3e50;
@@ -102,7 +103,7 @@
   </style>
 </head>
 <body>
-  <!-- Mobile menu toggle button (visible on screens <=768px) -->
+  <!-- Mobile menu toggle button (visible on screens ≤768px) -->
   <button class="menu-toggle" id="menuToggle">☰ Menu</button>
   
   <!-- Sidebar for Page Navigation -->
@@ -175,9 +176,9 @@
           Array.from(pagesList.children).forEach(child => child.classList.remove("active"));
           li.classList.add("active");
           loadPageContent(page);
-          // Hide sidebar on mobile after selection
+          // In mobile view, hide sidebar after selection if desired
           if (window.innerWidth <= 768) {
-            document.getElementById("sidebar").classList.remove("active");
+            document.getElementById("sidebar").classList.add("hidden");
           }
         });
         pagesList.appendChild(li);
@@ -246,7 +247,7 @@
     const menuToggle = document.getElementById("menuToggle");
     menuToggle.addEventListener("click", () => {
       const sidebar = document.getElementById("sidebar");
-      sidebar.classList.toggle("active");
+      sidebar.classList.toggle("hidden");
     });
   </script>
 </body>
