@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Panel - Edit Page Content</title>
-  <!-- Firebase Libraries -->
+  <!-- Firebase Libraries (compat versions) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <style>
@@ -16,7 +16,7 @@
       height: 100vh;
       overflow: hidden;
     }
-    /* Sidebar styles */
+    /* Sidebar Styles */
     .sidebar {
       width: 250px;
       background-color: #2c3e50;
@@ -24,8 +24,12 @@
       padding: 20px;
       overflow-y: auto;
     }
-    .sidebar h2 { margin-bottom: 15px; }
-    .sidebar ul { list-style: none; }
+    .sidebar h2 {
+      margin-bottom: 15px;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
     .sidebar li {
       padding: 10px;
       margin-bottom: 10px;
@@ -35,15 +39,22 @@
     .sidebar li:hover, .sidebar li.active {
       background-color: #34495e;
     }
-    /* Content area styles */
+    /* Content Area Styles */
     .content {
       flex: 1;
       padding: 20px;
       overflow-y: auto;
     }
-    .content h2 { margin-bottom: 15px; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; }
+    .content h2 {
+      margin-bottom: 15px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
     input[type="text"], textarea {
       width: 100%;
       padding: 8px;
@@ -58,17 +69,25 @@
       color: white;
       cursor: pointer;
     }
-    button:hover { background-color: #2ecc71; }
-    .message { margin-top: 10px; font-weight: bold; }
+    button:hover {
+      background-color: #2ecc71;
+    }
+    .message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
+  <!-- Sidebar for Page Navigation -->
   <div class="sidebar">
     <h2>Pages</h2>
     <ul id="pagesList">
       <!-- List of pages will be dynamically populated -->
     </ul>
   </div>
+  
+  <!-- Content Area for Editing Page Content -->
   <div class="content">
     <h2>Edit Page Content</h2>
     <form id="pageForm">
@@ -98,7 +117,7 @@
   </div>
 
   <script>
-    // TODO: Replace with your actual Firebase project configuration
+    // Replace with your actual Firebase project configuration details
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "e-commerce-pk.firebaseapp.com",
@@ -112,7 +131,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Predefined list of pages (update as needed)
+    // Predefined list of pages (modify or add pages as needed)
     const pages = ["index", "ecommerce", "about", "delivery", "offers", "payments", "support", "contact"];
     const pagesList = document.getElementById("pagesList");
     const pageForm = document.getElementById("pageForm");
@@ -120,7 +139,7 @@
 
     let currentPage = null;
 
-    // Render the list of pages in the sidebar
+    // Function to render the sidebar with available pages
     function renderPagesList() {
       pagesList.innerHTML = "";
       pages.forEach(page => {
@@ -136,11 +155,10 @@
       });
     }
 
-    // Load page content from Firestore
+    // Function to load page content from Firestore
     function loadPageContent(pageId) {
       currentPage = pageId;
       document.getElementById("pageId").value = pageId;
-      // Fetch document from 'pages' collection
       db.collection("pages").doc(pageId).get()
         .then(doc => {
           if (doc.exists) {
@@ -150,7 +168,6 @@
             document.getElementById("backgroundVideo").value = data.backgroundVideo || "";
             document.getElementById("heroImage").value = data.heroImage || "";
           } else {
-            // If the document doesn't exist, clear the form
             document.getElementById("title").value = "";
             document.getElementById("description").value = "";
             document.getElementById("backgroundVideo").value = "";
@@ -190,11 +207,4 @@
 
     // Initialize the admin panel
     renderPagesList();
-    // Optionally, load the first page by default
-    if (pages.length > 0) {
-      loadPageContent(pages[0]);
-      pagesList.firstChild.classList.add("active");
-    }
-  </script>
-</body>
-</html>
+    // Optionally, load the first page by
