@@ -9,14 +9,20 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <style>
     /* Basic Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       display: flex;
+      flex-direction: row; /* Sidebar on the left, content on the right by default */
       height: 100vh;
       overflow: hidden;
     }
-    /* Sidebar styles */
+
+    /* Sidebar (desktop defaults) */
     .sidebar {
       width: 250px;
       background-color: #2c3e50;
@@ -24,28 +30,43 @@
       padding: 20px;
       overflow-y: auto;
       transition: transform 0.3s ease-in-out;
+      /* No transform on desktop; fully visible */
     }
-    .sidebar h2 { margin-bottom: 15px; }
-    .sidebar ul { list-style: none; }
+    .sidebar h2 {
+      margin-bottom: 15px;
+    }
+    .sidebar ul {
+      list-style: none;
+    }
     .sidebar li {
       padding: 10px;
       margin-bottom: 10px;
       border-radius: 4px;
       cursor: pointer;
     }
-    .sidebar li:hover, .sidebar li.active {
+    .sidebar li:hover,
+    .sidebar li.active {
       background-color: #34495e;
     }
-    /* Content area styles */
+
+    /* Content area */
     .content {
       flex: 1;
       padding: 20px;
       overflow-y: auto;
     }
-    .content h2 { margin-bottom: 15px; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; }
-    input[type="text"], textarea {
+    .content h2 {
+      margin-bottom: 15px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"],
+    textarea {
       width: 100%;
       padding: 8px;
       border: 1px solid #bdc3c7;
@@ -59,31 +80,26 @@
       color: white;
       cursor: pointer;
     }
-    button:hover { background-color: #2ecc71; }
-    .message { margin-top: 10px; font-weight: bold; }
+    button:hover {
+      background-color: #2ecc71;
+    }
+    .message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    /* Hide menu button on desktop */
+    .menu-toggle {
+      display: none;
+    }
 
     /* Mobile Styles */
     @media (max-width: 768px) {
+      /* Stack layout vertically so the sidebar can slide in */
       body {
         flex-direction: column;
       }
-      .sidebar {
-        width: 100%;
-        height: auto;
-        position: fixed;
-        top: 0;
-        left: 0;
-        /* Show sidebar by default */
-        transform: translateY(0);
-        z-index: 1000;
-      }
-      /* When hidden, move sidebar out of view */
-      .sidebar.hidden {
-        transform: translateY(-100%);
-      }
-      .content {
-        margin-top: 60px; /* space for the sidebar/menu button */
-      }
+      /* Show the menu button on mobile */
       .menu-toggle {
         display: block;
         background-color: #2c3e50;
@@ -94,18 +110,33 @@
         cursor: pointer;
         width: 100%;
         text-align: left;
+        z-index: 2000; /* Above content */
       }
-    }
-    /* Desktop Styles */
-    .menu-toggle {
-      display: none;
+      /* Sidebar hidden by default on mobile */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 250px;
+        transform: translateX(-100%);
+        z-index: 1000;
+      }
+      /* Sidebar visible when .active is applied */
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      /* Content should not hide behind the sidebar */
+      .content {
+        margin-top: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Mobile menu toggle button (visible on screens ≤768px) -->
+  <!-- Mobile menu toggle button (hidden on desktop) -->
   <button class="menu-toggle" id="menuToggle">☰ Menu</button>
-  
+
   <!-- Sidebar for Page Navigation -->
   <div class="sidebar" id="sidebar">
     <h2>Pages</h2>
@@ -113,7 +144,7 @@
       <!-- List of pages will be dynamically populated -->
     </ul>
   </div>
-  
+
   <!-- Content Area for Editing Page Content -->
   <div class="content">
     <h2>Edit Page Content</h2>
@@ -176,9 +207,9 @@
           Array.from(pagesList.children).forEach(child => child.classList.remove("active"));
           li.classList.add("active");
           loadPageContent(page);
-          // In mobile view, hide sidebar after selection if desired
+          // On mobile, close the sidebar after selection
           if (window.innerWidth <= 768) {
-            document.getElementById("sidebar").classList.add("hidden");
+            document.getElementById("sidebar").classList.remove("active");
           }
         });
         pagesList.appendChild(li);
@@ -247,7 +278,7 @@
     const menuToggle = document.getElementById("menuToggle");
     menuToggle.addEventListener("click", () => {
       const sidebar = document.getElementById("sidebar");
-      sidebar.classList.toggle("hidden");
+      sidebar.classList.toggle("active");
     });
   </script>
 </body>
