@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NextGen Admin Panel</title>
+  <title>Comprehensive Admin Panel</title>
   <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Bootstrap 5 CSS -->
@@ -34,10 +34,10 @@
       font-size: 1.2rem;
       font-weight: bold;
     }
-    .sidebar ul.components {
+    .sidebar ul {
+      list-style: none;
       padding: 0;
       margin: 0;
-      list-style: none;
     }
     .sidebar ul li {
       padding: 15px 20px;
@@ -103,11 +103,17 @@
         margin-left: 0;
       }
     }
-    /* Dashboard Card Styles */
-    .card {
+    /* Content Sections */
+    .content-section {
+      margin-top: 20px;
+    }
+    .content-section h4 {
       margin-bottom: 20px;
     }
-    /* Pages Section Styles */
+    .d-none {
+      display: none !important;
+    }
+    /* Pages Section (Multi-Part) */
     .pages-container {
       display: flex;
       flex-wrap: wrap;
@@ -133,6 +139,10 @@
       flex: 1;
       padding: 15px;
     }
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
@@ -140,15 +150,16 @@
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-header">Admin Panel</div>
-      <ul class="components">
+      <ul>
         <li class="active" data-target="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
-        <li data-target="pages"><i class="fas fa-file-alt"></i> Pages</li>
-        <li data-target="products"><i class="fas fa-box-open"></i> Products</li>
-        <li data-target="orders"><i class="fas fa-shopping-cart"></i> Orders</li>
-        <li data-target="users"><i class="fas fa-users"></i> Users</li>
-        <li data-target="settings"><i class="fas fa-cogs"></i> Settings</li>
-        <li data-target="analytics"><i class="fas fa-chart-line"></i> Analytics</li>
+        <li data-target="home"><i class="fas fa-home"></i> Home</li>
+        <li data-target="ecommerce"><i class="fas fa-shopping-bag"></i> E-commerce</li>
+        <li data-target="offers"><i class="fas fa-tags"></i> Offers</li>
+        <li data-target="payments"><i class="fas fa-credit-card"></i> Payments</li>
         <li data-target="support"><i class="fas fa-headset"></i> Support</li>
+        <li data-target="productDetails"><i class="fas fa-info-circle"></i> Product Details</li>
+        <li data-target="header"><i class="fas fa-ellipsis-h"></i> Header</li>
+        <li data-target="footer"><i class="fas fa-ellipsis-v"></i> Footer</li>
       </ul>
     </nav>
     
@@ -170,32 +181,32 @@
             <div class="col-md-3 col-sm-6">
               <div class="card text-white bg-primary">
                 <div class="card-body">
-                  <h5 class="card-title"><i class="fas fa-box-open"></i> Products</h5>
-                  <p class="card-text">Total: 120</p>
+                  <h5 class="card-title"><i class="fas fa-home"></i> Home</h5>
+                  <p class="card-text">Manage Home Page</p>
                 </div>
               </div>
             </div>
             <div class="col-md-3 col-sm-6">
               <div class="card text-white bg-success">
                 <div class="card-body">
-                  <h5 class="card-title"><i class="fas fa-shopping-cart"></i> Orders</h5>
-                  <p class="card-text">Total: 75</p>
+                  <h5 class="card-title"><i class="fas fa-shopping-bag"></i> E-commerce</h5>
+                  <p class="card-text">Update Products &amp; Categories</p>
                 </div>
               </div>
             </div>
             <div class="col-md-3 col-sm-6">
               <div class="card text-white bg-warning">
                 <div class="card-body">
-                  <h5 class="card-title"><i class="fas fa-users"></i> Users</h5>
-                  <p class="card-text">Total: 230</p>
+                  <h5 class="card-title"><i class="fas fa-tags"></i> Offers</h5>
+                  <p class="card-text">Manage Offers</p>
                 </div>
               </div>
             </div>
             <div class="col-md-3 col-sm-6">
               <div class="card text-white bg-danger">
                 <div class="card-body">
-                  <h5 class="card-title"><i class="fas fa-chart-line"></i> Analytics</h5>
-                  <p class="card-text">Overview</p>
+                  <h5 class="card-title"><i class="fas fa-credit-card"></i> Payments</h5>
+                  <p class="card-text">Payment Options &amp; Details</p>
                 </div>
               </div>
             </div>
@@ -203,154 +214,199 @@
           <div class="mt-4">
             <h5>Recent Activity</h5>
             <ul class="list-group">
-              <li class="list-group-item">New order #1234 placed.</li>
-              <li class="list-group-item">Product "Smartphone A" updated.</li>
-              <li class="list-group-item">User "john.doe@example.com" registered.</li>
+              <li class="list-group-item">Order #1234 placed.</li>
+              <li class="list-group-item">Home page updated.</li>
+              <li class="list-group-item">New product added.</li>
             </ul>
           </div>
         </div>
         
-        <!-- Pages Management Section -->
-        <div id="pages" class="content-section d-none">
-          <h4>Manage Pages</h4>
-          <div class="pages-container d-flex">
-            <!-- Left: List of Pages -->
-            <div class="pages-list">
-              <ul id="pagesList">
-                <!-- Filled dynamically -->
-              </ul>
+        <!-- Home Page Section -->
+        <div id="home" class="content-section d-none">
+          <h4>Home Page Content</h4>
+          <form id="homeForm">
+            <div class="form-group">
+              <label for="homeHeroTitle">Hero Title</label>
+              <input type="text" class="form-control" id="homeHeroTitle" placeholder="Enter hero title">
             </div>
-            <!-- Right: Edit Form -->
-            <div class="page-edit-form">
-              <form id="pageForm">
-                <div class="mb-3">
-                  <label for="pageName" class="form-label">Page Name</label>
-                  <input type="text" class="form-control" id="pageName" readonly>
-                </div>
-                <div class="mb-3">
-                  <label for="pageTitle" class="form-label">Page Title</label>
-                  <input type="text" class="form-control" id="pageTitle" placeholder="Enter page title">
-                </div>
-                <div class="mb-3">
-                  <label for="pageDescription" class="form-label">Description</label>
-                  <textarea class="form-control" id="pageDescription" rows="4" placeholder="Enter page description"></textarea>
-                </div>
-                <div class="mb-3">
-                  <label for="backgroundVideo" class="form-label">Background Video URL</label>
-                  <input type="text" class="form-control" id="backgroundVideo" placeholder="Enter background video URL">
-                </div>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-              </form>
+            <div class="form-group">
+              <label for="homeHeroDesc">Hero Description</label>
+              <textarea class="form-control" id="homeHeroDesc" rows="3" placeholder="Enter hero description"></textarea>
             </div>
-          </div>
-        </div>
-        
-        <!-- Products Management Section -->
-        <div id="products" class="content-section d-none">
-          <h4>Manage Products</h4>
-          <p>Add, edit or remove products from the catalog.</p>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>#001</td>
-                <td>Smartphone A</td>
-                <td>PKR 894</td>
-                <td>50</td>
-                <td>
-                  <button class="btn btn-sm btn-warning">Edit</button>
-                  <button class="btn btn-sm btn-danger">Delete</button>
-                </td>
-              </tr>
-              <!-- More rows as needed -->
-            </tbody>
-          </table>
-        </div>
-        
-        <!-- Orders Management Section -->
-        <div id="orders" class="content-section d-none">
-          <h4>Manage Orders</h4>
-          <p>View and process customer orders.</p>
-          <ul class="list-group">
-            <li class="list-group-item">Order #1234 - Pending</li>
-            <li class="list-group-item">Order #1235 - Completed</li>
-            <li class="list-group-item">Order #1236 - Shipped</li>
-          </ul>
-        </div>
-        
-        <!-- Users Management Section -->
-        <div id="users" class="content-section d-none">
-          <h4>Manage Users</h4>
-          <p>View, edit or remove user accounts.</p>
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>john.doe@example.com</td>
-                <td>John Doe</td>
-                <td>Customer</td>
-                <td>Active</td>
-                <td>
-                  <button class="btn btn-sm btn-info">View</button>
-                  <button class="btn btn-sm btn-danger">Disable</button>
-                </td>
-              </tr>
-              <!-- More rows as needed -->
-            </tbody>
-          </table>
-        </div>
-        
-        <!-- Settings Section -->
-        <div id="settings" class="content-section d-none">
-          <h4>Settings</h4>
-          <p>Configure system settings, integrations, and preferences.</p>
-          <form>
-            <div class="mb-3">
-              <label for="siteName" class="form-label">Site Name</label>
-              <input type="text" class="form-control" id="siteName" placeholder="Enter site name">
+            <div class="form-group">
+              <label for="homeVideoURL">Background Video URL</label>
+              <input type="text" class="form-control" id="homeVideoURL" placeholder="Enter video URL">
             </div>
-            <div class="mb-3">
-              <label for="siteEmail" class="form-label">Contact Email</label>
-              <input type="email" class="form-control" id="siteEmail" placeholder="Enter contact email">
+            <div class="form-group">
+              <label for="cta1Text">CTA Button 1 Text</label>
+              <input type="text" class="form-control" id="cta1Text" placeholder="Enter CTA text">
             </div>
-            <button type="submit" class="btn btn-primary">Update Settings</button>
+            <div class="form-group">
+              <label for="cta1Link">CTA Button 1 Link</label>
+              <input type="text" class="form-control" id="cta1Link" placeholder="Enter CTA link">
+            </div>
+            <div class="form-group">
+              <label for="cta2Text">CTA Button 2 Text</label>
+              <input type="text" class="form-control" id="cta2Text" placeholder="Enter CTA text">
+            </div>
+            <div class="form-group">
+              <label for="cta2Link">CTA Button 2 Link</label>
+              <input type="text" class="form-control" id="cta2Link" placeholder="Enter CTA link">
+            </div>
+            <div class="form-group">
+              <label for="featuresData">Features (JSON Array)</label>
+              <textarea class="form-control" id="featuresData" rows="3" placeholder='e.g. [{"icon": "fas fa-check", "title": "Feature 1", "desc": "Description"}]'></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Home Content</button>
           </form>
         </div>
         
-        <!-- Analytics Section -->
-        <div id="analytics" class="content-section d-none">
-          <h4>Analytics</h4>
-          <p>View website performance and user engagement statistics.</p>
-          <div style="background: #e9ecef; padding: 20px; border-radius: 8px; text-align: center;">
-            <p>Analytics Dashboard Coming Soon...</p>
-          </div>
+        <!-- E-commerce Page Section -->
+        <div id="ecommerce" class="content-section d-none">
+          <h4>E-commerce Page Content</h4>
+          <form id="ecommerceForm">
+            <div class="form-group">
+              <label for="ecomPageTitle">Page Title</label>
+              <input type="text" class="form-control" id="ecomPageTitle" placeholder="Enter page title">
+            </div>
+            <div class="form-group">
+              <label for="ecomHeroSubtitle">Hero Subtitle</label>
+              <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Enter hero subtitle">
+            </div>
+            <div class="form-group">
+              <label for="productsData">Products Data (JSON Array)</label>
+              <textarea class="form-control" id="productsData" rows="5" placeholder='e.g. [{"name": "Product A", "image": "url", "price": "100", "discount": "10", "desc": "Product description"}]'></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save E-commerce Content</button>
+          </form>
         </div>
         
-        <!-- Support Section -->
+        <!-- Offers Page Section -->
+        <div id="offers" class="content-section d-none">
+          <h4>Offers Page Content</h4>
+          <form id="offersForm">
+            <div class="form-group">
+              <label for="offersPageTitle">Page Title</label>
+              <input type="text" class="form-control" id="offersPageTitle" placeholder="Enter page title">
+            </div>
+            <div class="form-group">
+              <label for="offersDesc">Description</label>
+              <textarea class="form-control" id="offersDesc" rows="3" placeholder="Enter page description"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="offersItems">Offers Items (JSON Array)</label>
+              <textarea class="form-control" id="offersItems" rows="4" placeholder='e.g. [{"icon": "fas fa-tag", "title": "Offer 1", "desc": "Offer description"}]'></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Offers Content</button>
+          </form>
+        </div>
+        
+        <!-- Payments Page Section -->
+        <div id="payments" class="content-section d-none">
+          <h4>Payments Page Content</h4>
+          <form id="paymentsForm">
+            <div class="form-group">
+              <label for="paymentsPageTitle">Page Title</label>
+              <input type="text" class="form-control" id="paymentsPageTitle" placeholder="Enter page title">
+            </div>
+            <div class="form-group">
+              <label for="paymentsDesc">Description</label>
+              <textarea class="form-control" id="paymentsDesc" rows="3" placeholder="Enter description"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="paymentDetails">Payment Details (JSON Array)</label>
+              <textarea class="form-control" id="paymentDetails" rows="3" placeholder='e.g. [{"title": "Secure Payments", "desc": "Payment info"}]'></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Payments Content</button>
+          </form>
+        </div>
+        
+        <!-- Support Page Section -->
         <div id="support" class="content-section d-none">
-          <h4>Support Tickets</h4>
-          <p>Manage support requests and customer inquiries.</p>
-          <ul class="list-group">
-            <li class="list-group-item">Ticket #001: Issue with order #1234</li>
-            <li class="list-group-item">Ticket #002: Question about product features</li>
-            <li class="list-group-item">Ticket #003: Feedback on website usability</li>
-          </ul>
+          <h4>Support Page Content</h4>
+          <form id="supportForm">
+            <div class="form-group">
+              <label for="supportPageTitle">Page Title</label>
+              <input type="text" class="form-control" id="supportPageTitle" placeholder="Enter page title">
+            </div>
+            <div class="form-group">
+              <label for="supportSubtitle">Subtitle</label>
+              <input type="text" class="form-control" id="supportSubtitle" placeholder="Enter subtitle">
+            </div>
+            <div class="form-group">
+              <label for="faqData">FAQ Items (JSON Array)</label>
+              <textarea class="form-control" id="faqData" rows="4" placeholder='e.g. [{"question": "How to return?", "answer": "Return within 30 days"}]'></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Support Content</button>
+          </form>
+        </div>
+        
+        <!-- Product Details Page Section -->
+        <div id="productDetails" class="content-section d-none">
+          <h4>Product Details Content</h4>
+          <form id="productDetailsForm">
+            <div class="form-group">
+              <label for="prodName">Product Name</label>
+              <input type="text" class="form-control" id="prodName" placeholder="Enter product name">
+            </div>
+            <div class="form-group">
+              <label for="prodPrice">Price</label>
+              <input type="number" class="form-control" id="prodPrice" placeholder="Enter price">
+            </div>
+            <div class="form-group">
+              <label for="prodRating">Rating</label>
+              <input type="number" class="form-control" id="prodRating" placeholder="Enter rating">
+            </div>
+            <div class="form-group">
+              <label for="prodAdded">Added Count</label>
+              <input type="number" class="form-control" id="prodAdded" placeholder="Enter added count">
+            </div>
+            <div class="form-group">
+              <label for="prodSold">Sold Count</label>
+              <input type="number" class="form-control" id="prodSold" placeholder="Enter sold count">
+            </div>
+            <div class="form-group">
+              <label for="prodDesc">Description</label>
+              <textarea class="form-control" id="prodDesc" rows="3" placeholder="Enter product description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Product Details</button>
+          </form>
+        </div>
+        
+        <!-- Header Section -->
+        <div id="header" class="content-section d-none">
+          <h4>Header Content</h4>
+          <form id="headerForm">
+            <div class="form-group">
+              <label for="logoIcon">Logo Icon Class</label>
+              <input type="text" class="form-control" id="logoIcon" placeholder='e.g. "fas fa-briefcase"'>
+            </div>
+            <div class="form-group">
+              <label for="searchPlaceholder">Search Placeholder</label>
+              <input type="text" class="form-control" id="searchPlaceholder" placeholder="Enter search placeholder">
+            </div>
+            <div class="form-group">
+              <label for="supportLink">Support Link URL</label>
+              <input type="text" class="form-control" id="supportLink" placeholder="Enter support link URL">
+            </div>
+            <button type="submit" class="btn btn-primary">Save Header Content</button>
+          </form>
+        </div>
+        
+        <!-- Footer Section -->
+        <div id="footer" class="content-section d-none">
+          <h4>Footer Content</h4>
+          <form id="footerForm">
+            <div class="form-group">
+              <label for="footerLinks">Footer Links (JSON Array)</label>
+              <textarea class="form-control" id="footerLinks" rows="3" placeholder='e.g. [{"text": "Home", "url": "index.html"}]'></textarea>
+            </div>
+            <div class="form-group">
+              <label for="copyrightText">Copyright Text</label>
+              <input type="text" class="form-control" id="copyrightText" placeholder="Enter copyright text">
+            </div>
+            <button type="submit" class="btn btn-primary">Save Footer Content</button>
+          </form>
         </div>
       </div>
     </div>
@@ -366,10 +422,10 @@
       e.stopPropagation();
       sidebar.classList.toggle("open");
     });
-    // Click anywhere outside sidebar closes it on mobile
+    // Close sidebar on clicking outside (mobile)
     document.addEventListener("click", function(e) {
-      if (window.innerWidth < 768) {
-        if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+      if(window.innerWidth < 768) {
+        if(!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
           sidebar.classList.remove("open");
         }
       }
@@ -385,73 +441,31 @@
         const target = this.getAttribute("data-target");
         document.getElementById(target).classList.remove("d-none");
         document.querySelector(".top-navbar h4").innerText = this.innerText;
-        if (window.innerWidth < 768) sidebar.classList.remove("open");
+        if(window.innerWidth < 768) sidebar.classList.remove("open");
       });
     });
     
-    // Pages Section: Dynamic Page Editor
-    const pagesData = [
-      { id: "home", name: "Home", title: "Welcome to Our Home", description: "This is the home page description.", backgroundVideo: "https://i.imgur.com/OXCPyAw.mp4" },
-      { id: "ecommerce", name: "E-commerce", title: "Shop Now", description: "Our e-commerce page offers the latest products.", backgroundVideo: "" },
-      { id: "offers", name: "Offers", title: "Exclusive Offers", description: "Discover our exclusive offers and deals.", backgroundVideo: "" },
-      { id: "payments", name: "Payments", title: "Secure Payments", description: "Payment details and secure transaction methods.", backgroundVideo: "" },
-      { id: "support", name: "Support", title: "Customer Support", description: "Get help and support from our team.", backgroundVideo: "" }
-    ];
-    const pagesListElem = document.getElementById("pagesList");
-    const pageNameInput = document.getElementById("pageName");
-    const pageTitleInput = document.getElementById("pageTitle");
-    const pageDescriptionInput = document.getElementById("pageDescription");
-    const backgroundVideoInput = document.getElementById("backgroundVideo");
-    let currentPageId = null;
-    function loadPagesList() {
-      pagesListElem.innerHTML = "";
-      pagesData.forEach(page => {
-        const li = document.createElement("li");
-        li.innerText = page.name;
-        li.setAttribute("data-id", page.id);
-        li.addEventListener("click", function() {
-          document.querySelectorAll("#pagesList li").forEach(item => item.classList.remove("active"));
-          this.classList.add("active");
-          loadPageData(this.getAttribute("data-id"));
+    // Form submission handlers (simulate saving data)
+    function handleFormSubmit(formId, dataName) {
+      document.getElementById(formId).addEventListener("submit", function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => {
+          data[key] = value;
         });
-        pagesListElem.appendChild(li);
+        alert(dataName + " content saved successfully!");
+        console.log(dataName + " Data:", data);
       });
     }
-    function loadPageData(pageId) {
-      currentPageId = pageId;
-      const page = pagesData.find(p => p.id === pageId);
-      if (page) {
-        pageNameInput.value = page.name;
-        pageTitleInput.value = page.title;
-        pageDescriptionInput.value = page.description;
-        backgroundVideoInput.value = page.backgroundVideo;
-      }
-    }
-    document.getElementById("pageForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const updatedPage = {
-        id: currentPageId,
-        name: pageNameInput.value,
-        title: pageTitleInput.value,
-        description: pageDescriptionInput.value,
-        backgroundVideo: backgroundVideoInput.value
-      };
-      const index = pagesData.findIndex(p => p.id === currentPageId);
-      if (index !== -1) {
-        pagesData[index] = updatedPage;
-        alert("Page updated successfully!");
-        console.log("Updated Pages Data:", pagesData);
-      }
-    });
-    // Initialize pages list when the Pages section is active
-    if (document.getElementById("pages")) {
-      loadPagesList();
-      if (pagesData.length > 0) {
-        const firstPageId = pagesData[0].id;
-        document.querySelector("#pagesList li").classList.add("active");
-        loadPageData(firstPageId);
-      }
-    }
+    handleFormSubmit("homeForm", "Home");
+    handleFormSubmit("ecommerceForm", "E-commerce");
+    handleFormSubmit("offersForm", "Offers");
+    handleFormSubmit("paymentsForm", "Payments");
+    handleFormSubmit("supportForm", "Support");
+    handleFormSubmit("productDetailsForm", "Product Details");
+    handleFormSubmit("headerForm", "Header");
+    handleFormSubmit("footerForm", "Footer");
   </script>
 </body>
 </html>
