@@ -1,81 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin Panel - Manage Products</title>
-  <!-- Firebase libraries (compat versions for easier usage) -->
+  <title>Admin Panel - Edit Page Content</title>
+  <!-- Firebase Libraries -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <style>
+    /* Basic Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
-      background-color: #f7f7f7;
-      margin: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    /* Sidebar styles */
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: #ecf0f1;
       padding: 20px;
+      overflow-y: auto;
     }
-    .container {
-      max-width: 800px;
-      background: #fff;
-      padding: 20px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2, h3 {
-      text-align: center;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 15px;
-      border: none;
+    .sidebar h2 { margin-bottom: 15px; }
+    .sidebar ul { list-style: none; }
+    .sidebar li {
+      padding: 10px;
+      margin-bottom: 10px;
       border-radius: 4px;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #0056b3;
+    .sidebar li:hover, .sidebar li.active {
+      background-color: #34495e;
     }
-    #message {
-      margin-top: 15px;
-      font-weight: bold;
-      text-align: center;
+    /* Content area styles */
+    .content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
     }
-    table {
+    .content h2 { margin-bottom: 15px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; }
+    input[type="text"], textarea {
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table, th, td {
-      border: 1px solid #ddd;
-    }
-    th, td {
       padding: 8px;
-      text-align: left;
+      border: 1px solid #bdc3c7;
+      border-radius: 4px;
     }
-    th {
-      background-color: #007bff;
-      color: #fff;
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      background-color: #27ae60;
+      color: white;
+      cursor: pointer;
     }
-    img {
-      max-width: 60px;
-      height: auto;
-    }
+    button:hover { background-color: #2ecc71; }
+    .message { margin-top: 10px; font-weight: bold; }
   </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Pages</h2>
+    <ul id="pagesList">
+      <!-- List of pages will be dynamically populated -->
+    </ul>
+  </div>
+  <div class="content">
+    <h2>Edit Page Content</h2>
+    <form id="pageForm">
+      <div class="form-group">
+        <label for="pageId">Page ID</label>
+        <input type="text" id="pageId" readonly>
+      </div>
+      <div class="form-group">
+        <label for="title">Page Title</label>
+        <input type="text" id="title" placeholder="Enter page title">
+      </div>
+      <div class="form-group">
+        <label for="description">Page Description</label>
+        <textarea id="description" rows="4" placeholder="Enter page description"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="backgroundVideo">Background Video URL</label>
+        <input type="text" id="backgroundVideo" placeholder="Enter background video URL">
+      </div>
+      <div class="form-group">
+        <label for="heroImage">Hero Image URL</label>
+        <input type="text" id="heroImage" placeholder="Enter hero image URL">
+      </div>
+      <button type="submit">Save Changes</button>
+      <div class="message" id="formMessage"></div>
+    </form>
+  </div>
+
   <script>
-    // Replace the placeholder values with your Firebase project configuration
+    // TODO: Replace with your actual Firebase project configuration
     const firebaseConfig = {
       apiKey: "YOUR_API_KEY",
       authDomain: "e-commerce-pk.firebaseapp.com",
@@ -89,109 +112,89 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Function to add a product
-    function addProduct(e) {
+    // Predefined list of pages (update as needed)
+    const pages = ["index", "ecommerce", "about", "delivery", "offers", "payments", "support", "contact"];
+    const pagesList = document.getElementById("pagesList");
+    const pageForm = document.getElementById("pageForm");
+    const formMessage = document.getElementById("formMessage");
+
+    let currentPage = null;
+
+    // Render the list of pages in the sidebar
+    function renderPagesList() {
+      pagesList.innerHTML = "";
+      pages.forEach(page => {
+        const li = document.createElement("li");
+        li.textContent = page;
+        li.addEventListener("click", () => {
+          // Highlight the active page
+          Array.from(pagesList.children).forEach(child => child.classList.remove("active"));
+          li.classList.add("active");
+          loadPageContent(page);
+        });
+        pagesList.appendChild(li);
+      });
+    }
+
+    // Load page content from Firestore
+    function loadPageContent(pageId) {
+      currentPage = pageId;
+      document.getElementById("pageId").value = pageId;
+      // Fetch document from 'pages' collection
+      db.collection("pages").doc(pageId).get()
+        .then(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            document.getElementById("title").value = data.title || "";
+            document.getElementById("description").value = data.description || "";
+            document.getElementById("backgroundVideo").value = data.backgroundVideo || "";
+            document.getElementById("heroImage").value = data.heroImage || "";
+          } else {
+            // If the document doesn't exist, clear the form
+            document.getElementById("title").value = "";
+            document.getElementById("description").value = "";
+            document.getElementById("backgroundVideo").value = "";
+            document.getElementById("heroImage").value = "";
+          }
+          formMessage.textContent = "";
+        })
+        .catch(error => {
+          console.error("Error loading page content:", error);
+          formMessage.textContent = "Error loading content: " + error.message;
+        });
+    }
+
+    // Handle form submission to update Firestore
+    pageForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const name = document.getElementById('name').value;
-      const price = parseFloat(document.getElementById('price').value);
-      const description = document.getElementById('description').value;
-      const image = document.getElementById('image').value;
-
-      db.collection('products').add({
-        name: name,
-        price: price,
-        description: description,
-        image: image,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        document.getElementById('message').innerText = "Product added successfully!";
-        document.getElementById('adminForm').reset();
-        fetchProducts(); // Refresh product list
-      }).catch((error) => {
-        document.getElementById('message').innerText = "Error: " + error.message;
-      });
-    }
-
-    // Function to fetch and display products
-    function fetchProducts() {
-      db.collection('products').orderBy('createdAt', 'desc').get().then((querySnapshot) => {
-        const tableBody = document.getElementById('productsTableBody');
-        tableBody.innerHTML = "";
-        querySnapshot.forEach((doc) => {
-          const product = doc.data();
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${doc.id}</td>
-            <td>${product.name}</td>
-            <td>${product.price}</td>
-            <td>${product.description}</td>
-            <td>${product.image ? `<img src="${product.image}" alt="${product.name}">` : "No Image"}</td>
-            <td><button onclick="deleteProduct('${doc.id}')">Delete</button></td>
-          `;
-          tableBody.appendChild(row);
-        });
-      }).catch((error) => {
-        console.error("Error fetching products: ", error);
-      });
-    }
-
-    // Function to delete a product
-    function deleteProduct(id) {
-      if (confirm("Are you sure you want to delete this product?")) {
-        db.collection('products').doc(id).delete().then(() => {
-          document.getElementById('message').innerText = "Product deleted successfully!";
-          fetchProducts();
-        }).catch((error) => {
-          document.getElementById('message').innerText = "Error: " + error.message;
-        });
+      if (!currentPage) {
+        formMessage.textContent = "Please select a page to edit.";
+        return;
       }
-    }
+      const pageData = {
+        title: document.getElementById("title").value,
+        description: document.getElementById("description").value,
+        backgroundVideo: document.getElementById("backgroundVideo").value,
+        heroImage: document.getElementById("heroImage").value,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      db.collection("pages").doc(currentPage).set(pageData, { merge: true })
+        .then(() => {
+          formMessage.textContent = "Page content updated successfully!";
+        })
+        .catch(error => {
+          console.error("Error updating content:", error);
+          formMessage.textContent = "Error updating content: " + error.message;
+        });
+    });
 
-    // Fetch products on page load
-    window.onload = function() {
-      fetchProducts();
-    };
+    // Initialize the admin panel
+    renderPagesList();
+    // Optionally, load the first page by default
+    if (pages.length > 0) {
+      loadPageContent(pages[0]);
+      pagesList.firstChild.classList.add("active");
+    }
   </script>
-</head>
-<body>
-  <div class="container">
-    <h2>Admin Panel - Manage Products</h2>
-    <form id="adminForm" onsubmit="addProduct(event)">
-      <div class="form-group">
-        <label for="name">Product Name</label>
-        <input type="text" id="name" placeholder="Enter product name" required>
-      </div>
-      <div class="form-group">
-        <label for="price">Price (PKR)</label>
-        <input type="number" id="price" placeholder="Enter price" required>
-      </div>
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" rows="4" placeholder="Enter product description" required></textarea>
-      </div>
-      <div class="form-group">
-        <label for="image">Image URL</label>
-        <input type="url" id="image" placeholder="Enter image URL">
-      </div>
-      <button type="submit">Add Product</button>
-    </form>
-    <p id="message"></p>
-    <h3>Product List</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Price (PKR)</th>
-          <th>Description</th>
-          <th>Image</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="productsTableBody">
-        <!-- Products will be listed here dynamically -->
-      </tbody>
-    </table>
-  </div>
 </body>
 </html>
