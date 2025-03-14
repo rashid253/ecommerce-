@@ -8,14 +8,14 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <!-- Bootstrap 5 CSS & Font Awesome -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap 5 & Font Awesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Global Reset & Layout */
+    /* Basic Reset & Layout */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html { height: 100%; }
-    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; }
+    html, body { height: 100%; }
+    body { display: flex; flex-direction: column; font-family: Arial, sans-serif; }
     /* Top Bar */
     .topbar {
       display: flex;
@@ -26,28 +26,11 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       flex-shrink: 0;
     }
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .hamburger {
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #2c3e50;
-    }
-    .topbar-center {
-      flex: 1;
-      text-align: center;
-      font-size: 1rem;
-      font-weight: bold;
-    }
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    /* Wrapper for sidebar + content */
+    .topbar-left { display: flex; align-items: center; gap: 10px; }
+    .hamburger { font-size: 1.5rem; cursor: pointer; color: #2c3e50; }
+    .topbar-center { flex: 1; text-align: center; font-weight: bold; }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    /* Wrapper for Sidebar + Content */
     .wrapper {
       flex: 1;
       display: flex;
@@ -83,7 +66,7 @@
     @media (max-width: 767.98px) {
       .sidebar {
         position: fixed;
-        top: 60px; /* Below topbar */
+        top: 60px; /* below topbar */
         left: 0;
         height: calc(100% - 60px);
         transform: translateX(-100%);
@@ -96,6 +79,7 @@
     .content-section.active { display: block; }
     .form-group { margin-bottom: 15px; }
     .form-check { margin-bottom: 5px; }
+    .d-none { display: none !important; }
   </style>
 </head>
 <body>
@@ -111,19 +95,17 @@
     </div>
   </div>
   
-  <!-- Wrapper -->
+  <!-- Wrapper (Sidebar + Content) -->
   <div class="wrapper">
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
       <h2>Admin Panel</h2>
-      <ul id="pagesList">
-        <!-- Populated via script below -->
-      </ul>
+      <ul id="pagesList"></ul>
     </nav>
     
-    <!-- Main Content -->
+    <!-- Main Content Area -->
     <div class="content" id="mainContent">
-      <!-- Home Section -->
+      <!-- 1. Home Page -->
       <div id="home" class="content-section">
         <h4>Home Page Content</h4>
         <form id="homeForm">
@@ -150,18 +132,15 @@
               <label class="form-check-label" for="heroOptionDefault">Use Default</label>
             </div>
           </div>
-          <!-- Manual URL field -->
           <div class="form-group" id="heroURLField">
             <label for="homeMediaURL">Background Media URL</label>
             <input type="text" class="form-control" id="homeMediaURL" placeholder="Enter media URL">
           </div>
-          <!-- Direct Upload field -->
           <div class="form-group d-none" id="heroUploadField">
             <label for="homeMediaFile">Upload Background Media</label>
             <input type="file" id="homeMediaFile" accept="image/*">
             <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
           </div>
-          <!-- Default message -->
           <div class="form-group d-none" id="heroDefaultField">
             <p class="text-muted">Default background media will be used.</p>
           </div>
@@ -169,71 +148,282 @@
         </form>
       </div>
       
-      <!-- Product Details Section -->
-      <div id="productDetails" class="content-section">
-        <h4>Product Details</h4>
-        <form id="productDetailsForm">
+      <!-- 2. E-commerce Page -->
+      <div id="ecommerce" class="content-section">
+        <h4>E-commerce Page Content</h4>
+        <form id="ecommerceForm">
           <div class="form-group">
-            <label for="prodName">Product Name</label>
-            <input type="text" class="form-control" id="prodName" placeholder="Enter product name">
+            <label for="ecomPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="ecomPageTitle" placeholder="Enter page title">
+          </div>
+          <div class="form-group">
+            <label for="ecomHeroSubtitle">Hero Subtitle</label>
+            <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Enter hero subtitle">
+          </div>
+          <!-- Optional hero background with 3 options -->
+          <div class="form-group">
+            <label>E-commerce Hero Media Options</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="ecomHeroOption" id="ecomOptionURL" value="url" checked>
+              <label class="form-check-label" for="ecomOptionURL">Manual URL</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="ecomHeroOption" id="ecomOptionUpload" value="upload">
+              <label class="form-check-label" for="ecomOptionUpload">Direct Upload</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="ecomHeroOption" id="ecomOptionDefault" value="default">
+              <label class="form-check-label" for="ecomOptionDefault">Use Default</label>
+            </div>
+          </div>
+          <div class="form-group" id="ecomURLField">
+            <label for="ecomMediaURL">Hero Media URL</label>
+            <input type="text" class="form-control" id="ecomMediaURL" placeholder="Enter hero media URL">
+          </div>
+          <div class="form-group d-none" id="ecomUploadField">
+            <label for="ecomMediaFile">Upload Hero Media</label>
+            <input type="file" id="ecomMediaFile" accept="image/*">
+            <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
+          </div>
+          <div class="form-group d-none" id="ecomDefaultField">
+            <p class="text-muted">Default hero media will be used.</p>
+          </div>
+          <button type="submit" class="btn btn-primary">Save E-commerce Content</button>
+        </form>
+      </div>
+      
+      <!-- 3. Offers Page -->
+      <div id="offers" class="content-section">
+        <h4>Offers Page Content</h4>
+        <form id="offersForm">
+          <div class="form-group">
+            <label for="offersPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="offersPageTitle" placeholder="Enter page title">
+          </div>
+          <div class="form-group">
+            <label for="offersDesc">Description</label>
+            <textarea class="form-control" id="offersDesc" rows="3" placeholder="Enter offers description"></textarea>
+          </div>
+          <!-- Optional hero background with 3 options -->
+          <div class="form-group">
+            <label>Offers Hero Media Options</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="offersHeroOption" id="offersOptionURL" value="url" checked>
+              <label class="form-check-label" for="offersOptionURL">Manual URL</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="offersHeroOption" id="offersOptionUpload" value="upload">
+              <label class="form-check-label" for="offersOptionUpload">Direct Upload</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="offersHeroOption" id="offersOptionDefault" value="default">
+              <label class="form-check-label" for="offersOptionDefault">Use Default</label>
+            </div>
+          </div>
+          <div class="form-group" id="offersURLField">
+            <label for="offersMediaURL">Hero Media URL</label>
+            <input type="text" class="form-control" id="offersMediaURL" placeholder="Enter hero media URL">
+          </div>
+          <div class="form-group d-none" id="offersUploadField">
+            <label for="offersMediaFile">Upload Hero Media</label>
+            <input type="file" id="offersMediaFile" accept="image/*">
+            <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
+          </div>
+          <div class="form-group d-none" id="offersDefaultField">
+            <p class="text-muted">Default hero media will be used.</p>
+          </div>
+          <!-- Offers Items -->
+          <div class="form-group">
+            <label>Offers Items</label>
+            <div id="offersContainer"></div>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="addOfferBtn">
+              <i class="fas fa-plus"></i> Add Offer
+            </button>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Offers Content</button>
+        </form>
+      </div>
+      
+      <!-- 4. Payments Page -->
+      <div id="payments" class="content-section">
+        <h4>Payments Page Content</h4>
+        <form id="paymentsForm">
+          <div class="form-group">
+            <label for="paymentsPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="paymentsPageTitle" placeholder="Enter page title">
+          </div>
+          <div class="form-group">
+            <label for="paymentsDesc">Description</label>
+            <textarea class="form-control" id="paymentsDesc" rows="3" placeholder="Enter page description"></textarea>
+          </div>
+          <!-- Optional hero background with 3 options -->
+          <div class="form-group">
+            <label>Payments Hero Media Options</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentsHeroOption" id="paymentsOptionURL" value="url" checked>
+              <label class="form-check-label" for="paymentsOptionURL">Manual URL</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentsHeroOption" id="paymentsOptionUpload" value="upload">
+              <label class="form-check-label" for="paymentsOptionUpload">Direct Upload</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentsHeroOption" id="paymentsOptionDefault" value="default">
+              <label class="form-check-label" for="paymentsOptionDefault">Use Default</label>
+            </div>
+          </div>
+          <div class="form-group" id="paymentsURLField">
+            <label for="paymentsMediaURL">Hero Media URL</label>
+            <input type="text" class="form-control" id="paymentsMediaURL" placeholder="Enter hero media URL">
+          </div>
+          <div class="form-group d-none" id="paymentsUploadField">
+            <label for="paymentsMediaFile">Upload Hero Media</label>
+            <input type="file" id="paymentsMediaFile" accept="image/*">
+            <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
+          </div>
+          <div class="form-group d-none" id="paymentsDefaultField">
+            <p class="text-muted">Default hero media will be used.</p>
+          </div>
+          <!-- Payment Details -->
+          <div class="form-group">
+            <label>Payment Details</label>
+            <div id="paymentsContainer"></div>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="addPaymentBtn">
+              <i class="fas fa-plus"></i> Add Payment Detail
+            </button>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Payments Content</button>
+        </form>
+      </div>
+      
+      <!-- 5. Support Page -->
+      <div id="support" class="content-section">
+        <h4>Support Page Content</h4>
+        <form id="supportForm">
+          <div class="form-group">
+            <label for="supportPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="supportPageTitle" placeholder="Enter page title">
+          </div>
+          <div class="form-group">
+            <label for="supportSubtitle">Subtitle</label>
+            <input type="text" class="form-control" id="supportSubtitle" placeholder="Enter subtitle">
+          </div>
+          <!-- FAQ Items -->
+          <div class="form-group">
+            <label>FAQ Items</label>
+            <div id="faqContainer"></div>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="addFaqBtn">
+              <i class="fas fa-plus"></i> Add FAQ
+            </button>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Support Content</button>
+        </form>
+      </div>
+      
+      <!-- 6. Details (Product Details) -->
+      <div id="details" class="content-section">
+        <h4>Product Details</h4>
+        <form id="detailsForm">
+          <div class="form-group">
+            <label for="detName">Product Name</label>
+            <input type="text" class="form-control" id="detName" placeholder="Enter product name">
           </div>
           <div class="form-group">
             <label>Product Image Options</label>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="prodImageOption" id="prodOptionUpload" value="upload" checked>
-              <label class="form-check-label" for="prodOptionUpload">Direct Upload</label>
+              <input class="form-check-input" type="radio" name="detImageOption" id="detOptionUpload" value="upload" checked>
+              <label class="form-check-label" for="detOptionUpload">Direct Upload</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="prodImageOption" id="prodOptionDefault" value="default">
-              <label class="form-check-label" for="prodOptionDefault">Use Default</label>
+              <input class="form-check-input" type="radio" name="detImageOption" id="detOptionDefault" value="default">
+              <label class="form-check-label" for="detOptionDefault">Use Default</label>
             </div>
           </div>
-          <!-- Product image URL field (read-only) -->
-          <div class="form-group" id="prodURLField">
-            <label for="prodImageUrl">Product Image URL</label>
-            <input type="text" class="form-control" id="prodImageUrl" placeholder="Image URL will appear here" readonly>
+          <div class="form-group" id="detURLField">
+            <label for="detImageUrl">Product Image URL</label>
+            <input type="text" class="form-control" id="detImageUrl" placeholder="Image URL will appear here" readonly>
           </div>
-          <!-- Direct Upload field -->
-          <div class="form-group" id="prodUploadField">
-            <label for="prodImageFile">Upload Product Image</label>
-            <input type="file" id="prodImageFile" accept="image/*">
+          <div class="form-group" id="detUploadField">
+            <label for="detImageFile">Upload Product Image</label>
+            <input type="file" id="detImageFile" accept="image/*">
             <small>Auto-resized (max 400×300) & uploaded via Imgur.</small>
           </div>
           <div class="form-group">
-            <label for="prodPrice">Price</label>
-            <input type="number" class="form-control" id="prodPrice" placeholder="Enter price">
+            <label for="detPrice">Price</label>
+            <input type="number" class="form-control" id="detPrice" placeholder="Enter price">
           </div>
           <div class="form-group">
-            <label for="prodDiscount">Discount (%)</label>
-            <input type="number" class="form-control" id="prodDiscount" placeholder="Enter discount">
+            <label for="detDiscount">Discount (%)</label>
+            <input type="number" class="form-control" id="detDiscount" placeholder="Enter discount">
           </div>
           <div class="form-group">
-            <label for="prodRating">Rating</label>
-            <input type="number" class="form-control" id="prodRating" placeholder="Enter rating">
+            <label for="detRating">Rating</label>
+            <input type="number" class="form-control" id="detRating" placeholder="Enter rating">
           </div>
           <div class="form-group">
-            <label for="prodAdded">Added Count</label>
-            <input type="number" class="form-control" id="prodAdded" placeholder="Enter added count">
+            <label for="detAdded">Added Count</label>
+            <input type="number" class="form-control" id="detAdded" placeholder="Enter added count">
           </div>
           <div class="form-group">
-            <label for="prodSold">Sold Count</label>
-            <input type="number" class="form-control" id="prodSold" placeholder="Enter sold count">
+            <label for="detSold">Sold Count</label>
+            <input type="number" class="form-control" id="detSold" placeholder="Enter sold count">
           </div>
           <div class="form-group">
-            <label for="prodDesc">Description</label>
-            <textarea class="form-control" id="prodDesc" rows="3" placeholder="Enter product description"></textarea>
+            <label for="detDesc">Description</label>
+            <textarea class="form-control" id="detDesc" rows="3" placeholder="Enter product description"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Save Product Details</button>
+          <button type="submit" class="btn btn-primary">Save Details</button>
         </form>
       </div>
-      <!-- Add other sections (ecommerce, offers, payments, support, header, footer) similarly -->
+      
+      <!-- 7. Header -->
+      <div id="header" class="content-section">
+        <h4>Header Content</h4>
+        <form id="headerForm">
+          <div class="form-group">
+            <label for="logoIcon">Logo Icon Class</label>
+            <input type="text" class="form-control" id="logoIcon" placeholder='e.g. "fas fa-briefcase"'>
+          </div>
+          <div class="form-group">
+            <label for="searchPlaceholder">Search Placeholder</label>
+            <input type="text" class="form-control" id="searchPlaceholder" placeholder="Enter search placeholder">
+          </div>
+          <div class="form-group">
+            <label for="supportLink">Support Link URL</label>
+            <input type="text" class="form-control" id="supportLink" placeholder="Enter support link URL">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Header Content</button>
+        </form>
+      </div>
+      
+      <!-- 8. Footer -->
+      <div id="footer" class="content-section">
+        <h4>Footer Content</h4>
+        <form id="footerForm">
+          <div class="form-group">
+            <label>Footer Links</label>
+            <div id="footerLinksContainer"></div>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="addFooterLinkBtn">
+              <i class="fas fa-plus"></i> Add Footer Link
+            </button>
+          </div>
+          <div class="form-group">
+            <label for="footerCopyright">Copyright Text</label>
+            <input type="text" class="form-control" id="footerCopyright"
+                   placeholder="Enter copyright text">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Footer Content</button>
+        </form>
+      </div>
     </div>
   </div>
   
-  <!-- Bootstrap Bundle -->
+  <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Firebase config – replace with your own project values if needed
+    // ================================
+    // 1. Initialize Firebase (if needed)
+    // ================================
     const firebaseConfig = {
       apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
@@ -245,21 +435,25 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    
-    // Mobile hamburger toggle
+
+    // ================================
+    // 2. Mobile Hamburger Toggle
+    // ================================
     const hamburger = document.getElementById("hamburger");
     const sidebar = document.getElementById("sidebar");
-    hamburger.addEventListener("click", function() {
+    hamburger.addEventListener("click", () => {
       sidebar.classList.toggle("open");
     });
-    document.addEventListener("click", function(e) {
+    document.addEventListener("click", (e) => {
       if(window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
         sidebar.classList.remove("open");
       }
     });
-    
-    // Pages list in sidebar
-    const pages = ["home", "ecommerce", "offers", "payments", "support", "productDetails", "header", "footer"];
+
+    // ================================
+    // 3. Pages List & Navigation
+    // ================================
+    const pages = ["home", "ecommerce", "offers", "payments", "support", "details", "header", "footer"];
     function renderPagesList() {
       const pagesList = document.getElementById("pagesList");
       pagesList.innerHTML = "";
@@ -268,14 +462,13 @@
         li.innerHTML = `<i class="fas fa-angle-right"></i> ${page}`;
         li.dataset.target = page;
         li.addEventListener("click", function() {
-          // Set active
+          // Mark active
           document.querySelectorAll("#pagesList li").forEach(item => item.classList.remove("active"));
           this.classList.add("active");
-          // Update page title
+          // Show page
           document.getElementById("pageTitle").innerText = page;
-          // Show correct section
-          document.querySelectorAll(".content-section").forEach(section => section.classList.remove("active"));
-          document.querySelectorAll(".content-section").forEach(section => section.classList.add("d-none"));
+          document.querySelectorAll(".content-section").forEach(sec => sec.classList.remove("active"));
+          document.querySelectorAll(".content-section").forEach(sec => sec.classList.add("d-none"));
           document.getElementById(page).classList.add("active");
           document.getElementById(page).classList.remove("d-none");
           // Close sidebar on mobile
@@ -285,17 +478,21 @@
       });
     }
     renderPagesList();
-    // By default, show the first page
+    // Show the first page by default
     document.querySelector("#pagesList li").classList.add("active");
     document.getElementById(pages[0]).classList.add("active");
     document.getElementById(pages[0]).classList.remove("d-none");
     document.getElementById("pageTitle").innerText = pages[0];
-    
-    // Form submission simulation (replace with real Firestore calls if needed)
+
+    // ================================
+    // 4. Form Submissions (simulated)
+    // ================================
     function handleFormSubmit(formId, pageName) {
-      document.getElementById(formId).addEventListener("submit", function(e) {
+      const form = document.getElementById(formId);
+      if(!form) return;
+      form.addEventListener("submit", function(e) {
         e.preventDefault();
-        const formData = new FormData(this);
+        const formData = new FormData(form);
         const data = {};
         formData.forEach((value, key) => { data[key] = value; });
         alert(`${pageName} content saved successfully!`);
@@ -303,120 +500,216 @@
       });
     }
     handleFormSubmit("homeForm", "Home");
-    handleFormSubmit("productDetailsForm", "Product Details");
-    
-    // Show/hide hero media fields
-    const heroOptions = document.getElementsByName("heroMediaOption");
-    heroOptions.forEach(radio => {
-      radio.addEventListener("change", function() {
-        document.getElementById("heroURLField").classList.add("d-none");
-        document.getElementById("heroUploadField").classList.add("d-none");
-        document.getElementById("heroDefaultField").classList.add("d-none");
-        if(this.value === "url") {
-          document.getElementById("heroURLField").classList.remove("d-none");
-        } else if(this.value === "upload") {
-          document.getElementById("heroUploadField").classList.remove("d-none");
-        } else {
-          document.getElementById("heroDefaultField").classList.remove("d-none");
-        }
-      });
+    handleFormSubmit("ecommerceForm", "E-commerce");
+    handleFormSubmit("offersForm", "Offers");
+    handleFormSubmit("paymentsForm", "Payments");
+    handleFormSubmit("supportForm", "Support");
+    handleFormSubmit("detailsForm", "Details");
+    handleFormSubmit("headerForm", "Header");
+    handleFormSubmit("footerForm", "Footer");
+
+    // Dynamic "Add" buttons for Offers, Payments, Support (FAQ), Footer Links
+    document.getElementById("addOfferBtn").addEventListener("click", function() {
+      addListItem("offersContainer", [
+        { name: "offerIcon", placeholder: "Offer Icon (e.g. fas fa-tag)" },
+        { name: "offerTitle", placeholder: "Offer Title" },
+        { name: "offerDesc", placeholder: "Offer Description" }
+      ]);
     });
-    
-    // Show/hide product image fields
-    const prodOptions = document.getElementsByName("prodImageOption");
-    prodOptions.forEach(radio => {
-      radio.addEventListener("change", function() {
-        document.getElementById("prodUploadField").classList.add("d-none");
-        document.getElementById("prodURLField").classList.add("d-none");
-        document.getElementById("prodImageUrl").value = "";
-        if(this.value === "upload") {
-          document.getElementById("prodUploadField").classList.remove("d-none");
-          document.getElementById("prodURLField").classList.remove("d-none");
-        }
-      });
+    document.getElementById("addPaymentBtn").addEventListener("click", function() {
+      addListItem("paymentsContainer", [
+        { name: "paymentTitle", placeholder: "Payment Title" },
+        { name: "paymentDesc", placeholder: "Payment Description" }
+      ]);
     });
-    
-    // Imgur integration for Product Image (max 400×300)
-    document.getElementById("prodImageFile").addEventListener("change", function(e) {
-      const file = e.target.files[0];
+    document.getElementById("addFaqBtn").addEventListener("click", function() {
+      addListItem("faqContainer", [
+        { name: "faqQuestion", placeholder: "FAQ Question" },
+        { name: "faqAnswer", placeholder: "FAQ Answer" }
+      ]);
+    });
+    document.getElementById("addFooterLinkBtn").addEventListener("click", function() {
+      addListItem("footerLinksContainer", [
+        { name: "linkText", placeholder: "Link Text" },
+        { name: "linkURL", placeholder: "Link URL" }
+      ]);
+    });
+
+    function addListItem(containerId, fields) {
+      const container = document.getElementById(containerId);
+      const div = document.createElement("div");
+      div.classList.add("border", "rounded", "p-2", "mb-2");
+      fields.forEach(field => {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = field.placeholder;
+        input.classList.add("form-control", "mb-1");
+        input.name = field.name;
+        div.appendChild(input);
+      });
+      container.appendChild(div);
+    }
+
+    // ================================
+    // 5. Show/Hide Media Fields (Hero)
+    // ================================
+    function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
+      const radios = document.getElementsByName(radioName);
+      radios.forEach(radio => {
+        radio.addEventListener("change", function() {
+          document.getElementById(urlFieldId).classList.add("d-none");
+          document.getElementById(uploadFieldId).classList.add("d-none");
+          document.getElementById(defaultFieldId).classList.add("d-none");
+          if(this.value === "url") {
+            document.getElementById(urlFieldId).classList.remove("d-none");
+          } else if(this.value === "upload") {
+            document.getElementById(uploadFieldId).classList.remove("d-none");
+          } else {
+            document.getElementById(defaultFieldId).classList.remove("d-none");
+          }
+        });
+      });
+    }
+    // Home hero
+    setupHeroRadios("heroMediaOption", "heroURLField", "heroUploadField", "heroDefaultField");
+    // E-commerce hero
+    setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
+    // Offers hero
+    setupHeroRadios("offersHeroOption", "offersURLField", "offersUploadField", "offersDefaultField");
+    // Payments hero
+    setupHeroRadios("paymentsHeroOption", "paymentsURLField", "paymentsUploadField", "paymentsDefaultField");
+
+    // ================================
+    // 6. Show/Hide Product Image Fields (E-commerce "products" or "Details" page)
+    // ================================
+    function setupProductRadios(radioName, urlFieldId, uploadFieldId) {
+      const radios = document.getElementsByName(radioName);
+      radios.forEach(radio => {
+        radio.addEventListener("change", function() {
+          document.getElementById(urlFieldId).classList.add("d-none");
+          document.getElementById(uploadFieldId).classList.add("d-none");
+          if(this.value === "upload") {
+            document.getElementById(urlFieldId).classList.remove("d-none");
+            document.getElementById(uploadFieldId).classList.remove("d-none");
+          }
+        });
+      });
+    }
+    setupProductRadios("prodImageOption", "prodURLField", "prodUploadField");
+    setupProductRadios("detImageOption", "detURLField", "detUploadField");
+
+    // ================================
+    // 7. Imgur Uploads for Images
+    // ================================
+    // Home hero upload (max 1920×1080)
+    const homeFile = document.getElementById("homeMediaFile");
+    if(homeFile) {
+      homeFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
+          alert("Hero background uploaded!\n" + imageUrl);
+          document.getElementById("homeMediaURL").value = imageUrl;
+        });
+      });
+    }
+    // E-commerce hero upload (max 1920×1080)
+    const ecomFile = document.getElementById("ecomMediaFile");
+    if(ecomFile) {
+      ecomFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
+          alert("E-commerce hero uploaded!\n" + imageUrl);
+          document.getElementById("ecomMediaURL").value = imageUrl;
+        });
+      });
+    }
+    // Offers hero upload (max 1920×1080)
+    const offersFile = document.getElementById("offersMediaFile");
+    if(offersFile) {
+      offersFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
+          alert("Offers hero uploaded!\n" + imageUrl);
+          document.getElementById("offersMediaURL").value = imageUrl;
+        });
+      });
+    }
+    // Payments hero upload (max 1920×1080)
+    const paymentsFile = document.getElementById("paymentsMediaFile");
+    if(paymentsFile) {
+      paymentsFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
+          alert("Payments hero uploaded!\n" + imageUrl);
+          document.getElementById("paymentsMediaURL").value = imageUrl;
+        });
+      });
+    }
+    // Product details page upload (max 400×300)
+    const detFile = document.getElementById("detImageFile");
+    if(detFile) {
+      detFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 400, 300, (imageUrl) => {
+          alert("Product image uploaded!\n" + imageUrl);
+          document.getElementById("detImageUrl").value = imageUrl;
+        });
+      });
+    }
+    // Product details (for "productDetails" page if needed) 
+    const prodFile = document.getElementById("prodImageFile");
+    if(prodFile) {
+      prodFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 400, 300, (imageUrl) => {
+          alert("Product image uploaded!\n" + imageUrl);
+          document.getElementById("prodImageUrl").value = imageUrl;
+        });
+      });
+    }
+
+    // Reusable function to resize & upload image to Imgur
+    function handleImageUpload(file, maxWidth, maxHeight, callback) {
       if(!file) return;
-      const img = new Image();
       const reader = new FileReader();
-      reader.onload = ev => { img.src = ev.target.result; };
+      const img = new Image();
+      reader.onload = (e) => { img.src = e.target.result; };
       reader.readAsDataURL(file);
-      img.onload = function() {
-        const MAX_W = 400, MAX_H = 300;
+      img.onload = () => {
         let w = img.width, h = img.height;
-        if(w > h && w > MAX_W) { h = Math.floor(h*MAX_W/w); w = MAX_W; }
-        else if(h > MAX_H) { w = Math.floor(w*MAX_H/h); h = MAX_H; }
+        if(w > h && w > maxWidth) {
+          h = Math.floor(h * maxWidth / w);
+          w = maxWidth;
+        } else if(h > maxHeight) {
+          w = Math.floor(w * maxHeight / h);
+          h = maxHeight;
+        }
         const canvas = document.createElement("canvas");
         canvas.width = w; canvas.height = h;
         canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-        canvas.toBlob(blob => {
+        canvas.toBlob((blob) => {
           const r2 = new FileReader();
           r2.onloadend = () => {
             const base64data = r2.result.split(',')[1];
+            const clientId = "048d9400ce02b71"; // Your Imgur Client ID
+            const formData = new FormData();
+            formData.append("image", base64data);
             fetch("https://api.imgur.com/3/image", {
               method: "POST",
-              headers: { Authorization: "Client-ID 048d9400ce02b71" },
-              body: new FormData().append("image", base64data)
+              headers: { Authorization: "Client-ID " + clientId },
+              body: formData
             })
             .then(res => res.json())
             .then(result => {
               if(result.success) {
-                alert("Product image uploaded!\n" + result.data.link);
-                document.getElementById("prodImageUrl").value = result.data.link;
+                const imageUrl = result.data.link;
+                if(callback) callback(imageUrl);
               } else {
                 alert("Upload failed: " + result.data.error);
               }
             })
-            .catch(err => alert("Error uploading product image: " + err.message));
+            .catch(err => {
+              alert("Error uploading image: " + err.message);
+            });
           };
           r2.readAsDataURL(blob);
         }, "image/jpeg", 0.8);
       };
-    });
-    
-    // Imgur integration for Home hero background (max 1920×1080)
-    document.getElementById("homeMediaFile").addEventListener("change", function(e) {
-      const file = e.target.files[0];
-      if(!file) return;
-      const img = new Image();
-      const reader = new FileReader();
-      reader.onload = ev => { img.src = ev.target.result; };
-      reader.readAsDataURL(file);
-      img.onload = function() {
-        const MAX_W = 1920, MAX_H = 1080;
-        let w = img.width, h = img.height;
-        if(w > h && w > MAX_W) { h = Math.floor(h*MAX_W/w); w = MAX_W; }
-        else if(h > MAX_H) { w = Math.floor(w*MAX_H/h); h = MAX_H; }
-        const canvas = document.createElement("canvas");
-        canvas.width = w; canvas.height = h;
-        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-        canvas.toBlob(blob => {
-          const r2 = new FileReader();
-          r2.onloadend = () => {
-            const base64data = r2.result.split(',')[1];
-            fetch("https://api.imgur.com/3/image", {
-              method: "POST",
-              headers: { Authorization: "Client-ID 048d9400ce02b71" },
-              body: new FormData().append("image", base64data)
-            })
-            .then(res => res.json())
-            .then(result => {
-              if(result.success) {
-                alert("Hero background uploaded!\n" + result.data.link);
-                document.getElementById("homeMediaURL").value = result.data.link;
-              } else {
-                alert("Upload failed: " + result.data.error);
-              }
-            })
-            .catch(err => alert("Error uploading hero image: " + err.message));
-          };
-          r2.readAsDataURL(blob);
-        }, "image/jpeg", 0.8);
-      };
-    });
+    }
   </script>
 </body>
 </html>
