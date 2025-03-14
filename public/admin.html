@@ -43,7 +43,7 @@
     .sidebar h2 { margin-bottom: 15px; font-size: 1.2rem; }
     .sidebar ul { list-style: none; padding: 0; margin: 0; }
     .sidebar ul li {
-      padding: 10px;
+      padding: 10px 15px;
       margin-bottom: 5px;
       border-radius: 4px;
       cursor: pointer;
@@ -58,7 +58,7 @@
     @media (max-width: 767.98px) {
       .sidebar {
         position: fixed;
-        top: 60px; /* below topbar */
+        top: 60px;
         left: 0;
         height: calc(100% - 60px);
         transform: translateX(-100%);
@@ -94,7 +94,9 @@
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
       <h2>Admin Panel</h2>
-      <ul id="pagesList"></ul>
+      <ul id="pagesList">
+        <!-- Populated via script -->
+      </ul>
     </nav>
     
     <!-- Main Content -->
@@ -138,11 +140,17 @@
           <div class="form-group d-none" id="heroDefaultField">
             <p class="text-muted">Default background media will be used.</p>
           </div>
-          <button type="submit" class="btn btn-primary">Save Home Content</button>
+          <!-- Dynamic Feature Cards (if any) -->
+          <h5>Feature Cards</h5>
+          <div id="featureCardsContainer"></div>
+          <button type="button" class="btn btn-sm btn-outline-primary" id="addFeatureCardBtn">
+            <i class="fas fa-plus"></i> Add Feature Card
+          </button>
+          <button type="submit" class="btn btn-primary mt-3">Save Home Content</button>
         </form>
       </div>
       
-      <!-- 2. E-commerce Section (Extended) -->
+      <!-- 2. E-commerce Section -->
       <div id="ecommerce" class="content-section d-none">
         <h4>E-commerce Page Content</h4>
         <form id="ecommerceForm">
@@ -154,7 +162,6 @@
             <label for="ecomHeroSubtitle">Hero Subtitle</label>
             <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Enter hero subtitle">
           </div>
-          <!-- Optional Hero Media Options for Ecommerce -->
           <div class="form-group">
             <label>E-commerce Hero Media Options</label>
             <div class="form-check">
@@ -182,25 +189,22 @@
           <div class="form-group d-none" id="ecomDefaultField">
             <p class="text-muted">Default hero media will be used.</p>
           </div>
-          <!-- Dynamic List: Carousel Items -->
-          <h5>Carousel Items</h5>
+          <!-- Dynamic Lists for E-commerce Content -->
+          <h5 class="mt-3">Carousel Items</h5>
           <div id="carouselContainer"></div>
           <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn">
             <i class="fas fa-plus"></i> Add Carousel Item
           </button>
-          <!-- Dynamic List: Seasonal Offers -->
           <h5 class="mt-3">Seasonal Offers</h5>
           <div id="seasonalOffersContainer"></div>
           <button type="button" class="btn btn-sm btn-outline-primary" id="addSeasonalOfferBtn">
             <i class="fas fa-plus"></i> Add Seasonal Offer
           </button>
-          <!-- Dynamic List: Hot Offers -->
           <h5 class="mt-3">Hot Offers</h5>
           <div id="hotOffersContainer"></div>
           <button type="button" class="btn btn-sm btn-outline-primary" id="addHotOfferBtn">
             <i class="fas fa-plus"></i> Add Hot Offer
           </button>
-          <!-- Dynamic List: Countdown Offers -->
           <h5 class="mt-3">Countdown Offers</h5>
           <div id="countdownOffersContainer"></div>
           <button type="button" class="btn btn-sm btn-outline-primary" id="addCountdownOfferBtn">
@@ -210,7 +214,56 @@
         </form>
       </div>
       
-      <!-- 3. Payments Section -->
+      <!-- 3. Offers Section -->
+      <div id="offers" class="content-section d-none">
+        <h4>Offers Page Content</h4>
+        <form id="offersForm">
+          <div class="form-group">
+            <label for="offersPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="offersPageTitle" placeholder="Enter page title">
+          </div>
+          <div class="form-group">
+            <label for="offersDesc">Description</label>
+            <textarea class="form-control" id="offersDesc" rows="3" placeholder="Enter offers description"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Offers Hero Media Options</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="offersHeroOption" id="offersOptionURL" value="url" checked>
+              <label class="form-check-label" for="offersOptionURL">Manual URL</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="offersHeroOption" id="offersOptionUpload" value="upload">
+              <label class="form-check-label" for="offersOptionUpload">Direct Upload</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="offersHeroOption" id="offersOptionDefault" value="default">
+              <label class="form-check-label" for="offersOptionDefault">Use Default</label>
+            </div>
+          </div>
+          <div class="form-group" id="offersURLField">
+            <label for="offersMediaURL">Hero Media URL</label>
+            <input type="text" class="form-control" id="offersMediaURL" placeholder="Enter hero media URL">
+          </div>
+          <div class="form-group d-none" id="offersUploadField">
+            <label for="offersMediaFile">Upload Hero Media</label>
+            <input type="file" id="offersMediaFile" accept="image/*">
+            <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
+          </div>
+          <div class="form-group d-none" id="offersDefaultField">
+            <p class="text-muted">Default hero media will be used.</p>
+          </div>
+          <!-- Dynamic list for Offers Items -->
+          <h5 class="mt-3">Offers Items</h5>
+          <div id="offersContainer"></div>
+          <button type="button" class="btn btn-sm btn-outline-primary" id="addOfferBtn">
+            <i class="fas fa-plus"></i> Add Offer
+          </button>
+          <button type="submit" class="btn btn-primary mt-3">Save Offers Content</button>
+        </form>
+      </div>
+      
+      <!-- 4. Payments Section -->
       <div id="payments" class="content-section d-none">
         <h4>Payments Page Content</h4>
         <form id="paymentsForm">
@@ -249,6 +302,7 @@
           <div class="form-group d-none" id="paymentsDefaultField">
             <p class="text-muted">Default hero media will be used.</p>
           </div>
+          <!-- Dynamic list for Payment Details -->
           <div class="form-group">
             <label>Payment Details</label>
             <div id="paymentsContainer"></div>
@@ -260,7 +314,7 @@
         </form>
       </div>
       
-      <!-- 4. Support Section -->
+      <!-- 5. Support Section -->
       <div id="support" class="content-section d-none">
         <h4>Support Page Content</h4>
         <form id="supportForm">
@@ -272,6 +326,7 @@
             <label for="supportSubtitle">Subtitle</label>
             <input type="text" class="form-control" id="supportSubtitle" placeholder="Enter subtitle">
           </div>
+          <!-- Dynamic list for FAQ Items -->
           <div class="form-group">
             <label>FAQ Items</label>
             <div id="faqContainer"></div>
@@ -283,7 +338,7 @@
         </form>
       </div>
       
-      <!-- 5. Contact Section -->
+      <!-- 6. Contact Section -->
       <div id="contact" class="content-section d-none">
         <h4>Contact Page Content</h4>
         <form id="contactForm">
@@ -293,7 +348,7 @@
           </div>
           <div class="form-group">
             <label for="contactAboutHeading">About Section Heading</label>
-            <input type="text" class="form-control" id="contactAboutHeading" placeholder="Enter heading (e.g., About YourBrand)">
+            <input type="text" class="form-control" id="contactAboutHeading" placeholder="Enter heading (e.g. About YourBrand)">
           </div>
           <div class="form-group">
             <label for="contactAboutText">About Section Text</label>
@@ -323,7 +378,7 @@
         </form>
       </div>
       
-      <!-- 6. Details (Product Details) Section -->
+      <!-- 7. Details (Product Details) Section -->
       <div id="details" class="content-section d-none">
         <h4>Product Details Content</h4>
         <form id="detailsForm">
@@ -379,7 +434,7 @@
         </form>
       </div>
       
-      <!-- 7. Header Section -->
+      <!-- 8. Header Section -->
       <div id="header" class="content-section d-none">
         <h4>Header Content</h4>
         <form id="headerForm">
@@ -399,7 +454,7 @@
         </form>
       </div>
       
-      <!-- 8. Footer Section -->
+      <!-- 9. Footer Section -->
       <div id="footer" class="content-section d-none">
         <h4>Footer Content</h4>
         <form id="footerForm">
@@ -420,7 +475,7 @@
     </div>
   </div>
   
-  <!-- Bootstrap JS Bundle -->
+  <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // -------------------------------
@@ -453,7 +508,7 @@
     // -------------------------------
     // 3. Render Sidebar Pages List
     // -------------------------------
-    const pages = ["home", "ecommerce", "payments", "support", "contact", "details", "header", "footer"];
+    const pages = ["home", "ecommerce", "offers", "payments", "support", "contact", "details", "header", "footer"];
     function renderPagesList() {
       const pagesList = document.getElementById("pagesList");
       pagesList.innerHTML = "";
@@ -498,6 +553,7 @@
     }
     handleFormSubmit("homeForm", "Home");
     handleFormSubmit("ecommerceForm", "E-commerce");
+    handleFormSubmit("offersForm", "Offers");
     handleFormSubmit("paymentsForm", "Payments");
     handleFormSubmit("supportForm", "Support");
     handleFormSubmit("contactForm", "Contact");
@@ -511,7 +567,7 @@
     function addListItem(containerId, fields) {
       const container = document.getElementById(containerId);
       const div = document.createElement("div");
-      div.classList.add("border", "rounded", "p-2", "mb-2");
+      div.classList.add("list-editor-item");
       fields.forEach(field => {
         const input = document.createElement("input");
         input.type = "text";
@@ -562,9 +618,38 @@
         { name: "offerEndDate", placeholder: "Offer End Date" }
       ]);
     });
+    // Offers Items for Offers page
+    document.getElementById("addOfferBtn")?.addEventListener("click", () => {
+      addListItem("offersContainer", [
+        { name: "offerIcon", placeholder: "Offer Icon (e.g. fas fa-tag)" },
+        { name: "offerTitle", placeholder: "Offer Title" },
+        { name: "offerDesc", placeholder: "Offer Description" }
+      ]);
+    });
+    // Payment Details for Payments page
+    document.getElementById("addPaymentBtn")?.addEventListener("click", () => {
+      addListItem("paymentsContainer", [
+        { name: "paymentTitle", placeholder: "Payment Title" },
+        { name: "paymentDesc", placeholder: "Payment Description" }
+      ]);
+    });
+    // FAQ Items for Support page
+    document.getElementById("addFaqBtn")?.addEventListener("click", () => {
+      addListItem("faqContainer", [
+        { name: "faqQuestion", placeholder: "FAQ Question" },
+        { name: "faqAnswer", placeholder: "FAQ Answer" }
+      ]);
+    });
+    // Footer Links for Footer page
+    document.getElementById("addFooterLinkBtn")?.addEventListener("click", () => {
+      addListItem("footerLinksContainer", [
+        { name: "linkText", placeholder: "Link Text" },
+        { name: "linkURL", placeholder: "Link URL" }
+      ]);
+    });
     
     // -------------------------------
-    // 6. Show/Hide Media Fields for Hero Sections
+    // 6. Show/Hide Hero Media Fields
     // -------------------------------
     function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
       const radios = document.getElementsByName(radioName);
@@ -583,17 +668,17 @@
         });
       });
     }
-    // Home
+    // Home Hero
     setupHeroRadios("heroMediaOption", "heroURLField", "heroUploadField", "heroDefaultField");
-    // E-commerce (Hero)
+    // E-commerce Hero
     setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
-    // Offers (Hero)
+    // Offers Hero
     setupHeroRadios("offersHeroOption", "offersURLField", "offersUploadField", "offersDefaultField");
-    // Payments (Hero)
+    // Payments Hero
     setupHeroRadios("paymentsHeroOption", "paymentsURLField", "paymentsUploadField", "paymentsDefaultField");
     
     // -------------------------------
-    // 7. Show/Hide Product Image Fields
+    // 7. Show/Hide Product Image Fields (Details Page)
     // -------------------------------
     function setupProductRadios(radioName, urlFieldId, uploadFieldId) {
       const radios = document.getElementsByName(radioName);
@@ -608,7 +693,6 @@
         });
       });
     }
-    setupProductRadios("prodImageOption", "prodURLField", "prodUploadField");
     setupProductRadios("detImageOption", "detURLField", "detUploadField");
     
     // -------------------------------
@@ -654,7 +738,10 @@
       };
     }
     
-    // Imgur upload for Home hero background
+    // -------------------------------
+    // 9. Set up Imgur Uploads for Media Fields
+    // -------------------------------
+    // Home Hero Upload (max 1920×1080)
     const homeMediaFile = document.getElementById("homeMediaFile");
     if(homeMediaFile) {
       homeMediaFile.addEventListener("change", function() {
@@ -664,7 +751,7 @@
         });
       });
     }
-    // Imgur upload for E-commerce hero background
+    // E-commerce Hero Upload
     const ecomMediaFile = document.getElementById("ecomMediaFile");
     if(ecomMediaFile) {
       ecomMediaFile.addEventListener("change", function() {
@@ -674,7 +761,7 @@
         });
       });
     }
-    // Imgur upload for Offers hero background
+    // Offers Hero Upload
     const offersMediaFile = document.getElementById("offersMediaFile");
     if(offersMediaFile) {
       offersMediaFile.addEventListener("change", function() {
@@ -684,7 +771,7 @@
         });
       });
     }
-    // Imgur upload for Payments hero background
+    // Payments Hero Upload
     const paymentsMediaFile = document.getElementById("paymentsMediaFile");
     if(paymentsMediaFile) {
       paymentsMediaFile.addEventListener("change", function() {
@@ -694,7 +781,7 @@
         });
       });
     }
-    // Imgur upload for Product Details (det) image
+    // Details Page (Product Image) Upload (max 400×300)
     const detImageFile = document.getElementById("detImageFile");
     if(detImageFile) {
       detImageFile.addEventListener("change", function() {
@@ -704,16 +791,7 @@
         });
       });
     }
-    // Imgur upload for Product Details (prod) image
-    const prodImageFile = document.getElementById("prodImageFile");
-    if(prodImageFile) {
-      prodImageFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 400, 300, (imageUrl) => {
-          alert("Product image uploaded!\n" + imageUrl);
-          document.getElementById("prodImageUrl").value = imageUrl;
-        });
-      });
-    }
+    
   </script>
 </body>
 </html>
