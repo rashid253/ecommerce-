@@ -6,61 +6,15 @@
   <title>Footer Navigation</title>
   <script src="https://kit.fontawesome.com/YOUR_FONT_AWESOME_KIT.js" crossorigin="anonymous"></script>
   <style>
-    /* Mobile-app style footer navigation – compact version */
-    .footer {
-      position: fixed;
-      bottom: 30px;
-      left: 0;
-      width: 100%;
-      background: #fff;
-      border-top: 1px solid #ddd;
-      display: flex;
-      justify-content: space-around;
-      padding: 5px 0; /* Reduced padding */
-      font-size: 0.7rem; /* Reduced font size */
-      z-index: 1000;
-    }
-    .footer a {
-      text-decoration: none;
-      color: #333;
-      text-align: center;
-      flex: 1;
-      position: relative;
-    }
-    .footer a i {
-      display: block;
-      font-size: 0.8rem; /* Reduced icon size */
-      margin-bottom: 2px;
-      font-weight: bold; /* Icons bold */
-    }
-    .badge {
-      position: absolute;
-      top: -3px;
-      right: 25%; /* Moved badge slightly left from 20% to 25% */
-      background: red;
-      border-radius: 50%;
-      color: #fff;
-      padding: 1px 4px;
-      font-size: 0.6rem;
-    }
-    /* Extra footer bar with black background and white text */
-    .footer-extra {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #000;  /* Black background */
-      text-align: center;
-      padding: 3px 0;    /* Reduced padding */
-      font-size: 0.7rem; /* Reduced font size */
-      color: #fff;       /* White text */
-      z-index: 1100;
-    }
+    .footer { position: fixed; bottom: 30px; left: 0; width: 100%; background: #fff; border-top: 1px solid #ddd; display: flex; justify-content: space-around; padding: 5px 0; font-size: 0.7rem; z-index: 1000; }
+    .footer a { text-decoration: none; color: #333; text-align: center; flex: 1; }
+    .footer a i { display: block; font-size: 0.8rem; margin-bottom: 2px; font-weight: bold; }
+    .badge { position: absolute; top: -3px; right: 25%; background: red; border-radius: 50%; color: #fff; padding: 1px 4px; font-size: 0.6rem; }
+    .footer-extra { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; text-align: center; padding: 3px 0; font-size: 0.7rem; color: #fff; z-index: 1100; }
   </style>
 </head>
 <body>
-
-  <footer class="footer">
+  <footer class="footer" id="footerNav">
     <a href="index.html"><i class="fas fa-home"></i>Home</a>
     <a href="offers.html"><i class="fas fa-tags"></i>Offers</a>
     <a href="analytics.html"><i class="fas fa-chart-line"></i>Analytics</a>
@@ -72,21 +26,34 @@
       <i class="fas fa-headset"></i>Support
     </a>
   </footer>
-
-  <div class="footer-extra">
-    &copy; 2025 MyBusiness. All rights reserved.
-  </div>
-
+  <div class="footer-extra" id="footerExtra">&copy; 2025 MyBusiness. All rights reserved.</div>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script>
-    // Update the cart count in the footer badge
-    document.addEventListener("DOMContentLoaded", function() {
-      var count = localStorage.getItem("cartCount") || 0;
-      var badge = document.getElementById("cartCountFooter");
-      if (badge) {
-        badge.innerText = count;
+    const firebaseConfig = {
+      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
+      authDomain: "e-commerce-pk.firebaseapp.com",
+      projectId: "e-commerce-pk",
+      storageBucket: "e-commerce-pk.firebasestorage.app",
+      messagingSenderId: "126517093225",
+      appId: "1:126517093225:web:c2352620c6d32c582513f8",
+      measurementId: "G-2G2DNCNNT3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    db.collection("pages").doc("footer").get().then(doc => {
+      if(doc.exists) {
+        const data = doc.data();
+        if(data.footerLinks && Array.isArray(data.footerLinks)) {
+          let linksHtml = "";
+          data.footerLinks.forEach(link => { linksHtml += `<a href="${link.url}">${link.text}</a>`; });
+          document.getElementById("footerNav").innerHTML = linksHtml;
+        }
+        if(data.copyrightText) {
+          document.getElementById("footerExtra").innerText = data.copyrightText;
+        }
       }
-    });
+    }).catch(err => console.error("Error loading footer data:", err));
   </script>
-
 </body>
 </html>
