@@ -3,102 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyBusiness Premium</title>
-  <script src="https://kit.fontawesome.com/YOUR_FONT_AWESOME_KIT.js" crossorigin="anonymous"></script>
+  <title>MyBusiness Premium - Header</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Global box-sizing to include padding in element widths */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-    /* Compact header with logo (left), search bar (center) and support icon (right) */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: #fff;
-      padding: 5px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      z-index: 1000;
-      min-height: 48px;
-    }
-    /* Logo on left */
-    .logo-container {
-      flex: 0 0 auto;
-    }
-    .logo-container i {
-      font-size: 1.6rem;
-      color: #007bff;
-    }
-    /* Centered search bar */
-    .search-bar {
-      flex: 1 1 auto;
-      margin: 0 10px;
-    }
-    .search-bar input {
-      width: 100%;
-      padding: 6px 12px;
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      outline: none;
-    }
-    /* Support icon on right */
-    .support-icon {
-      flex: 0 0 auto;
-    }
-    .support-icon a {
-      text-decoration: none;
-      color: #007bff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .support-icon i {
-      font-size: 1.6rem;
-    }
+    *, *::before, *::after { box-sizing: border-box; }
+    .header { position: fixed; top: 0; left: 0; width: 100%; background: #fff; padding: 5px 10px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 1000; min-height: 48px; }
+    .logo-container { flex: 0 0 auto; }
+    .logo-container i { font-size: 1.6rem; color: #007bff; }
+    .search-bar { flex: 1 1 auto; margin: 0 10px; }
+    .search-bar input { width: 100%; padding: 6px 12px; border: 1px solid #ddd; border-radius: 20px; font-size: 0.9rem; }
+    .support-icon { flex: 0 0 auto; }
+    .support-icon a { text-decoration: none; color: #007bff; }
+    .support-icon i { font-size: 1.6rem; }
     @media (max-width: 600px) {
-      .header {
-        padding: 4px 8px;
-        min-height: 44px;
-      }
-      .logo-container i {
-        font-size: 1.4rem;
-      }
-      .search-bar input {
-        padding: 5px 10px;
-        font-size: 0.85rem;
-      }
-      .support-icon i {
-        font-size: 1.4rem;
-      }
+      .header { padding: 4px 8px; min-height: 44px; }
+      .logo-container i { font-size: 1.4rem; }
+      .search-bar input { padding: 5px 10px; font-size: 0.85rem; }
+      .support-icon i { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
-
-<header class="header">
-  <!-- Logo on the left -->
-  <div class="logo-container">
-    <i class="fas fa-briefcase"></i>
-  </div>
-  <!-- Search bar in the center -->
-  <div class="search-bar">
-    <input 
-      type="text" 
-      placeholder="Search products..."
-    />
-  </div>
-  <!-- Support icon on the right -->
-  <div class="support-icon">
-    <a href="support.html">
-      <i class="fas fa-headset"></i>
-    </a>
-  </div>
-</header>
-
+  <header class="header">
+    <div class="logo-container">
+      <i class="fas fa-briefcase"></i>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search products..." id="searchPlaceholder">
+    </div>
+    <div class="support-icon">
+      <a href="support.html" id="supportLink">
+        <i class="fas fa-headset"></i>
+      </a>
+    </div>
+  </header>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
+      authDomain: "e-commerce-pk.firebaseapp.com",
+      projectId: "e-commerce-pk",
+      storageBucket: "e-commerce-pk.firebasestorage.app",
+      messagingSenderId: "126517093225",
+      appId: "1:126517093225:web:c2352620c6d32c582513f8",
+      measurementId: "G-2G2DNCNNT3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    db.collection("pages").doc("header").get().then(doc => {
+      if(doc.exists) {
+        const data = doc.data();
+        if(data.searchPlaceholder) {
+          document.getElementById("searchPlaceholder").placeholder = data.searchPlaceholder;
+        }
+        if(data.supportLink) {
+          document.getElementById("supportLink").href = data.supportLink;
+        }
+      }
+    }).catch(err => console.error("Error loading header data:", err));
+  </script>
 </body>
 </html>
