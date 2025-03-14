@@ -3,46 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Secure Payments Excellence - MyBusiness Premium</title>
+  <title>Payments - MyBusiness Premium</title>
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Roboto', sans-serif; background: #f4f4f4; color: #333; line-height: 1.6; }
-    .hero {
-      position: relative;
-      background: url('https://i.imgur.com/mZN9XTi.png') no-repeat center center/cover;
-      height: 70vh;
-      display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;
-    }
-    .hero::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); }
-    .hero-content { position: relative; z-index: 1; max-width: 90%; padding: 20px; }
-    .hero-content h2 { font-size: 3rem; margin-bottom: 20px; }
-    .hero-content p { font-size: 1.2rem; margin-bottom: 30px; }
-    .cta-btn { padding: 10px 20px; font-size: 0.9rem; background: #28a745; border: none; border-radius: 5px; color: #fff; cursor: pointer; transition: background 0.3s, transform 0.3s; }
-    .cta-btn:hover { background: #218838; transform: perspective(500px) rotateX(3deg) rotateY(3deg); }
-    main { padding-top: 20px; padding-bottom: 60px; }
-    .section { padding: 40px 20px; max-width: 1200px; margin: 20px auto; }
-    .section h2 { text-align: center; margin-bottom: 20px; font-size: 2.5rem; color: #007BFF; }
-    .section p { text-align: center; font-size: 1.1rem; margin-bottom: 20px; }
+    /* Basic styles for Payments page */
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    header, footer { background: #333; color: #fff; padding: 10px; text-align: center; }
+    main { padding: 20px; }
+    .hero { position: relative; height: 50vh; overflow: hidden; }
+    .hero video, .hero img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-content { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); color: #fff; text-align: center; }
   </style>
 </head>
 <body>
-  <div id="header-placeholder"></div>
+  <header id="siteHeader">MyBusiness Premium</header>
   <main>
     <section class="hero">
+      <video id="paymentsHeroMedia" autoplay muted loop playsinline>
+        <source src="default-payments-video.mp4" type="video/mp4">
+      </video>
       <div class="hero-content">
-        <h2 id="paymentsHeroTitle">Secure Payments</h2>
-        <p id="paymentsHeroDesc">Experience seamless and secure transactions.</p>
-        <button class="cta-btn" onclick="window.location.href='checkout.html'">Learn More</button>
+        <h1 id="paymentsPageTitleElement">Payments Default Title</h1>
+        <p id="paymentsDescElement">Default description for payments page.</p>
       </div>
     </section>
-    <section class="section" id="paymentDetailsSection">
-      <h2>Payment Details</h2>
-      <p id="paymentDetailsDesc">Default payment details text.</p>
+    <!-- Payment Details Section -->
+    <section id="paymentDetailsSection">
+      <!-- Render payment details dynamically -->
     </section>
   </main>
-  <div id="footer-placeholder"></div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <footer id="siteFooter">© 2025 MyBusiness. All rights reserved.</footer>
+  
+  <!-- Firebase and Firestore -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script>
@@ -57,14 +50,26 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    db.collection("pages").doc("payments").get().then(doc => {
-      if (doc.exists) {
+    
+    // Listen for Payments page updates
+    db.collection("pages").doc("payments").onSnapshot((doc) => {
+      if(doc.exists) {
         const data = doc.data();
-        if(data.pageTitle) document.getElementById("paymentsHeroTitle").innerText = data.pageTitle;
-        if(data.description) document.getElementById("paymentsHeroDesc").innerText = data.description;
-        if(data.paymentDetailsDesc) document.getElementById("paymentDetailsDesc").innerText = data.paymentDetailsDesc;
+        document.getElementById("paymentsPageTitleElement").innerText = data.pageTitle || "Payments Default Title";
+        document.getElementById("paymentsDescElement").innerText = data.description || "Default description for payments page.";
+        document.getElementById("paymentsHeroMedia").src = data.mediaURL || "default-payments-video.mp4";
+        // Render payment details if available
+        if(data.paymentDetails && Array.isArray(data.paymentDetails)) {
+          const container = document.getElementById("paymentDetailsSection");
+          container.innerHTML = "";
+          data.paymentDetails.forEach(item => {
+            const div = document.createElement("div");
+            div.innerHTML = `<h5>${item.paymentTitle}</h5><p>${item.paymentDesc}</p>`;
+            container.appendChild(div);
+          });
+        }
       }
-    }).catch(err => console.error("Error loading payments data:", err));
+    });
   </script>
 </body>
 </html>
