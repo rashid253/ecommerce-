@@ -8,14 +8,14 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <!-- Bootstrap 5 & Font Awesome -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <!-- Bootstrap 5 CSS & Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Basic Reset & Layout */
+    /* Global Reset & Layout */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
-    body { display: flex; flex-direction: column; font-family: Arial, sans-serif; }
+    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; }
     /* Top Bar */
     .topbar {
       display: flex;
@@ -26,16 +26,12 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       flex-shrink: 0;
     }
-    .topbar-left { display: flex; align-items: center; gap: 10px; }
+    .topbar-left { display: flex; align-items: center; }
     .hamburger { font-size: 1.5rem; cursor: pointer; color: #2c3e50; }
     .topbar-center { flex: 1; text-align: center; font-weight: bold; }
     .topbar-right { display: flex; align-items: center; gap: 8px; }
     /* Wrapper for Sidebar + Content */
-    .wrapper {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
+    .wrapper { flex: 1; display: flex; overflow: hidden; }
     /* Sidebar */
     .sidebar {
       width: 250px;
@@ -46,7 +42,7 @@
     }
     .sidebar h2 { margin-bottom: 15px; font-size: 1.2rem; }
     .sidebar ul { list-style: none; padding: 0; margin: 0; }
-    .sidebar li {
+    .sidebar ul li {
       padding: 10px;
       margin-bottom: 5px;
       border-radius: 4px;
@@ -54,15 +50,11 @@
       display: flex;
       align-items: center;
     }
-    .sidebar li i { margin-right: 8px; }
-    .sidebar li:hover, .sidebar li.active { background: #34495e; }
+    .sidebar ul li i { margin-right: 8px; }
+    .sidebar ul li:hover, .sidebar ul li.active { background: #34495e; }
     /* Content Area */
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 15px;
-    }
-    /* Mobile - hide sidebar by default */
+    .content { flex: 1; overflow-y: auto; padding: 15px; }
+    /* Mobile Responsiveness */
     @media (max-width: 767.98px) {
       .sidebar {
         position: fixed;
@@ -95,18 +87,20 @@
     </div>
   </div>
   
-  <!-- Wrapper (Sidebar + Content) -->
+  <!-- Wrapper -->
   <div class="wrapper">
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
       <h2>Admin Panel</h2>
-      <ul id="pagesList"></ul>
+      <ul id="pagesList">
+        <!-- Populated via script below -->
+      </ul>
     </nav>
     
-    <!-- Main Content Area -->
+    <!-- Main Content -->
     <div class="content" id="mainContent">
-      <!-- 1. Home Page -->
-      <div id="home" class="content-section">
+      <!-- 1. Home Page Section -->
+      <div id="home" class="content-section active">
         <h4>Home Page Content</h4>
         <form id="homeForm">
           <div class="form-group">
@@ -132,15 +126,18 @@
               <label class="form-check-label" for="heroOptionDefault">Use Default</label>
             </div>
           </div>
+          <!-- Manual URL input -->
           <div class="form-group" id="heroURLField">
             <label for="homeMediaURL">Background Media URL</label>
             <input type="text" class="form-control" id="homeMediaURL" placeholder="Enter media URL">
           </div>
+          <!-- Direct Upload input -->
           <div class="form-group d-none" id="heroUploadField">
             <label for="homeMediaFile">Upload Background Media</label>
             <input type="file" id="homeMediaFile" accept="image/*">
             <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
           </div>
+          <!-- Default option message -->
           <div class="form-group d-none" id="heroDefaultField">
             <p class="text-muted">Default background media will be used.</p>
           </div>
@@ -148,8 +145,8 @@
         </form>
       </div>
       
-      <!-- 2. E-commerce Page -->
-      <div id="ecommerce" class="content-section">
+      <!-- 2. E-commerce Page Section -->
+      <div id="ecommerce" class="content-section d-none">
         <h4>E-commerce Page Content</h4>
         <form id="ecommerceForm">
           <div class="form-group">
@@ -160,7 +157,6 @@
             <label for="ecomHeroSubtitle">Hero Subtitle</label>
             <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Enter hero subtitle">
           </div>
-          <!-- Optional hero background with 3 options -->
           <div class="form-group">
             <label>E-commerce Hero Media Options</label>
             <div class="form-check">
@@ -192,8 +188,8 @@
         </form>
       </div>
       
-      <!-- 3. Offers Page -->
-      <div id="offers" class="content-section">
+      <!-- 3. Offers Page Section -->
+      <div id="offers" class="content-section d-none">
         <h4>Offers Page Content</h4>
         <form id="offersForm">
           <div class="form-group">
@@ -204,7 +200,6 @@
             <label for="offersDesc">Description</label>
             <textarea class="form-control" id="offersDesc" rows="3" placeholder="Enter offers description"></textarea>
           </div>
-          <!-- Optional hero background with 3 options -->
           <div class="form-group">
             <label>Offers Hero Media Options</label>
             <div class="form-check">
@@ -232,7 +227,6 @@
           <div class="form-group d-none" id="offersDefaultField">
             <p class="text-muted">Default hero media will be used.</p>
           </div>
-          <!-- Offers Items -->
           <div class="form-group">
             <label>Offers Items</label>
             <div id="offersContainer"></div>
@@ -244,8 +238,8 @@
         </form>
       </div>
       
-      <!-- 4. Payments Page -->
-      <div id="payments" class="content-section">
+      <!-- 4. Payments Page Section -->
+      <div id="payments" class="content-section d-none">
         <h4>Payments Page Content</h4>
         <form id="paymentsForm">
           <div class="form-group">
@@ -256,7 +250,6 @@
             <label for="paymentsDesc">Description</label>
             <textarea class="form-control" id="paymentsDesc" rows="3" placeholder="Enter page description"></textarea>
           </div>
-          <!-- Optional hero background with 3 options -->
           <div class="form-group">
             <label>Payments Hero Media Options</label>
             <div class="form-check">
@@ -284,7 +277,6 @@
           <div class="form-group d-none" id="paymentsDefaultField">
             <p class="text-muted">Default hero media will be used.</p>
           </div>
-          <!-- Payment Details -->
           <div class="form-group">
             <label>Payment Details</label>
             <div id="paymentsContainer"></div>
@@ -296,8 +288,8 @@
         </form>
       </div>
       
-      <!-- 5. Support Page -->
-      <div id="support" class="content-section">
+      <!-- 5. Support Page Section -->
+      <div id="support" class="content-section d-none">
         <h4>Support Page Content</h4>
         <form id="supportForm">
           <div class="form-group">
@@ -308,7 +300,6 @@
             <label for="supportSubtitle">Subtitle</label>
             <input type="text" class="form-control" id="supportSubtitle" placeholder="Enter subtitle">
           </div>
-          <!-- FAQ Items -->
           <div class="form-group">
             <label>FAQ Items</label>
             <div id="faqContainer"></div>
@@ -320,9 +311,49 @@
         </form>
       </div>
       
-      <!-- 6. Details (Product Details) -->
-      <div id="details" class="content-section">
-        <h4>Product Details</h4>
+      <!-- 6. Contact Page Section -->
+      <div id="contact" class="content-section d-none">
+        <h4>Contact Page Content</h4>
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="contactPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="contactPageTitle" placeholder="Enter contact page title">
+          </div>
+          <div class="form-group">
+            <label for="contactAboutHeading">About Section Heading</label>
+            <input type="text" class="form-control" id="contactAboutHeading" placeholder="Enter heading (e.g., About YourBrand)">
+          </div>
+          <div class="form-group">
+            <label for="contactAboutText">About Section Text</label>
+            <textarea class="form-control" id="contactAboutText" rows="3" placeholder="Enter about text"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="contactMapURL">Map Embed URL</label>
+            <input type="text" class="form-control" id="contactMapURL" placeholder="Enter Google Maps embed URL">
+          </div>
+          <div class="form-group">
+            <label for="contactPhone">Phone Number</label>
+            <input type="text" class="form-control" id="contactPhone" placeholder="Enter phone number">
+          </div>
+          <div class="form-group">
+            <label for="contactWhatsApp">WhatsApp Link</label>
+            <input type="text" class="form-control" id="contactWhatsApp" placeholder="Enter WhatsApp URL">
+          </div>
+          <div class="form-group">
+            <label for="contactEmail">Email Address</label>
+            <input type="email" class="form-control" id="contactEmail" placeholder="Enter email address">
+          </div>
+          <div class="form-group">
+            <label for="contactAddress">Physical Address</label>
+            <input type="text" class="form-control" id="contactAddress" placeholder="Enter physical address">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Contact Content</button>
+        </form>
+      </div>
+      
+      <!-- 7. Details (Product Details) Section -->
+      <div id="details" class="content-section d-none">
+        <h4>Product Details Content</h4>
         <form id="detailsForm">
           <div class="form-group">
             <label for="detName">Product Name</label>
@@ -376,8 +407,8 @@
         </form>
       </div>
       
-      <!-- 7. Header -->
-      <div id="header" class="content-section">
+      <!-- 8. Header Section -->
+      <div id="header" class="content-section d-none">
         <h4>Header Content</h4>
         <form id="headerForm">
           <div class="form-group">
@@ -396,8 +427,8 @@
         </form>
       </div>
       
-      <!-- 8. Footer -->
-      <div id="footer" class="content-section">
+      <!-- 9. Footer Section -->
+      <div id="footer" class="content-section d-none">
         <h4>Footer Content</h4>
         <form id="footerForm">
           <div class="form-group">
@@ -409,8 +440,7 @@
           </div>
           <div class="form-group">
             <label for="footerCopyright">Copyright Text</label>
-            <input type="text" class="form-control" id="footerCopyright"
-                   placeholder="Enter copyright text">
+            <input type="text" class="form-control" id="footerCopyright" placeholder="Enter copyright text">
           </div>
           <button type="submit" class="btn btn-primary">Save Footer Content</button>
         </form>
@@ -418,42 +448,40 @@
     </div>
   </div>
   
-  <!-- Bootstrap JS Bundle -->
+  <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // ================================
-    // 1. Initialize Firebase (if needed)
-    // ================================
+    // ----------------------------
+    // 1. Initialize Firebase
+    // ----------------------------
     const firebaseConfig = {
       apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
       projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.appspot.com",
+      storageBucket: "e-commerce-pk.firebasestorage.app",
       messagingSenderId: "126517093225",
       appId: "1:126517093225:web:c2352620c6d32c582513f8",
       measurementId: "G-2G2DNCNNT3"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-
-    // ================================
+    
+    // ----------------------------
     // 2. Mobile Hamburger Toggle
-    // ================================
+    // ----------------------------
     const hamburger = document.getElementById("hamburger");
     const sidebar = document.getElementById("sidebar");
-    hamburger.addEventListener("click", () => {
-      sidebar.classList.toggle("open");
-    });
+    hamburger.addEventListener("click", () => { sidebar.classList.toggle("open"); });
     document.addEventListener("click", (e) => {
       if(window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
         sidebar.classList.remove("open");
       }
     });
-
-    // ================================
-    // 3. Pages List & Navigation
-    // ================================
-    const pages = ["home", "ecommerce", "offers", "payments", "support", "details", "header", "footer"];
+    
+    // ----------------------------
+    // 3. Render Sidebar Pages List
+    // ----------------------------
+    const pages = ["home", "ecommerce", "offers", "payments", "support", "contact", "details", "header", "footer"];
     function renderPagesList() {
       const pagesList = document.getElementById("pagesList");
       pagesList.innerHTML = "";
@@ -462,31 +490,28 @@
         li.innerHTML = `<i class="fas fa-angle-right"></i> ${page}`;
         li.dataset.target = page;
         li.addEventListener("click", function() {
-          // Mark active
           document.querySelectorAll("#pagesList li").forEach(item => item.classList.remove("active"));
           this.classList.add("active");
-          // Show page
           document.getElementById("pageTitle").innerText = page;
           document.querySelectorAll(".content-section").forEach(sec => sec.classList.remove("active"));
           document.querySelectorAll(".content-section").forEach(sec => sec.classList.add("d-none"));
           document.getElementById(page).classList.add("active");
           document.getElementById(page).classList.remove("d-none");
-          // Close sidebar on mobile
           if(window.innerWidth < 768) sidebar.classList.remove("open");
         });
         pagesList.appendChild(li);
       });
     }
     renderPagesList();
-    // Show the first page by default
+    // Show first page by default
     document.querySelector("#pagesList li").classList.add("active");
     document.getElementById(pages[0]).classList.add("active");
     document.getElementById(pages[0]).classList.remove("d-none");
     document.getElementById("pageTitle").innerText = pages[0];
-
-    // ================================
-    // 4. Form Submissions (simulated)
-    // ================================
+    
+    // ----------------------------
+    // 4. Form Submission Handlers (Simulated)
+    // ----------------------------
     function handleFormSubmit(formId, pageName) {
       const form = document.getElementById(formId);
       if(!form) return;
@@ -504,37 +529,14 @@
     handleFormSubmit("offersForm", "Offers");
     handleFormSubmit("paymentsForm", "Payments");
     handleFormSubmit("supportForm", "Support");
+    handleFormSubmit("contactForm", "Contact");
     handleFormSubmit("detailsForm", "Details");
     handleFormSubmit("headerForm", "Header");
     handleFormSubmit("footerForm", "Footer");
-
-    // Dynamic "Add" buttons for Offers, Payments, Support (FAQ), Footer Links
-    document.getElementById("addOfferBtn").addEventListener("click", function() {
-      addListItem("offersContainer", [
-        { name: "offerIcon", placeholder: "Offer Icon (e.g. fas fa-tag)" },
-        { name: "offerTitle", placeholder: "Offer Title" },
-        { name: "offerDesc", placeholder: "Offer Description" }
-      ]);
-    });
-    document.getElementById("addPaymentBtn").addEventListener("click", function() {
-      addListItem("paymentsContainer", [
-        { name: "paymentTitle", placeholder: "Payment Title" },
-        { name: "paymentDesc", placeholder: "Payment Description" }
-      ]);
-    });
-    document.getElementById("addFaqBtn").addEventListener("click", function() {
-      addListItem("faqContainer", [
-        { name: "faqQuestion", placeholder: "FAQ Question" },
-        { name: "faqAnswer", placeholder: "FAQ Answer" }
-      ]);
-    });
-    document.getElementById("addFooterLinkBtn").addEventListener("click", function() {
-      addListItem("footerLinksContainer", [
-        { name: "linkText", placeholder: "Link Text" },
-        { name: "linkURL", placeholder: "Link URL" }
-      ]);
-    });
-
+    
+    // ----------------------------
+    // 5. Dynamic "Add" Buttons for List Items
+    // ----------------------------
     function addListItem(containerId, fields) {
       const container = document.getElementById(containerId);
       const div = document.createElement("div");
@@ -549,10 +551,35 @@
       });
       container.appendChild(div);
     }
-
-    // ================================
-    // 5. Show/Hide Media Fields (Hero)
-    // ================================
+    document.getElementById("addOfferBtn")?.addEventListener("click", () => {
+      addListItem("offersContainer", [
+        { name: "offerIcon", placeholder: "Offer Icon (e.g. fas fa-tag)" },
+        { name: "offerTitle", placeholder: "Offer Title" },
+        { name: "offerDesc", placeholder: "Offer Description" }
+      ]);
+    });
+    document.getElementById("addPaymentBtn")?.addEventListener("click", () => {
+      addListItem("paymentsContainer", [
+        { name: "paymentTitle", placeholder: "Payment Title" },
+        { name: "paymentDesc", placeholder: "Payment Description" }
+      ]);
+    });
+    document.getElementById("addFaqBtn")?.addEventListener("click", () => {
+      addListItem("faqContainer", [
+        { name: "faqQuestion", placeholder: "FAQ Question" },
+        { name: "faqAnswer", placeholder: "FAQ Answer" }
+      ]);
+    });
+    document.getElementById("addFooterLinkBtn")?.addEventListener("click", () => {
+      addListItem("footerLinksContainer", [
+        { name: "linkText", placeholder: "Link Text" },
+        { name: "linkURL", placeholder: "Link URL" }
+      ]);
+    });
+    
+    // ----------------------------
+    // 6. Show/Hide Media Fields for Hero Sections
+    // ----------------------------
     function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
       const radios = document.getElementsByName(radioName);
       radios.forEach(radio => {
@@ -564,24 +591,24 @@
             document.getElementById(urlFieldId).classList.remove("d-none");
           } else if(this.value === "upload") {
             document.getElementById(uploadFieldId).classList.remove("d-none");
-          } else {
+          } else if(this.value === "default") {
             document.getElementById(defaultFieldId).classList.remove("d-none");
           }
         });
       });
     }
-    // Home hero
+    // Home
     setupHeroRadios("heroMediaOption", "heroURLField", "heroUploadField", "heroDefaultField");
-    // E-commerce hero
+    // E-commerce
     setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
-    // Offers hero
+    // Offers
     setupHeroRadios("offersHeroOption", "offersURLField", "offersUploadField", "offersDefaultField");
-    // Payments hero
+    // Payments
     setupHeroRadios("paymentsHeroOption", "paymentsURLField", "paymentsUploadField", "paymentsDefaultField");
-
-    // ================================
-    // 6. Show/Hide Product Image Fields (E-commerce "products" or "Details" page)
-    // ================================
+    
+    // ----------------------------
+    // 7. Show/Hide Product Image Fields
+    // ----------------------------
     function setupProductRadios(radioName, urlFieldId, uploadFieldId) {
       const radios = document.getElementsByName(radioName);
       radios.forEach(radio => {
@@ -597,72 +624,10 @@
     }
     setupProductRadios("prodImageOption", "prodURLField", "prodUploadField");
     setupProductRadios("detImageOption", "detURLField", "detUploadField");
-
-    // ================================
-    // 7. Imgur Uploads for Images
-    // ================================
-    // Home hero upload (max 1920×1080)
-    const homeFile = document.getElementById("homeMediaFile");
-    if(homeFile) {
-      homeFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("Hero background uploaded!\n" + imageUrl);
-          document.getElementById("homeMediaURL").value = imageUrl;
-        });
-      });
-    }
-    // E-commerce hero upload (max 1920×1080)
-    const ecomFile = document.getElementById("ecomMediaFile");
-    if(ecomFile) {
-      ecomFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("E-commerce hero uploaded!\n" + imageUrl);
-          document.getElementById("ecomMediaURL").value = imageUrl;
-        });
-      });
-    }
-    // Offers hero upload (max 1920×1080)
-    const offersFile = document.getElementById("offersMediaFile");
-    if(offersFile) {
-      offersFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("Offers hero uploaded!\n" + imageUrl);
-          document.getElementById("offersMediaURL").value = imageUrl;
-        });
-      });
-    }
-    // Payments hero upload (max 1920×1080)
-    const paymentsFile = document.getElementById("paymentsMediaFile");
-    if(paymentsFile) {
-      paymentsFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("Payments hero uploaded!\n" + imageUrl);
-          document.getElementById("paymentsMediaURL").value = imageUrl;
-        });
-      });
-    }
-    // Product details page upload (max 400×300)
-    const detFile = document.getElementById("detImageFile");
-    if(detFile) {
-      detFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 400, 300, (imageUrl) => {
-          alert("Product image uploaded!\n" + imageUrl);
-          document.getElementById("detImageUrl").value = imageUrl;
-        });
-      });
-    }
-    // Product details (for "productDetails" page if needed) 
-    const prodFile = document.getElementById("prodImageFile");
-    if(prodFile) {
-      prodFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 400, 300, (imageUrl) => {
-          alert("Product image uploaded!\n" + imageUrl);
-          document.getElementById("prodImageUrl").value = imageUrl;
-        });
-      });
-    }
-
-    // Reusable function to resize & upload image to Imgur
+    
+    // ----------------------------
+    // 8. Imgur Upload Function (Reusable)
+    // ----------------------------
     function handleImageUpload(file, maxWidth, maxHeight, callback) {
       if(!file) return;
       const reader = new FileReader();
@@ -679,13 +644,14 @@
           h = maxHeight;
         }
         const canvas = document.createElement("canvas");
-        canvas.width = w; canvas.height = h;
+        canvas.width = w;
+        canvas.height = h;
         canvas.getContext("2d").drawImage(img, 0, 0, w, h);
         canvas.toBlob((blob) => {
-          const r2 = new FileReader();
-          r2.onloadend = () => {
-            const base64data = r2.result.split(',')[1];
-            const clientId = "048d9400ce02b71"; // Your Imgur Client ID
+          const reader2 = new FileReader();
+          reader2.onloadend = () => {
+            const base64data = reader2.result.split(',')[1];
+            const clientId = "048d9400ce02b71";
             const formData = new FormData();
             formData.append("image", base64data);
             fetch("https://api.imgur.com/3/image", {
@@ -696,19 +662,80 @@
             .then(res => res.json())
             .then(result => {
               if(result.success) {
-                const imageUrl = result.data.link;
-                if(callback) callback(imageUrl);
+                callback(result.data.link);
               } else {
                 alert("Upload failed: " + result.data.error);
               }
             })
             .catch(err => {
               alert("Error uploading image: " + err.message);
+              console.error("Imgur upload error:", err);
             });
           };
-          r2.readAsDataURL(blob);
+          reader2.readAsDataURL(blob);
         }, "image/jpeg", 0.8);
       };
+    }
+    
+    // Imgur upload for Home hero background
+    const homeMediaFile = document.getElementById("homeMediaFile");
+    if(homeMediaFile) {
+      homeMediaFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
+          alert("Hero background uploaded!\n" + imageUrl);
+          document.getElementById("homeMediaURL").value = imageUrl;
+        });
+      });
+    }
+    // Imgur upload for E-commerce hero background
+    const ecomMediaFile = document.getElementById("ecomMediaFile");
+    if(ecomMediaFile) {
+      ecomMediaFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
+          alert("E-commerce hero uploaded!\n" + imageUrl);
+          document.getElementById("ecomMediaURL").value = imageUrl;
+        });
+      });
+    }
+    // Imgur upload for Offers hero background
+    const offersMediaFile = document.getElementById("offersMediaFile");
+    if(offersMediaFile) {
+      offersMediaFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
+          alert("Offers hero uploaded!\n" + imageUrl);
+          document.getElementById("offersMediaURL").value = imageUrl;
+        });
+      });
+    }
+    // Imgur upload for Payments hero background
+    const paymentsMediaFile = document.getElementById("paymentsMediaFile");
+    if(paymentsMediaFile) {
+      paymentsMediaFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
+          alert("Payments hero uploaded!\n" + imageUrl);
+          document.getElementById("paymentsMediaURL").value = imageUrl;
+        });
+      });
+    }
+    // Imgur upload for Product Details (det) image
+    const detImageFile = document.getElementById("detImageFile");
+    if(detImageFile) {
+      detImageFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 400, 300, (imageUrl) => {
+          alert("Product image uploaded!\n" + imageUrl);
+          document.getElementById("detImageUrl").value = imageUrl;
+        });
+      });
+    }
+    // Imgur upload for Product Details (prod) image
+    const prodImageFile = document.getElementById("prodImageFile");
+    if(prodImageFile) {
+      prodImageFile.addEventListener("change", function() {
+        handleImageUpload(this.files[0], 400, 300, (imageUrl) => {
+          alert("Product image uploaded!\n" + imageUrl);
+          document.getElementById("prodImageUrl").value = imageUrl;
+        });
+      });
     }
   </script>
 </body>
