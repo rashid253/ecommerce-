@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Basic styles for Product Details page */
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
     header, footer { background: #333; color: #fff; padding: 10px; text-align: center; }
     main { padding: 20px; max-width: 800px; margin: auto; }
@@ -22,7 +21,7 @@
       <h1 id="detNameElement">Default Product Name</h1>
       <img id="detImageElement" class="product-image" src="default-product.jpg" alt="Product Image">
       <p id="detDescElement">Default product description goes here.</p>
-      <p id="detPriceElement">Price: $0.00</p>
+      <p id="detPriceElement">Price: Rs 0.00</p>
       <p id="detDiscountElement">Discount: 0%</p>
       <p id="detRatingElement">Rating: 0</p>
       <p id="detAddedElement">Added Count: 0</p>
@@ -31,7 +30,6 @@
   </main>
   <footer id="siteFooter">© 2025 MyBusiness. All rights reserved.</footer>
   
-  <!-- Firebase and Firestore -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script>
@@ -52,7 +50,7 @@
         const data = doc.data();
         document.getElementById("detNameElement").innerText = data.productName || "Default Product Name";
         document.getElementById("detDescElement").innerText = data.description || "Default product description goes here.";
-        document.getElementById("detPriceElement").innerText = "Price: $" + (data.price || "0.00");
+        document.getElementById("detPriceElement").innerText = "Price: Rs " + (data.price || "0.00");
         document.getElementById("detDiscountElement").innerText = "Discount: " + (data.discount || "0") + "%";
         document.getElementById("detRatingElement").innerText = "Rating: " + (data.rating || "0");
         document.getElementById("detAddedElement").innerText = "Added Count: " + (data.added || "0");
