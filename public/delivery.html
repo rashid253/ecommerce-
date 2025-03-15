@@ -6,16 +6,8 @@
   <title>Fast Delivery Excellence - MyBusiness Premium</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Global Reset & Base */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: 'Roboto', sans-serif; 
-      background: #f4f4f4; 
-      color: #333; 
-      line-height: 1.6; 
-    }
-    
-    /* ===== Hero Section ===== */
+    body { font-family: 'Roboto', sans-serif; background: #f4f4f4; color: #333; line-height: 1.6; }
     .hero {
       position: relative;
       background: url('https://i.imgur.com/KuVyZbv.jpeg') no-repeat center center/cover;
@@ -62,8 +54,6 @@
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
-    /* ===== Main Content Container ===== */
     main {
       flex: 1;
       position: relative;
@@ -71,13 +61,9 @@
       padding-top: 20px;
       padding-bottom: 60px;
     }
-    
-    /* ===== Section Base ===== */
     .section { padding: 40px 20px; max-width: 1200px; margin: 20px auto; }
     .section h2 { text-align: center; margin-bottom: 20px; font-size: 2.5rem; color: #007BFF; }
     .section p { text-align: center; font-size: 1.1rem; margin-bottom: 20px; }
-    
-    /* ===== Delivery Details Section (Plain Text Card) ===== */
     .delivery-details {
       display: flex;
       flex-direction: column;
@@ -108,56 +94,14 @@
       color: #555;
       text-align: left;
     }
-    
-    /* ===== Testimonials Section ===== */
-    .testimonials {
-      background: #fff;
-      padding: 40px 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-width: 800px;
-      margin: 40px auto;
-    }
-    .testimonials h3 { text-align: center; font-size: 2rem; margin-bottom: 20px; color: #007BFF; }
-    .testimonial { text-align: center; font-size: 1rem; margin-bottom: 20px; color: #555; }
-    
-    /* ===== CTA Section ===== */
-    .cta-section {
-      text-align: center;
-      margin: 40px 0 80px 0;
-      position: relative;
-      z-index: 10;
-    }
-    .cta-section a {
-      padding: 10px 20px;
-      background: #007BFF;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 5px;
-      font-size: 1rem;
-      transition: background 0.3s ease, transform 0.3s ease;
-      transform: perspective(500px);
-    }
-    .cta-section a:hover {
-      background: #0056b3;
-      transform: perspective(500px) rotateX(5deg) rotateY(5deg);
-    }
-    
-    /* ===== External Footer ===== */
-    /* External footer styles loaded via loadHTML from footer.html */
-    
     @media (max-width: 768px) {
       .hero-content h2 { font-size: 2.5rem; }
       .hero-content p { font-size: 1rem; }
-      .delivery-details { flex-direction: column; }
     }
   </style>
 </head>
 <body>
-  <!-- External Header -->
   <div id="header-placeholder"></div>
-  
-  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-content">
       <h2>Lightning-Fast Delivery at Your Fingertips</h2>
@@ -165,12 +109,9 @@
       <button class="cta-btn" onclick="document.getElementById('deliveryDetails').scrollIntoView({ behavior: 'smooth' });">Learn More</button>
     </div>
   </section>
-  
-  <!-- Main Content -->
   <main>
-    <!-- Delivery Details Section -->
     <section id="deliveryDetails" class="section">
-      <h2>Unmatched Speed & Reliability</h2>
+      <h2>Unmatched Speed &amp; Reliability</h2>
       <div class="delivery-details">
         <div class="delivery-text">
           <h3>Experience Unrivaled Delivery</h3>
@@ -185,44 +126,34 @@
         </div>
       </div>
     </section>
-    
-    <!-- Testimonials Section -->
     <section class="section testimonials">
       <h3>What Our Customers Say</h3>
-      <div class="testimonial">
+      <div class="delivery-text">
         <p>"I was amazed at how quickly my order arrived! The tracking feature kept me informed, and the service was truly exceptional." - Sarah K.</p>
       </div>
-      <div class="testimonial">
+      <div class="delivery-text">
         <p>"Reliable and fast! Their delivery service exceeded my expectations, and the hassle-free returns make it even better." - Michael T.</p>
       </div>
     </section>
-    
-    <!-- CTA Section -->
-    <section class="cta-section">
+    <section class="section cta-section">
       <a href="offers.html">Explore Our Offers</a>
     </section>
   </main>
-  
-  <!-- External Footer -->
   <div id="footer-placeholder"></div>
   
   <script>
     function loadHTML(elementId, filePath) {
       fetch(filePath)
         .then(response => {
-          if (!response.ok) {
-            throw new Error('Error fetching ' + filePath);
-          }
+          if (!response.ok) throw new Error("Error fetching " + filePath);
           return response.text();
         })
-        .then(html => {
-          document.getElementById(elementId).innerHTML = html;
-        })
+        .then(html => { document.getElementById(elementId).innerHTML = html; })
         .catch(error => console.error(error));
     }
     document.addEventListener("DOMContentLoaded", function() {
-      loadHTML('header-placeholder', 'header.html');
-      loadHTML('footer-placeholder', 'footer.html');
+      loadHTML("header-placeholder", "header.html");
+      loadHTML("footer-placeholder", "footer.html");
     });
   </script>
 </body>
