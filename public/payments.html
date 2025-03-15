@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Basic styles for Payments page */
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
     header, footer { background: #333; color: #fff; padding: 10px; text-align: center; }
     main { padding: 20px; }
@@ -28,14 +27,12 @@
         <p id="paymentsDescElement">Default description for payments page.</p>
       </div>
     </section>
-    <!-- Payment Details Section -->
     <section id="paymentDetailsSection">
-      <!-- Render payment details dynamically -->
+      <!-- Payment details will be rendered dynamically -->
     </section>
   </main>
   <footer id="siteFooter">© 2025 MyBusiness. All rights reserved.</footer>
   
-  <!-- Firebase and Firestore -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script>
@@ -51,14 +48,12 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     
-    // Listen for Payments page updates
     db.collection("pages").doc("payments").onSnapshot((doc) => {
       if(doc.exists) {
         const data = doc.data();
         document.getElementById("paymentsPageTitleElement").innerText = data.pageTitle || "Payments Default Title";
         document.getElementById("paymentsDescElement").innerText = data.description || "Default description for payments page.";
         document.getElementById("paymentsHeroMedia").src = data.mediaURL || "default-payments-video.mp4";
-        // Render payment details if available
         if(data.paymentDetails && Array.isArray(data.paymentDetails)) {
           const container = document.getElementById("paymentDetailsSection");
           container.innerHTML = "";
