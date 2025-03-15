@@ -7,14 +7,12 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Basic styles for E-commerce page */
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
     header, footer { background: #333; color: #fff; padding: 10px; text-align: center; }
     main { padding: 20px; }
     .hero { position: relative; height: 50vh; overflow: hidden; }
     .hero video, .hero img { width: 100%; height: 100%; object-fit: cover; }
     .hero-content { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); color: #fff; text-align: center; }
-    .carousel, .offers { margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -29,16 +27,10 @@
         <p id="ecomHeroSubtitleElement">Default Hero Subtitle for E-commerce.</p>
       </div>
     </section>
-    <section class="carousel" id="carouselSection">
-      <!-- Carousel items will be rendered here dynamically -->
-    </section>
-    <section class="offers" id="offersSection">
-      <!-- Offers items will be rendered here dynamically -->
-    </section>
+    <!-- Additional dynamic content (carousel, offers, etc.) can be added here -->
   </main>
   <footer id="siteFooter">© 2025 MyBusiness. All rights reserved.</footer>
   
-  <!-- Firebase and Firestore -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script>
@@ -54,14 +46,12 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     
-    // Listen for E-commerce page updates
     db.collection("pages").doc("ecommerce").onSnapshot((doc) => {
       if (doc.exists) {
         const data = doc.data();
         document.getElementById("ecomPageTitleElement").innerText = data.pageTitle || "E-commerce Default Title";
         document.getElementById("ecomHeroSubtitleElement").innerText = data.heroSubtitle || "Default Hero Subtitle for E-commerce.";
         document.getElementById("ecomHeroMedia").src = data.mediaURL || "default-ecom-video.mp4";
-        // You can also render dynamic lists (carousel, offers, etc.) by iterating over data arrays.
       }
     });
   </script>
