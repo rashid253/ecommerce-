@@ -1,147 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fast Delivery Excellence - MyBusiness Premium</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout - MyBusiness Premium</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
   <style>
+    /* Global resets and checkout styling */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Roboto', sans-serif; background: #f4f4f4; color: #333; line-height: 1.6; }
-    .hero {
-      position: relative;
-      background: url('https://i.imgur.com/KuVyZbv.jpeg') no-repeat center center/cover;
-      height: 70vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #fff;
-      perspective: 1000px;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-    }
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 90%;
-      padding: 20px;
-      animation: fadeInDown 1s ease;
-    }
-    .hero-content h2 { font-size: 3rem; margin-bottom: 20px; }
-    .hero-content p { font-size: 1.2rem; margin-bottom: 30px; }
-    .hero-content .cta-btn {
-      padding: 10px 20px;
-      font-size: 0.9rem;
-      background: #28a745;
-      border: none;
-      border-radius: 5px;
-      color: #fff;
-      cursor: pointer;
-      transition: background 0.3s ease, transform 0.3s ease;
-      transform: perspective(500px);
-      margin-top: -10px;
-    }
-    .hero-content .cta-btn:hover { 
-      background: #218838;
-      transform: perspective(500px) rotateX(3deg) rotateY(3deg);
-    }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    main {
-      flex: 1;
-      position: relative;
-      overflow-y: auto;
-      padding-top: 20px;
-      padding-bottom: 60px;
-    }
-    .section { padding: 40px 20px; max-width: 1200px; margin: 20px auto; }
-    .section h2 { text-align: center; margin-bottom: 20px; font-size: 2.5rem; color: #007BFF; }
-    .section p { text-align: center; font-size: 1.1rem; margin-bottom: 20px; }
-    .delivery-details {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      padding: 20px;
-    }
-    .delivery-text {
-      max-width: 800px;
+    body { font-family: Arial, sans-serif; background: #f4f4f4; }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
       background: #fff;
       padding: 20px;
+      padding-bottom: 120px;
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .checkout-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-section {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 6px;
+      background: #fafafa;
+      margin-bottom: 20px;
+    }
+    .form-section h2 {
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+      color: #007BFF;
+    }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    /* Phone input styling */
+    .phone-input {
+      display: flex;
+      align-items: center;
+    }
+    .phone-input .phone-prefix {
+      background: #eee;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-right: none;
+      border-radius: 4px 0 0 4px;
+      font-size: 1rem;
+      color: #333;
+    }
+    .phone-input input {
+      flex: 1;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-left: none;
+      border-radius: 0 4px 4px 0;
+      font-size: 1rem;
+    }
+    /* Payment options */
+    .payment-options { display: flex; flex-direction: column; gap: 10px; }
+    .payment-method { display: flex; align-items: center; }
+    .payment-method input { margin-right: 10px; }
+    /* Order summary styling */
+    .order-summary {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 6px;
+      background: #e9f1f7;
+    }
+    .order-summary h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #005a9e;
       text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .delivery-text:hover {
-      transform: translateY(-5px) scale(1.01);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    .order-summary table {
+      width: 100%;
+      border-collapse: collapse;
     }
-    .delivery-text h3 { font-size: 2rem; color: #28a745; margin-bottom: 10px; }
-    .delivery-text p { font-size: 1rem; margin-bottom: 20px; }
-    .delivery-text ul {
-      list-style: disc;
-      padding-left: 20px;
-      margin: 0 auto;
-      max-width: 400px;
-      color: #555;
-      text-align: left;
+    .order-summary th,
+    .order-summary td {
+      padding: 8px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+      font-size: 0.9rem;
     }
-    @media (max-width: 768px) {
-      .hero-content h2 { font-size: 2.5rem; }
-      .hero-content p { font-size: 1rem; }
+    .order-summary th { background: #cce0f5; color: #005a9e; }
+    .total-amount {
+      text-align: right;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #005a9e;
+    }
+    /* Place order button */
+    .place-order {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 20px;
+    }
+    .place-order:hover { background: #218838; }
+    @media (min-width: 768px) {
+      .checkout-form { flex-direction: row; }
+      .form-left, .form-right { flex: 1; }
+      .form-left { margin-right: 20px; }
+      .place-order { width: auto; align-self: flex-end; }
     }
   </style>
 </head>
 <body>
+  <!-- External Header (loaded from header.html) -->
   <div id="header-placeholder"></div>
-  <section class="hero">
-    <div class="hero-content">
-      <h2>Lightning-Fast Delivery at Your Fingertips</h2>
-      <p>We partner with the world's most reliable courier companies to ensure your products arrive in record time.</p>
-      <button class="cta-btn" onclick="document.getElementById('deliveryDetails').scrollIntoView({ behavior: 'smooth' });">Learn More</button>
-    </div>
-  </section>
-  <main>
-    <section id="deliveryDetails" class="section">
-      <h2>Unmatched Speed &amp; Reliability</h2>
-      <div class="delivery-details">
-        <div class="delivery-text">
-          <h3>Experience Unrivaled Delivery</h3>
-          <p>We are contracted with the world's fastest and most reliable courier companies. Our state-of-the-art logistics network ensures that your products are delivered in the shortest possible time.</p>
-          <p>Our delivery promises include:</p>
-          <ul>
-            <li>Lightning-fast dispatch and delivery</li>
-            <li>Real-time tracking and notifications</li>
-            <li>Dedicated customer support</li>
-            <li>Hassle-free returns</li>
-          </ul>
+  
+  <div class="container">
+    <form class="checkout-form" id="checkoutForm" novalidate>
+      <div class="form-left">
+        <!-- Shipping Information Section -->
+        <div class="form-section">
+          <h2>Shipping Information</h2>
+          <div class="form-group">
+            <label for="fullName" class="required">Full Name</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="email" class="required">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone" class="required">Phone Number</label>
+            <div class="phone-input">
+              <span class="phone-prefix">+92</span>
+              <input type="tel" id="phone" name="phone" placeholder="3001234567" required pattern="^\d{10}$">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="address" class="required">Shipping Address</label>
+            <textarea id="address" name="address" rows="3" placeholder="Enter your address" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="city" class="required">City</label>
+            <input type="text" id="city" name="city" placeholder="Enter your city" required>
+          </div>
+          <div class="form-group">
+            <label for="postalCode" class="required">Postal Code</label>
+            <input type="text" id="postalCode" name="postalCode" placeholder="Enter your postal code" required pattern="^\d{4,6}$">
+          </div>
+          <div class="form-group">
+            <label for="country" class="required">Country</label>
+            <select id="country" name="country" required>
+              <option value="Pakistan" selected>Pakistan</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Payment Information Section -->
+        <div class="form-section">
+          <h2>Payment Method</h2>
+          <div class="payment-options">
+            <div class="payment-method">
+              <input type="radio" id="card" name="paymentMethod" value="card" required>
+              <label for="card">Credit/Debit Card</label>
+            </div>
+            <div class="payment-method">
+              <input type="radio" id="jazzcash" name="paymentMethod" value="jazzcash">
+              <label for="jazzcash">JazzCash</label>
+            </div>
+            <div class="payment-method">
+              <input type="radio" id="easypaisa" name="paymentMethod" value="easypaisa">
+              <label for="easypaisa">EasyPaisa</label>
+            </div>
+            <div class="payment-method">
+              <input type="radio" id="cod" name="paymentMethod" value="cod">
+              <label for="cod">Cash on Delivery</label>
+            </div>
+          </div>
+          <div id="paymentDetails" style="display:none; margin-top:15px;">
+            <div id="cardDetails" style="display:none;">
+              <div class="form-group">
+                <label for="cardNumber" class="required">Card Number</label>
+                <input type="text" id="cardNumber" name="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" pattern="^\d{4}-\d{4}-\d{4}-\d{4}$">
+              </div>
+              <div class="form-group">
+                <label for="cardExpiry" class="required">Expiry Date</label>
+                <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" pattern="^(0[1-9]|1[0-2])\/\d{2}$">
+              </div>
+              <div class="form-group">
+                <label for="cardCVV" class="required">CVV</label>
+                <input type="text" id="cardCVV" name="cardCVV" placeholder="XXX" pattern="^\d{3}$">
+              </div>
+            </div>
+            <div id="mobileWalletDetails" style="display:none;">
+              <div class="form-group">
+                <label for="walletNumber" class="required">Mobile Wallet Number</label>
+                <input type="text" id="walletNumber" name="walletNumber" placeholder="Enter your wallet number" pattern="^\+?\d{10,15}$">
+              </div>
+              <div class="form-group">
+                <label for="transactionId" class="required">Transaction ID</label>
+                <input type="text" id="transactionId" name="transactionId" placeholder="Enter transaction ID" required>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
-    <section class="section testimonials">
-      <h3>What Our Customers Say</h3>
-      <div class="delivery-text">
-        <p>"I was amazed at how quickly my order arrived! The tracking feature kept me informed, and the service was truly exceptional." - Sarah K.</p>
+      
+      <div class="form-right">
+        <!-- Order Summary Section -->
+        <div class="order-summary">
+          <h2>Order Summary</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="orderSummaryBody">
+              <tr>
+                <td>Sample Item</td>
+                <td>1</td>
+                <td>Rs 100.00</td>
+                <td>Rs 100.00</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="total-amount" id="orderTotal">Total: Rs 100.00</div>
+        </div>
       </div>
-      <div class="delivery-text">
-        <p>"Reliable and fast! Their delivery service exceeded my expectations, and the hassle-free returns make it even better." - Michael T.</p>
-      </div>
-    </section>
-    <section class="section cta-section">
-      <a href="offers.html">Explore Our Offers</a>
-    </section>
-  </main>
+      
+      <button type="submit" class="place-order">Place Order</button>
+    </form>
+  </div>
+  
   <div id="footer-placeholder"></div>
   
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    function renderOrderSummary() {
+      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      const summaryBody = document.getElementById("orderSummaryBody");
+      let total = 0;
+      summaryBody.innerHTML = "";
+      if(cartItems.length === 0) {
+        summaryBody.innerHTML = `<tr><td colspan="4">No items in your cart.</td></tr>`;
+      } else {
+        cartItems.forEach(item => {
+          const lineTotal = item.quantity * item.price;
+          total += lineTotal;
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.quantity}</td>
+            <td>Rs ${parseFloat(item.price).toFixed(2)}</td>
+            <td>Rs ${lineTotal.toFixed(2)}</td>
+          `;
+          summaryBody.appendChild(row);
+        });
+      }
+      document.getElementById("orderTotal").innerText = "Total: Rs " + total.toFixed(2);
+    }
+    
     function loadHTML(elementId, filePath) {
       fetch(filePath)
         .then(response => {
@@ -151,9 +286,42 @@
         .then(html => { document.getElementById(elementId).innerHTML = html; })
         .catch(error => console.error(error));
     }
-    document.addEventListener("DOMContentLoaded", function() {
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      renderOrderSummary();
       loadHTML("header-placeholder", "header.html");
       loadHTML("footer-placeholder", "footer.html");
+      
+      const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
+      paymentRadios.forEach(radio => {
+        radio.addEventListener("change", (e) => {
+          const paymentDetails = document.getElementById("paymentDetails");
+          const cardDetails = document.getElementById("cardDetails");
+          const mobileWalletDetails = document.getElementById("mobileWalletDetails");
+          if (e.target.value === "card") {
+            paymentDetails.style.display = "block";
+            cardDetails.style.display = "block";
+            mobileWalletDetails.style.display = "none";
+          } else if (e.target.value === "jazzcash" || e.target.value === "easypaisa") {
+            paymentDetails.style.display = "block";
+            cardDetails.style.display = "none";
+            mobileWalletDetails.style.display = "block";
+          } else if (e.target.value === "cod") {
+            paymentDetails.style.display = "none";
+          }
+        });
+      });
+      
+      const checkoutForm = document.getElementById("checkoutForm");
+      checkoutForm.addEventListener("submit", (e) => {
+        if (!checkoutForm.checkValidity()) {
+          checkoutForm.reportValidity();
+          e.preventDefault();
+          return;
+        }
+        e.preventDefault();
+        alert("Payment processed successfully. Order placed!");
+      });
     });
   </script>
 </body>
