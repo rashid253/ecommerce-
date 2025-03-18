@@ -1,62 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support - MyBusiness Premium</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Support - MyBusiness</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    header, footer { background: #333; color: #fff; padding: 10px; text-align: center; }
-    main { padding: 20px; }
-    .faq { margin-top: 20px; }
-    .faq-item { border-bottom: 1px solid #ccc; padding: 10px 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f7f8fa;
+      color: #333;
+      padding: 70px 10px; /* Space for fixed header */
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; color: #4caf50; }
+    /* About Section */
+    .about { margin-bottom: 40px; text-align: center; }
+    .about p { max-width: 800px; margin: 0 auto; font-size: 1rem; color: #666; }
+    /* Contact Info Section */
+    .contact-info {
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      text-align: center;
+    }
+    .map {
+      width: 100%;
+      height: 300px;
+      border: 0;
+    }
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      color: #555;
+    }
+    .info-item a { color: inherit; text-decoration: none; }
+    /* Contact Form Section */
+    .contact-form {
+      background: #f7f7f7;
+      padding: 30px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact-form form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .contact-form label { font-weight: 600; color: #555; }
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    .contact-form textarea { min-height: 80px; }
+    .contact-form button {
+      margin-top: 15px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .contact-form button:hover { background: #0056b3; }
+    /* Quick Nav Options */
+    .support-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .support-option {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 20px;
+      width: 220px;
+      text-align: center;
+      cursor: pointer;
+      transition: box-shadow 0.3s;
+    }
+    .support-option:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .support-option i { font-size: 2rem; color: #007bff; margin-bottom: 10px; }
+    .support-option h3 { font-size: 1.1rem; margin-bottom: 6px; color: #333; }
+    .support-option p { font-size: 0.9rem; color: #666; line-height: 1.4; }
+    /* FAQ Section */
+    .faq-section { margin-bottom: 40px; }
+    .faq-title { font-size: 1.2rem; margin-bottom: 15px; color: #007bff; }
+    .faq-item {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 15px;
+      cursor: pointer;
+      font-weight: 500;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-answer { display: none; padding: 15px; font-size: 0.9rem; color: #555; line-height: 1.4; }
   </style>
 </head>
 <body>
-  <header id="siteHeader">MyBusiness Premium</header>
-  <main>
-    <h1 id="supportPageTitleElement">Support Default Title</h1>
-    <h3 id="supportSubtitleElement">Default Support Subtitle</h3>
-    <section class="faq" id="faqSection">
-      <!-- FAQ items will be rendered dynamically -->
-    </section>
-  </main>
-  <footer id="siteFooter">© 2025 MyBusiness. All rights reserved.</footer>
+  <!-- External Header -->
+  <div id="header-placeholder"></div>
   
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
-      authDomain: "e-commerce-pk.firebaseapp.com",
-      projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.firebasestorage.app",
-      messagingSenderId: "126517093225",
-      appId: "1:126517093225:web:c2352620c6d32c582513f8",
-      measurementId: "G-2G2DNCNNT3"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+  <div class="container">
+    <h1>Customer Support</h1>
+    <p class="subtitle">Welcome to MyBusiness Support. How can we help you today?</p>
     
-    db.collection("pages").doc("support").onSnapshot((doc) => {
-      if(doc.exists) {
-        const data = doc.data();
-        document.getElementById("supportPageTitleElement").innerText = data.pageTitle || "Support Default Title";
-        document.getElementById("supportSubtitleElement").innerText = data.subtitle || "Default Support Subtitle";
-        if(data.faqItems && Array.isArray(data.faqItems)) {
-          const faqSection = document.getElementById("faqSection");
-          faqSection.innerHTML = "";
-          data.faqItems.forEach(item => {
-            const div = document.createElement("div");
-            div.classList.add("faq-item");
-            div.innerHTML = `<strong>${item.faqQuestion}</strong><p>${item.faqAnswer}</p>`;
-            faqSection.appendChild(div);
-          });
-        }
-      }
+    <!-- Quick Nav Options -->
+    <div class="support-options">
+      <div class="support-option" onclick="openChat()">
+        <i class="fas fa-comments"></i>
+        <h3>Chat with Supplier</h3>
+        <p>Instantly connect with a supplier for product queries.</p>
+      </div>
+      <div class="support-option" onclick="openOrderTracking()">
+        <i class="fas fa-truck"></i>
+        <h3>Track My Order</h3>
+        <p>Check real-time status and estimated delivery times.</p>
+      </div>
+      <div class="support-option" onclick="openExtraService()">
+        <i class="fas fa-headset"></i>
+        <h3>Live Support</h3>
+        <p>Speak with our customer support team for immediate help.</p>
+      </div>
+    </div>
+    
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <div class="faq-title">Frequently Asked Questions</div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          How do I return an item?
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          You can request a return via the Order Details page or contact our support. Items must be returned in original packaging within 30 days.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          How do I change my shipping address?
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          You can update your shipping address from your Account Settings page. Once an order has shipped, changes may not be possible.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFAQ(this)">
+          What payment methods do you accept?
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="faq-answer">
+          We accept all major credit/debit cards, PayPal, and mobile wallet options. Local payment methods may vary.
+        </div>
+      </div>
+    </div>
+    
+    <!-- Contact Form Section -->
+    <div class="contact-section">
+      <h2>Still need help?</h2>
+      <p>Fill out the form below and our support team will get back to you as soon as possible.</p>
+      <div class="contact-form">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your Name" />
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Your Email" />
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="How can we help you?"></textarea>
+        <button onclick="submitTicket()">Submit Ticket</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- External Footer -->
+  <div id="footer-placeholder"></div>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      fetch('header.html')
+        .then(response => response.text())
+        .then(data => { document.getElementById('header-placeholder').innerHTML = data; })
+        .catch(error => console.error('Error loading header:', error));
+      
+      fetch('footer.html')
+        .then(response => response.text())
+        .then(data => { document.getElementById('footer-placeholder').innerHTML = data; })
+        .catch(error => console.error('Error loading footer:', error));
     });
+    
+    function toggleFAQ(elem) {
+      const answer = elem.nextElementSibling;
+      const icon = elem.querySelector("i");
+      if(answer.style.display === "block") {
+        answer.style.display = "none";
+        icon.classList.replace("fa-chevron-up", "fa-chevron-down");
+      } else {
+        answer.style.display = "block";
+        icon.classList.replace("fa-chevron-down", "fa-chevron-up");
+      }
+    }
+    
+    function openChat() { alert("Opening chat with supplier (placeholder)."); }
+    function openOrderTracking() { alert("Navigating to Order Tracking (placeholder)."); }
+    function openExtraService() { alert("Connecting you to live support (placeholder)."); }
+    function submitTicket() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = document.getElementById("message").value.trim();
+      if (!name || !email || !message) { alert("Please fill in all fields."); return; }
+      alert("Thank you for contacting us! We'll respond soon.");
+    }
   </script>
 </body>
 </html>
