@@ -52,7 +52,7 @@
     .content {
       flex: 1;
       padding: 15px;
-      padding-bottom: 70px;  /* Extra bottom padding to avoid overlap with footer */
+      padding-bottom: 70px;  /* Extra bottom padding to avoid footer overlap */
       overflow-y: auto;
     }
     /* Dashboard Styles */
@@ -151,9 +151,9 @@
         .catch(error => console.error(error));
     }
     document.addEventListener("DOMContentLoaded", function() {
-      // Load external admin header and footer
-      loadHTML("admin-header-placeholder", "admin_header.html");
-      loadHTML("admin-footer-placeholder", "admin_footer.html");
+      // Load external admin header and footer from the admin folder
+      loadHTML("admin-header-placeholder", "admin/admin_header.html");
+      loadHTML("admin-footer-placeholder", "admin/admin_footer.html");
       
       // After external header loads, setup hamburger toggle for sidebar
       setTimeout(() => {
