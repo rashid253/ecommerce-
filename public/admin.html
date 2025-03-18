@@ -7,7 +7,6 @@
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <!-- Bootstrap 5 CSS & Font Awesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -91,7 +90,7 @@
   
   <!-- Wrapper -->
   <div class="wrapper">
-    <!-- Sidebar Navigation with Icons -->
+    <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
       <h2>Admin Panel</h2>
       <ul id="pagesList"></ul>
@@ -99,7 +98,7 @@
     
     <!-- Main Content Area -->
     <div class="content" id="mainContent">
-      <!-- 1. Home Page Section -->
+      <!-- Home Section -->
       <div id="home" class="content-section active">
         <h4>Home Page Content</h4>
         <form id="homeForm">
@@ -133,28 +132,24 @@
           <div class="form-group d-none" id="heroUploadField">
             <label for="homeMediaFile">Upload Background Media</label>
             <input type="file" id="homeMediaFile" accept="image/*">
-            <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
+            <small>Auto-resized (max 1920×1080) &amp; uploaded via Imgur.</small>
           </div>
           <div class="form-group d-none" id="heroDefaultField">
             <p class="text-muted">Default background media will be used.</p>
           </div>
-          <!-- Dummy Feature Cards (will be replaced when admin enters data) -->
           <h5>Feature Cards</h5>
           <div id="featureCardsContainer">
-            <!-- Example Dummy Card -->
             <div class="list-editor-item">
               <input type="text" class="form-control mb-1" name="featureTitle" placeholder="Feature Title" value="Secure Payments">
               <input type="text" class="form-control mb-1" name="featureDesc" placeholder="Feature Description" value="State-of-the-art security for your transactions.">
             </div>
           </div>
-          <button type="button" class="btn btn-sm btn-outline-primary" id="addFeatureCardBtn">
-            <i class="fas fa-plus"></i> Add Feature Card
-          </button>
+          <button type="button" class="btn btn-sm btn-outline-primary" id="addFeatureCardBtn"><i class="fas fa-plus"></i> Add Feature Card</button>
           <button type="submit" class="btn btn-primary mt-3">Save Home Content</button>
         </form>
       </div>
       
-      <!-- 2. E-commerce Section -->
+      <!-- E-commerce Section -->
       <div id="ecommerce" class="content-section d-none">
         <h4>E-commerce Page Content</h4>
         <form id="ecommerceForm">
@@ -188,15 +183,13 @@
           <div class="form-group d-none" id="ecomUploadField">
             <label for="ecomMediaFile">Upload Hero Media</label>
             <input type="file" id="ecomMediaFile" accept="image/*">
-            <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
+            <small>Auto-resized (max 1920×1080) &amp; uploaded via Imgur.</small>
           </div>
           <div class="form-group d-none" id="ecomDefaultField">
             <p class="text-muted">Default hero media will be used.</p>
           </div>
-          <!-- Dummy Dynamic Lists for E-commerce (Carousel & Offers) -->
           <h5 class="mt-3">Carousel Items</h5>
           <div id="carouselContainer">
-            <!-- Dummy carousel item -->
             <div class="list-editor-item">
               <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL" value="https://via.placeholder.com/300x200">
               <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title" value="Sample Item">
@@ -204,251 +197,12 @@
               <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link" value="ecommerce.html">
             </div>
           </div>
-          <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn">
-            <i class="fas fa-plus"></i> Add Carousel Item
-          </button>
-          <!-- (Similar dummy sections for Seasonal, Hot, and Countdown offers can be added as needed) -->
+          <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn"><i class="fas fa-plus"></i> Add Carousel Item</button>
           <button type="submit" class="btn btn-primary mt-3">Save E-commerce Content</button>
         </form>
       </div>
       
-      <!-- 3. Offers Section -->
-      <div id="offers" class="content-section d-none">
-        <h4>Offers Page Content</h4>
-        <form id="offersForm">
-          <div class="form-group">
-            <label for="offersPageTitle">Page Title</label>
-            <input type="text" class="form-control" id="offersPageTitle" placeholder="Enter page title" value="Default Offers Title">
-          </div>
-          <div class="form-group">
-            <label for="offersDesc">Description</label>
-            <textarea class="form-control" id="offersDesc" rows="3" placeholder="Enter offers description">Default offers description goes here.</textarea>
-          </div>
-          <div class="form-group">
-            <label>Offers Hero Media Options</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="offersHeroOption" id="offersOptionURL" value="url" checked>
-              <label class="form-check-label" for="offersOptionURL">Manual URL</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="offersHeroOption" id="offersOptionUpload" value="upload">
-              <label class="form-check-label" for="offersOptionUpload">Direct Upload</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="offersHeroOption" id="offersOptionDefault" value="default">
-              <label class="form-check-label" for="offersOptionDefault">Use Default</label>
-            </div>
-          </div>
-          <div class="form-group" id="offersURLField">
-            <label for="offersMediaURL">Hero Media URL</label>
-            <input type="text" class="form-control" id="offersMediaURL" placeholder="Enter hero media URL" value="https://i.imgur.com/OXCPyAw.mp4">
-          </div>
-          <div class="form-group d-none" id="offersUploadField">
-            <label for="offersMediaFile">Upload Hero Media</label>
-            <input type="file" id="offersMediaFile" accept="image/*">
-            <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
-          </div>
-          <div class="form-group d-none" id="offersDefaultField">
-            <p class="text-muted">Default hero media will be used.</p>
-          </div>
-          <!-- Dummy Offers Items -->
-          <h5 class="mt-3">Offers Items</h5>
-          <div id="offersContainer">
-            <div class="list-editor-item">
-              <input type="text" class="form-control mb-1" name="offerIcon" placeholder="Offer Icon (e.g. fas fa-tag)" value="fas fa-tag">
-              <input type="text" class="form-control mb-1" name="offerTitle" placeholder="Offer Title" value="Special Discount">
-              <input type="text" class="form-control mb-1" name="offerDesc" placeholder="Offer Description" value="Get 20% off on all items.">
-            </div>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-primary" id="addOfferBtn">
-            <i class="fas fa-plus"></i> Add Offer
-          </button>
-          <button type="submit" class="btn btn-primary mt-3">Save Offers Content</button>
-        </form>
-      </div>
-      
-      <!-- 4. Payments Section -->
-      <div id="payments" class="content-section d-none">
-        <h4>Payments Page Content</h4>
-        <form id="paymentsForm">
-          <div class="form-group">
-            <label for="paymentsPageTitle">Page Title</label>
-            <input type="text" class="form-control" id="paymentsPageTitle" placeholder="Enter page title" value="Default Payments Title">
-          </div>
-          <div class="form-group">
-            <label for="paymentsDesc">Description</label>
-            <textarea class="form-control" id="paymentsDesc" rows="3" placeholder="Enter description">Default payments description goes here.</textarea>
-          </div>
-          <div class="form-group">
-            <label>Payments Hero Media Options</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="paymentsHeroOption" id="paymentsOptionURL" value="url" checked>
-              <label class="form-check-label" for="paymentsOptionURL">Manual URL</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="paymentsHeroOption" id="paymentsOptionUpload" value="upload">
-              <label class="form-check-label" for="paymentsOptionUpload">Direct Upload</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="paymentsHeroOption" id="paymentsOptionDefault" value="default">
-              <label class="form-check-label" for="paymentsOptionDefault">Use Default</label>
-            </div>
-          </div>
-          <div class="form-group" id="paymentsURLField">
-            <label for="paymentsMediaURL">Hero Media URL</label>
-            <input type="text" class="form-control" id="paymentsMediaURL" placeholder="Enter hero media URL" value="https://i.imgur.com/OXCPyAw.mp4">
-          </div>
-          <div class="form-group d-none" id="paymentsUploadField">
-            <label for="paymentsMediaFile">Upload Hero Media</label>
-            <input type="file" id="paymentsMediaFile" accept="image/*">
-            <small>Auto-resized (max 1920×1080) & uploaded via Imgur.</small>
-          </div>
-          <div class="form-group d-none" id="paymentsDefaultField">
-            <p class="text-muted">Default hero media will be used.</p>
-          </div>
-          <!-- Dummy Payment Details -->
-          <div class="form-group">
-            <label>Payment Details</label>
-            <div id="paymentsContainer">
-              <div class="list-editor-item">
-                <input type="text" class="form-control mb-1" name="paymentTitle" placeholder="Payment Title" value="Credit Card">
-                <input type="text" class="form-control mb-1" name="paymentDesc" placeholder="Payment Description" value="Visa, MasterCard accepted.">
-              </div>
-            </div>
-            <button type="button" class="btn btn-sm btn-outline-primary" id="addPaymentBtn">
-              <i class="fas fa-plus"></i> Add Payment Detail
-            </button>
-          </div>
-          <button type="submit" class="btn btn-primary">Save Payments Content</button>
-        </form>
-      </div>
-      
-      <!-- 5. Support Section -->
-      <div id="support" class="content-section d-none">
-        <h4>Support Page Content</h4>
-        <form id="supportForm">
-          <div class="form-group">
-            <label for="supportPageTitle">Page Title</label>
-            <input type="text" class="form-control" id="supportPageTitle" placeholder="Enter page title" value="Default Support Title">
-          </div>
-          <div class="form-group">
-            <label for="supportSubtitle">Subtitle</label>
-            <input type="text" class="form-control" id="supportSubtitle" placeholder="Enter subtitle" value="Default Support Subtitle">
-          </div>
-          <!-- Dummy FAQ Items -->
-          <div class="form-group">
-            <label>FAQ Items</label>
-            <div id="faqContainer">
-              <div class="list-editor-item">
-                <input type="text" class="form-control mb-1" name="faqQuestion" placeholder="FAQ Question" value="How do I return an item?">
-                <input type="text" class="form-control mb-1" name="faqAnswer" placeholder="FAQ Answer" value="You can return an item within 30 days.">
-              </div>
-            </div>
-            <button type="button" class="btn btn-sm btn-outline-primary" id="addFaqBtn">
-              <i class="fas fa-plus"></i> Add FAQ
-            </button>
-          </div>
-          <button type="submit" class="btn btn-primary">Save Support Content</button>
-        </form>
-      </div>
-      
-      <!-- 6. Contact Section -->
-      <div id="contact" class="content-section d-none">
-        <h4>Contact Page Content</h4>
-        <form id="contactForm">
-          <div class="form-group">
-            <label for="contactPageTitle">Page Title</label>
-            <input type="text" class="form-control" id="contactPageTitle" placeholder="Enter contact page title" value="Default Contact Title">
-          </div>
-          <div class="form-group">
-            <label for="contactAboutHeading">About Section Heading</label>
-            <input type="text" class="form-control" id="contactAboutHeading" placeholder="Enter heading" value="About YourBrand">
-          </div>
-          <div class="form-group">
-            <label for="contactAboutText">About Section Text</label>
-            <textarea class="form-control" id="contactAboutText" rows="3" placeholder="Enter about text">Default about text for the contact page.</textarea>
-          </div>
-          <div class="form-group">
-            <label for="contactMapURL">Map Embed URL</label>
-            <input type="text" class="form-control" id="contactMapURL" placeholder="Enter Google Maps embed URL" value="default-map-embed-url">
-          </div>
-          <div class="form-group">
-            <label for="contactPhone">Phone Number</label>
-            <input type="text" class="form-control" id="contactPhone" placeholder="Enter phone number" value="+1 234 567 890">
-          </div>
-          <div class="form-group">
-            <label for="contactWhatsApp">WhatsApp Link</label>
-            <input type="text" class="form-control" id="contactWhatsApp" placeholder="Enter WhatsApp URL" value="https://wa.me/1234567890">
-          </div>
-          <div class="form-group">
-            <label for="contactEmail">Email Address</label>
-            <input type="email" class="form-control" id="contactEmail" placeholder="Enter email address" value="info@mybusiness.com">
-          </div>
-          <div class="form-group">
-            <label for="contactAddress">Physical Address</label>
-            <input type="text" class="form-control" id="contactAddress" placeholder="Enter physical address" value="Default Address, City, Country">
-          </div>
-          <button type="submit" class="btn btn-primary">Save Contact Content</button>
-        </form>
-      </div>
-      
-      <!-- 7. Details (Product Details) Section -->
-      <div id="details" class="content-section d-none">
-        <h4>Product Details Content</h4>
-        <form id="detailsForm">
-          <div class="form-group">
-            <label for="detName">Product Name</label>
-            <input type="text" class="form-control" id="detName" placeholder="Enter product name" value="Default Product Name">
-          </div>
-          <div class="form-group">
-            <label>Product Image Options</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="detImageOption" id="detOptionUpload" value="upload" checked>
-              <label class="form-check-label" for="detOptionUpload">Direct Upload</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="detImageOption" id="detOptionDefault" value="default">
-              <label class="form-check-label" for="detOptionDefault">Use Default</label>
-            </div>
-          </div>
-          <div class="form-group" id="detURLField">
-            <label for="detImageUrl">Product Image URL</label>
-            <input type="text" class="form-control" id="detImageUrl" placeholder="Image URL will appear here" readonly value="default-product.jpg">
-          </div>
-          <div class="form-group" id="detUploadField">
-            <label for="detImageFile">Upload Product Image</label>
-            <input type="file" id="detImageFile" accept="image/*">
-            <small>Auto-resized (max 400×300) & uploaded via Imgur.</small>
-          </div>
-          <div class="form-group">
-            <label for="detPrice">Price</label>
-            <input type="number" class="form-control" id="detPrice" placeholder="Enter price" value="0">
-          </div>
-          <div class="form-group">
-            <label for="detDiscount">Discount (%)</label>
-            <input type="number" class="form-control" id="detDiscount" placeholder="Enter discount" value="0">
-          </div>
-          <div class="form-group">
-            <label for="detRating">Rating</label>
-            <input type="number" class="form-control" id="detRating" placeholder="Enter rating" value="0">
-          </div>
-          <div class="form-group">
-            <label for="detAdded">Added Count</label>
-            <input type="number" class="form-control" id="detAdded" placeholder="Enter added count" value="0">
-          </div>
-          <div class="form-group">
-            <label for="detSold">Sold Count</label>
-            <input type="number" class="form-control" id="detSold" placeholder="Enter sold count" value="0">
-          </div>
-          <div class="form-group">
-            <label for="detDesc">Description</label>
-            <textarea class="form-control" id="detDesc" rows="3" placeholder="Enter product description">Default product description goes here.</textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Save Details</button>
-        </form>
-      </div>
-      
-      <!-- 8. Header Section -->
+      <!-- Header Section -->
       <div id="header" class="content-section d-none">
         <h4>Header Content</h4>
         <form id="headerForm">
@@ -468,7 +222,127 @@
         </form>
       </div>
       
-      <!-- Note: Footer section is not included in the admin panel so that your front‑end footer remains unchanged. -->
+      <!-- Details Section -->
+      <div id="details" class="content-section d-none">
+        <h4>Product Details Page Content</h4>
+        <form id="detailsForm">
+          <div class="form-group">
+            <label for="productNameField">Product Name</label>
+            <input type="text" class="form-control" id="productNameField" placeholder="Enter product name" value="Sample Product">
+          </div>
+          <div class="form-group">
+            <label for="productPriceField">Price</label>
+            <input type="text" class="form-control" id="productPriceField" placeholder="Enter price" value="PKR 29.99">
+          </div>
+          <div class="form-group">
+            <label for="productDescField">Description</label>
+            <textarea class="form-control" id="productDescField" rows="3" placeholder="Enter product description">This is a sample product for demonstration purposes.</textarea>
+          </div>
+          <div class="form-group">
+            <label for="productImageURLField">Product Image URL</label>
+            <input type="text" class="form-control" id="productImageURLField" placeholder="Enter image URL" value="https://via.placeholder.com/400x300?text=Product+Image">
+          </div>
+          <div class="form-group">
+            <label for="productAddedField">Added Count</label>
+            <input type="number" class="form-control" id="productAddedField" placeholder="Enter added count" value="10">
+          </div>
+          <div class="form-group">
+            <label for="productSoldField">Sold Count</label>
+            <input type="number" class="form-control" id="productSoldField" placeholder="Enter sold count" value="5">
+          </div>
+          <div class="form-group">
+            <label for="productRatingField">Rating</label>
+            <input type="number" class="form-control" id="productRatingField" placeholder="Enter rating" value="4">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Details Content</button>
+        </form>
+      </div>
+      
+      <!-- Payments Section -->
+      <div id="payments" class="content-section d-none">
+        <h4>Payments Page Content</h4>
+        <form id="paymentsForm">
+          <div class="form-group">
+            <label for="paymentsPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="paymentsPageTitle" placeholder="Enter page title" value="Secure Payments">
+          </div>
+          <div class="form-group">
+            <label for="paymentsDesc">Description</label>
+            <textarea class="form-control" id="paymentsDesc" rows="3" placeholder="Enter description">Our secure payment options are designed to protect your transactions.</textarea>
+          </div>
+          <div class="form-group">
+            <label>Payment Details (Dynamic List)</label>
+            <div id="paymentsContainer">
+              <div class="list-editor-item">
+                <input type="text" class="form-control mb-1" name="paymentTitle" placeholder="Payment Detail Title" value="JazzCash">
+                <input type="text" class="form-control mb-1" name="paymentDesc" placeholder="Payment Detail Description" value="Quick digital transactions">
+              </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="addPaymentBtn"><i class="fas fa-plus"></i> Add Payment Detail</button>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Payments Content</button>
+        </form>
+      </div>
+      
+      <!-- Checkout Section -->
+      <div id="checkout" class="content-section d-none">
+        <h4>Checkout Page Content</h4>
+        <form id="checkoutAdminForm">
+          <div class="form-group">
+            <label for="checkoutInfo">Checkout Information</label>
+            <textarea class="form-control" id="checkoutInfo" rows="3" placeholder="Enter checkout page info">Default checkout information goes here.</textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Checkout Content</button>
+        </form>
+      </div>
+      
+      <!-- Delivery Section -->
+      <div id="delivery" class="content-section d-none">
+        <h4>Delivery Page Content</h4>
+        <form id="deliveryForm">
+          <div class="form-group">
+            <label for="deliveryPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="deliveryPageTitle" placeholder="Enter page title" value="Fast Delivery Excellence">
+          </div>
+          <div class="form-group">
+            <label for="deliveryDesc">Description</label>
+            <textarea class="form-control" id="deliveryDesc" rows="3" placeholder="Enter description">Our delivery network is designed for speed and reliability.</textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Delivery Content</button>
+        </form>
+      </div>
+      
+      <!-- Support Section -->
+      <div id="support" class="content-section d-none">
+        <h4>Support Page Content</h4>
+        <form id="supportForm">
+          <div class="form-group">
+            <label for="supportPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="supportPageTitle" placeholder="Enter page title" value="Customer Support">
+          </div>
+          <div class="form-group">
+            <label for="supportSubtitle">Subtitle</label>
+            <input type="text" class="form-control" id="supportSubtitle" placeholder="Enter subtitle" value="We're here to help">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Support Content</button>
+        </form>
+      </div>
+      
+      <!-- Contact Section -->
+      <div id="contact" class="content-section d-none">
+        <h4>Contact Page Content</h4>
+        <form id="contactFormAdmin">
+          <div class="form-group">
+            <label for="contactPageTitle">Page Title</label>
+            <input type="text" class="form-control" id="contactPageTitle" placeholder="Enter page title" value="Contact Us">
+          </div>
+          <div class="form-group">
+            <label for="contactAbout">About Text</label>
+            <textarea class="form-control" id="contactAbout" rows="3" placeholder="Enter about text">YourBrand is dedicated to delivering innovative solutions with passion and professionalism.</textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Contact Content</button>
+        </form>
+      </div>
       
     </div>
   </div>
@@ -476,9 +350,7 @@
   <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // -------------------------------
-    // 1. Initialize Firebase
-    // -------------------------------
+    // Initialize Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
@@ -491,31 +363,28 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     
-    // -------------------------------
-    // 2. Mobile Hamburger Toggle
-    // -------------------------------
+    // Mobile sidebar toggle
     const hamburger = document.getElementById("hamburger");
     const sidebar = document.getElementById("sidebar");
     hamburger.addEventListener("click", () => { sidebar.classList.toggle("open"); });
     document.addEventListener("click", (e) => {
-      if(window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+      if(window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target)){
         sidebar.classList.remove("open");
       }
     });
     
-    // -------------------------------
-    // 3. Render Sidebar Pages List with Icons
-    // -------------------------------
-    const pages = ["home", "ecommerce", "offers", "payments", "support", "contact", "details", "header"];
+    // Render sidebar navigation
+    const pages = ["home", "ecommerce", "header", "details", "payments", "checkout", "delivery", "support", "contact"];
     const pageIcons = {
       home: "fas fa-home",
       ecommerce: "fas fa-shopping-bag",
-      offers: "fas fa-tags",
-      payments: "fas fa-credit-card",
-      support: "fas fa-headset",
-      contact: "fas fa-phone",
+      header: "fas fa-ellipsis-h",
       details: "fas fa-info-circle",
-      header: "fas fa-ellipsis-h"
+      payments: "fas fa-credit-card",
+      checkout: "fas fa-shopping-cart",
+      delivery: "fas fa-truck",
+      support: "fas fa-headset",
+      contact: "fas fa-envelope"
     };
     function renderPagesList() {
       const pagesList = document.getElementById("pagesList");
@@ -543,9 +412,7 @@
     document.getElementById(pages[0]).classList.remove("d-none");
     document.getElementById("pageTitle").innerText = pages[0];
     
-    // -------------------------------
-    // 4. Form Submission Handlers (Firestore Write Operations)
-    // -------------------------------
+    // Form submission handler – writes data to Firestore
     function handleFormSubmit(formId, pageName, docId) {
       const form = document.getElementById(formId);
       if(!form) return;
@@ -561,95 +428,39 @@
     }
     handleFormSubmit("homeForm", "Home", "home");
     handleFormSubmit("ecommerceForm", "E-commerce", "ecommerce");
-    handleFormSubmit("offersForm", "Offers", "offers");
-    handleFormSubmit("paymentsForm", "Payments", "payments");
-    handleFormSubmit("supportForm", "Support", "support");
-    handleFormSubmit("contactForm", "Contact", "contact");
-    handleFormSubmit("detailsForm", "Details", "details");
     handleFormSubmit("headerForm", "Header", "header");
+    handleFormSubmit("detailsForm", "Details", "details");
+    handleFormSubmit("paymentsForm", "Payments", "payments");
+    handleFormSubmit("checkoutAdminForm", "Checkout", "checkout");
+    handleFormSubmit("deliveryForm", "Delivery", "delivery");
+    handleFormSubmit("supportForm", "Support", "support");
+    handleFormSubmit("contactFormAdmin", "Contact", "contact");
     
-    // -------------------------------
-    // 5. Dynamic "Add" Buttons for List Items
-    // -------------------------------
-    function addListItem(containerId, fields) {
-      const container = document.getElementById(containerId);
+    // Dynamic list editor for Carousel and Payment Details
+    document.getElementById("addCarouselBtn").addEventListener("click", () => {
+      const container = document.getElementById("carouselContainer");
       const div = document.createElement("div");
       div.classList.add("list-editor-item");
-      fields.forEach(field => {
-        const input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = field.placeholder;
-        input.classList.add("form-control", "mb-1");
-        input.name = field.name;
-        div.appendChild(input);
-      });
+      div.innerHTML = `
+        <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL">
+        <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title">
+        <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description">
+        <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link">
+      `;
       container.appendChild(div);
-    }
-    document.getElementById("addCarouselBtn")?.addEventListener("click", () => {
-      addListItem("carouselContainer", [
-        { name: "carouselImageUrl", placeholder: "Carousel Image URL" },
-        { name: "carouselTitle", placeholder: "Carousel Title" },
-        { name: "carouselDesc", placeholder: "Carousel Description" },
-        { name: "carouselLink", placeholder: "Carousel Link" }
-      ]);
     });
-    document.getElementById("addSeasonalOfferBtn")?.addEventListener("click", () => {
-      addListItem("seasonalOffersContainer", [
-        { name: "seasonalImageUrl", placeholder: "Offer Image URL" },
-        { name: "seasonalTitle", placeholder: "Offer Title" },
-        { name: "seasonalDesc", placeholder: "Offer Description" },
-        { name: "seasonalPrice", placeholder: "Offer Price" },
-        { name: "seasonalDiscount", placeholder: "Offer Discount" }
-      ]);
-    });
-    document.getElementById("addHotOfferBtn")?.addEventListener("click", () => {
-      addListItem("hotOffersContainer", [
-        { name: "hotImageUrl", placeholder: "Offer Image URL" },
-        { name: "hotTitle", placeholder: "Offer Title" },
-        { name: "hotDesc", placeholder: "Offer Description" },
-        { name: "hotPrice", placeholder: "Offer Price" },
-        { name: "hotDiscount", placeholder: "Offer Discount" }
-      ]);
-    });
-    document.getElementById("addCountdownOfferBtn")?.addEventListener("click", () => {
-      addListItem("countdownOffersContainer", [
-        { name: "countdownImageUrl", placeholder: "Offer Image URL" },
-        { name: "countdownTitle", placeholder: "Offer Title" },
-        { name: "countdownDesc", placeholder: "Offer Description" },
-        { name: "countdownPrice", placeholder: "Offer Price" },
-        { name: "countdownDiscount", placeholder: "Offer Discount" },
-        { name: "offerEndDate", placeholder: "Offer End Date" }
-      ]);
-    });
-    document.getElementById("addOfferBtn")?.addEventListener("click", () => {
-      addListItem("offersContainer", [
-        { name: "offerIcon", placeholder: "Offer Icon (e.g. fas fa-tag)" },
-        { name: "offerTitle", placeholder: "Offer Title" },
-        { name: "offerDesc", placeholder: "Offer Description" }
-      ]);
-    });
-    document.getElementById("addPaymentBtn")?.addEventListener("click", () => {
-      addListItem("paymentsContainer", [
-        { name: "paymentTitle", placeholder: "Payment Title" },
-        { name: "paymentDesc", placeholder: "Payment Description" }
-      ]);
-    });
-    document.getElementById("addFaqBtn")?.addEventListener("click", () => {
-      addListItem("faqContainer", [
-        { name: "faqQuestion", placeholder: "FAQ Question" },
-        { name: "faqAnswer", placeholder: "FAQ Answer" }
-      ]);
-    });
-    document.getElementById("addFooterLinkBtn")?.addEventListener("click", () => {
-      addListItem("footerLinksContainer", [
-        { name: "linkText", placeholder: "Link Text" },
-        { name: "linkURL", placeholder: "Link URL" }
-      ]);
+    document.getElementById("addPaymentBtn").addEventListener("click", () => {
+      const container = document.getElementById("paymentsContainer");
+      const div = document.createElement("div");
+      div.classList.add("list-editor-item");
+      div.innerHTML = `
+        <input type="text" class="form-control mb-1" name="paymentTitle" placeholder="Payment Detail Title">
+        <input type="text" class="form-control mb-1" name="paymentDesc" placeholder="Payment Detail Description">
+      `;
+      container.appendChild(div);
     });
     
-    // -------------------------------
-    // 6. Show/Hide Hero Media Fields
-    // -------------------------------
+    // Show/hide media upload fields
     function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
       const radios = document.getElementsByName(radioName);
       radios.forEach(radio => {
@@ -667,36 +478,10 @@
         });
       });
     }
-    // Home
     setupHeroRadios("heroMediaOption", "heroURLField", "heroUploadField", "heroDefaultField");
-    // E-commerce
     setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
-    // Offers
-    setupHeroRadios("offersHeroOption", "offersURLField", "offersUploadField", "offersDefaultField");
-    // Payments
-    setupHeroRadios("paymentsHeroOption", "paymentsURLField", "paymentsUploadField", "paymentsDefaultField");
     
-    // -------------------------------
-    // 7. Show/Hide Product Image Fields (Details)
-    // -------------------------------
-    function setupProductRadios(radioName, urlFieldId, uploadFieldId) {
-      const radios = document.getElementsByName(radioName);
-      radios.forEach(radio => {
-        radio.addEventListener("change", function() {
-          document.getElementById(urlFieldId).classList.add("d-none");
-          document.getElementById(uploadFieldId).classList.add("d-none");
-          if(this.value === "upload") {
-            document.getElementById(urlFieldId).classList.remove("d-none");
-            document.getElementById(uploadFieldId).classList.remove("d-none");
-          }
-        });
-      });
-    }
-    setupProductRadios("detImageOption", "detURLField", "detUploadField");
-    
-    // -------------------------------
-    // 8. Imgur Upload Function (Reusable)
-    // -------------------------------
+    // Imgur upload function
     function handleImageUpload(file, maxWidth, maxHeight, callback) {
       if(!file) return;
       const reader = new FileReader();
@@ -737,14 +522,11 @@
       };
     }
     
-    // -------------------------------
-    // 9. Set up Imgur Uploads for Media Fields
-    // -------------------------------
     const homeMediaFile = document.getElementById("homeMediaFile");
     if(homeMediaFile) {
       homeMediaFile.addEventListener("change", function() {
         handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("Hero background uploaded!\n" + imageUrl);
+          alert("Home hero background uploaded!\n" + imageUrl);
           document.getElementById("homeMediaURL").value = imageUrl;
         });
       });
@@ -753,35 +535,8 @@
     if(ecomMediaFile) {
       ecomMediaFile.addEventListener("change", function() {
         handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("E-commerce hero uploaded!\n" + imageUrl);
+          alert("E-commerce hero media uploaded!\n" + imageUrl);
           document.getElementById("ecomMediaURL").value = imageUrl;
-        });
-      });
-    }
-    const offersMediaFile = document.getElementById("offersMediaFile");
-    if(offersMediaFile) {
-      offersMediaFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("Offers hero uploaded!\n" + imageUrl);
-          document.getElementById("offersMediaURL").value = imageUrl;
-        });
-      });
-    }
-    const paymentsMediaFile = document.getElementById("paymentsMediaFile");
-    if(paymentsMediaFile) {
-      paymentsMediaFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("Payments hero uploaded!\n" + imageUrl);
-          document.getElementById("paymentsMediaURL").value = imageUrl;
-        });
-      });
-    }
-    const detImageFile = document.getElementById("detImageFile");
-    if(detImageFile) {
-      detImageFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 400, 300, (imageUrl) => {
-          alert("Product image uploaded!\n" + imageUrl);
-          document.getElementById("detImageUrl").value = imageUrl;
         });
       });
     }
