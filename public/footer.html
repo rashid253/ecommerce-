@@ -1,46 +1,83 @@
-<footer class="footer">
-  <a href="index.html"><i class="fas fa-home"></i> Home</a>
-  <a href="offers.html"><i class="fas fa-tags"></i> Offers</a>
-  <a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a>
-  <a href="cart.html">
-    <i class="fas fa-shopping-cart"></i> Cart
-    <span id="cartCountFooter" class="badge">0</span>
-  </a>
-  <a href="support.html"><i class="fas fa-headset"></i> Support</a>
-</footer>
-<div class="footer-extra">
-  &copy; 2025 MyBusiness. All rights reserved.
-</div>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
-    authDomain: "e-commerce-pk.firebaseapp.com",
-    projectId: "e-commerce-pk",
-    storageBucket: "e-commerce-pk.firebasestorage.app",
-    messagingSenderId: "126517093225",
-    appId: "1:126517093225:web:c2352620c6d32c582513f8",
-    measurementId: "G-2G2DNCNNT3"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  db.collection("pages").doc("cart").onSnapshot((doc) => {
-    if (doc.exists) {
-      const data = doc.data();
-      document.getElementById("cartCountFooter").innerText = data.cartCount || 0;
-    } else {
-      const count = localStorage.getItem("cartCount") || 0;
-      document.getElementById("cartCountFooter").innerText = count;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footer Navigation</title>
+  <script src="https://kit.fontawesome.com/YOUR_FONT_AWESOME_KIT.js" crossorigin="anonymous"></script>
+  <style>
+    .footer {
+      position: fixed;
+      bottom: 30px;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      padding: 5px 0;
+      font-size: 0.7rem;
+      z-index: 1000;
     }
-  });
-
-  db.collection("pages").doc("footer").onSnapshot((doc) => {
-    if(doc.exists) {
-      const data = doc.data();
-      document.querySelector(".footer-extra").innerText =
-        data.copyright || "© 2025 MyBusiness. All rights reserved.";
+    .footer a {
+      text-decoration: none;
+      color: #333;
+      text-align: center;
+      flex: 1;
+      position: relative;
     }
-  });
-</script>
+    .footer a i {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 2px;
+      font-weight: bold;
+    }
+    .badge {
+      position: absolute;
+      top: -3px;
+      right: 25%;
+      background: red;
+      border-radius: 50%;
+      color: #fff;
+      padding: 1px 4px;
+      font-size: 0.6rem;
+    }
+    .footer-extra {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #000;
+      text-align: center;
+      padding: 3px 0;
+      font-size: 0.7rem;
+      color: #fff;
+      z-index: 1100;
+    }
+  </style>
+</head>
+<body>
+  <footer class="footer">
+    <a href="index.html"><i class="fas fa-home"></i>Home</a>
+    <a href="offers.html"><i class="fas fa-tags"></i>Offers</a>
+    <a href="analytics.html"><i class="fas fa-chart-line"></i>Analytics</a>
+    <a href="cart.html">
+      <i class="fas fa-shopping-cart"></i>Cart
+      <span id="cartCountFooter" class="badge">0</span>
+    </a>
+    <a href="support.html">
+      <i class="fas fa-headset"></i>Support
+    </a>
+  </footer>
+  <div class="footer-extra">
+    &copy; 2025 MyBusiness. All rights reserved.
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var count = localStorage.getItem("cartCount") || 0;
+      var badge = document.getElementById("cartCountFooter");
+      if(badge){ badge.innerText = count; }
+    });
+  </script>
+</body>
+</html>
