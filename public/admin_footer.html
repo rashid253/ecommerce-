@@ -2,19 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Footer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Navigation Footer</title>
   <style>
     .admin-footer {
-      background: #333;
-      color: #fff;
-      padding: 10px;
-      text-align: center;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      padding: 5px 0;
+      font-size: 0.8rem;
+      z-index: 1000;
+    }
+    .admin-footer a {
+      text-decoration: none;
+      color: #2c3e50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      transition: color 0.3s;
+    }
+    .admin-footer a i {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
+    .admin-footer a.active {
+      color: #007bff;
     }
   </style>
 </head>
 <body>
   <footer class="admin-footer">
-    <small>Admin Panel © 2025 Faiqtech Sol. All changes are live.</small>
+    <a href="admin_dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+    <a href="home_admin.html"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="header_admin.html"><i class="fas fa-ellipsis-h"></i><span>Header</span></a>
+    <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i><span>Shop</span></a>
+    <a href="details_admin.html"><i class="fas fa-info-circle"></i><span>Details</span></a>
+    <a href="payments_admin.html"><i class="fas fa-credit-card"></i><span>Payments</span></a>
+    <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i><span>Checkout</span></a>
+    <a href="delivery_admin.html"><i class="fas fa-truck"></i><span>Delivery</span></a>
+    <a href="support_admin.html"><i class="fas fa-headset"></i><span>Support</span></a>
+    <a href="contact_admin.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
+    <a href="analytics_admin.html"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+    <a href="about_admin.html"><i class="fas fa-eye"></i><span>About</span></a>
   </footer>
 </body>
 </html>
