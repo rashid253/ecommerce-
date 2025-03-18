@@ -1,63 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Details - MyBusiness Premium</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    header, footer { background: #333; color: #fff; padding: 10px; text-align: center; }
-    main { padding: 20px; max-width: 800px; margin: auto; }
-    .product-details { display: flex; flex-direction: column; align-items: center; }
-    .product-image { width: 400px; height: 300px; object-fit: cover; }
-  </style>
-</head>
-<body>
-  <header id="siteHeader">MyBusiness Premium</header>
-  <main>
-    <div class="product-details">
-      <h1 id="detNameElement">Default Product Name</h1>
-      <img id="detImageElement" class="product-image" src="default-product.jpg" alt="Product Image">
-      <p id="detDescElement">Default product description goes here.</p>
-      <p id="detPriceElement">Price: Rs 0.00</p>
-      <p id="detDiscountElement">Discount: 0%</p>
-      <p id="detRatingElement">Rating: 0</p>
-      <p id="detAddedElement">Added Count: 0</p>
-      <p id="detSoldElement">Sold Count: 0</p>
-    </div>
-  </main>
-  <footer id="siteFooter">© 2025 MyBusiness. All rights reserved.</footer>
-  
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
-      authDomain: "e-commerce-pk.firebaseapp.com",
-      projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.firebasestorage.app",
-      messagingSenderId: "126517093225",
-      appId: "1:126517093225:web:c2352620c6d32c582513f8",
-      measurementId: "G-2G2DNCNNT3"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    
-    db.collection("pages").doc("details").onSnapshot((doc) => {
-      if(doc.exists) {
-        const data = doc.data();
-        document.getElementById("detNameElement").innerText = data.productName || "Default Product Name";
-        document.getElementById("detDescElement").innerText = data.description || "Default product description goes here.";
-        document.getElementById("detPriceElement").innerText = "Price: Rs " + (data.price || "0.00");
-        document.getElementById("detDiscountElement").innerText = "Discount: " + (data.discount || "0") + "%";
-        document.getElementById("detRatingElement").innerText = "Rating: " + (data.rating || "0");
-        document.getElementById("detAddedElement").innerText = "Added Count: " + (data.added || "0");
-        document.getElementById("detSoldElement").innerText = "Sold Count: " + (data.sold || "0");
-        document.getElementById("detImageElement").src = data.productImageURL || "default-product.jpg";
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Product Details - NextGen E-commerce</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Custom JavaScript -->
+    <script src="script.js" defer></script>
+    <style>
+      /* Layout and styles as provided – do not change dummy data or design */
+      body {
+        margin-top: 70px;
+        scroll-behavior: smooth;
       }
-    });
-  </script>
-</body>
+      .section-nav {
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 999;
+      }
+      .section-nav .nav-link {
+        color: #007bff;
+        font-weight: bold;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0;
+      }
+      .section-nav .nav-link i {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+      }
+      .section-nav .nav-link:hover {
+        color: #0056b3;
+      }
+      .description-content {
+        max-height: 150px;
+        overflow: hidden;
+        transition: max-height 0.4s ease;
+      }
+      .description-content.expanded {
+        max-height: 1000px;
+      }
+      /* Reviews styling */
+      .review-item { margin-bottom: 1rem; border-bottom: 1px solid #ddd; padding-bottom: 1rem; }
+      .review-user { font-weight: 600; margin-right: 8px; }
+      .review-date { color: #666; font-size: 0.85rem; }
+      .review-text { white-space: pre-line; margin-bottom: 0.5rem; }
+      .review-full { display: none; }
+      .review-full.expanded { display: block; }
+      .review-read-more { color: #007bff; cursor: pointer; font-size: 0.9rem; }
+      .review-helpful { margin-top: 0.5rem; font-size: 0.85rem; color: #666; }
+      .helpful-btn {
+        border: 1px solid #c0c0c0;
+        background: #fff;
+        border-radius: 0;
+        padding: 2px 8px;
+        margin-left: 8px;
+        color: #202124;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+      .helpful-btn:hover { background-color: #f1f3f4; }
+      #ratingStars .star-icon {
+        font-size: 16px;
+        margin-right: 4px;
+        cursor: pointer;
+        color: #ccc;
+      }
+      #ratingStars .star-icon.selected { color: #f5c518; }
+    </style>
+  </head>
+  <body>
+    <!-- External Header -->
+    <div id="header-placeholder"></div>
+    
+    <!-- Product Details Section -->
+    <div class="container mt-5 mb-5">
+      <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-5 text-center mb-3">
+          <img id="productImage" src="https://via.placeholder.com/400x300?text=Product+Image" alt="Product Image" class="img-fluid rounded" />
+        </div>
+        <!-- Product Info -->
+        <div class="col-md-7">
+          <h2 id="productName">Product Name</h2>
+          <p class="h5 text-primary" id="productPrice">PKR 0</p>
+          <div id="productRating" class="star-rating mb-2"></div>
+          <p id="productStats" class="text-muted mb-3">0 Added | 0 Sold</p>
+          <button class="btn btn-success add-to-cart-btn mt-3">
+            <i class="fa fa-shopping-cart"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Section Navigation -->
+    <nav class="section-nav">
+      <div class="container d-flex justify-content-around">
+        <a class="nav-link" href="#section-description">
+          <i class="fa fa-file-text"></i>
+          <span>Description</span>
+        </a>
+        <a class="nav-link" href="#section-reviews">
+          <i class="fa fa-comments"></i>
+          <span>Reviews</span>
+        </a>
+        <a class="nav-link" href="#section-related">
+          <i class="fa fa-th"></i>
+          <span>Related Items</span>
+        </a>
+      </div>
+    </nav>
+    
+    <!-- Description Section -->
+    <section id="section-description" class="container mt-4 mb-5">
+      <h3>Description</h3>
+      <div class="description-content" id="descriptionContent">
+        <p id="productDescription">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel mauris quam. Praesent sed nisi eleifend, varius nulla eu, auctor urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse potenti. Proin ut tincidunt mauris, vel dapibus nulla. Nulla facilisi. Sed nec nulla vitae eros aliquet fermentum.
+        </p>
+      </div>
+      <button class="btn btn-sm btn-outline-primary mt-2" id="descReadMore">Read More</button>
+    </section>
+    
+    <!-- Reviews Section -->
+    <section id="section-reviews" class="container mb-5">
+      <h3>Reviews</h3>
+      <div id="reviewsContainer"></div>
+      <div id="seeAllReviewsLink" class="text-primary mt-2" style="cursor: pointer; display: none;">
+        See all reviews
+      </div>
+      
+      <!-- Write a Review -->
+      <div class="mt-4 p-3" style="border:1px solid #ddd; border-radius:5px;">
+        <h5>Write a Review</h5>
+        <div id="ratingStars" class="mb-2">
+          <i class="fa fa-star star-icon" data-value="1"></i>
+          <i class="fa fa-star star-icon" data-value="2"></i>
+          <i class="fa fa-star star-icon" data-value="3"></i>
+          <i class="fa fa-star star-icon" data-value="4"></i>
+          <i class="fa fa-star star-icon" data-value="5"></i>
+        </div>
+        <textarea class="form-control mb-2" rows="3" placeholder="Share your experience after purchasing"></textarea>
+        <button class="btn btn-success">Submit Review</button>
+      </div>
+    </section>
+    
+    <!-- Related Items Section -->
+    <section id="section-related" class="container mb-5">
+      <h3>Related Items</h3>
+      <div class="row" id="relatedItemsContainer">
+        <div class="col-6 col-md-3 mb-3">
+          <div class="card text-center">
+            <img src="https://via.placeholder.com/140x100?text=Item+1" alt="Item 1" class="card-img-top" />
+            <div class="card-body p-2">
+              <p class="small mb-0">Item 1</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3">
+          <div class="card text-center">
+            <img src="https://via.placeholder.com/140x100?text=Item+2" alt="Item 2" class="card-img-top" />
+            <div class="card-body p-2">
+              <p class="small mb-0">Item 2</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3">
+          <div class="card text-center">
+            <img src="https://via.placeholder.com/140x100?text=Item+3" alt="Item 3" class="card-img-top" />
+            <div class="card-body p-2">
+              <p class="small mb-0">Item 3</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 mb-3">
+          <div class="card text-center">
+            <img src="https://via.placeholder.com/140x100?text=Item+4" alt="Item 4" class="card-img-top" />
+            <div class="card-body p-2">
+              <p class="small mb-0">Item 4</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- External Footer -->
+    <div id="footer-placeholder"></div>
+    
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+      // Load external header and footer
+      function loadHTML(elementId, filePath) {
+        fetch(filePath)
+          .then(response => {
+            if (!response.ok) throw new Error("Error fetching " + filePath);
+            return response.text();
+          })
+          .then(html => { document.getElementById(elementId).innerHTML = html; })
+          .catch(error => console.error(error));
+      }
+      document.addEventListener("DOMContentLoaded", function() {
+        loadHTML('header-placeholder', 'header.html');
+        loadHTML('footer-placeholder', 'footer.html');
+      });
+      
+      // Firebase integration: load product details from Firestore document "details"
+      const firebaseConfig = {
+        apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
+        authDomain: "e-commerce-pk.firebaseapp.com",
+        projectId: "e-commerce-pk",
+        storageBucket: "e-commerce-pk.firebasestorage.app",
+        messagingSenderId: "126517093225",
+        appId: "1:126517093225:web:c2352620c6d32c582513f8",
+        measurementId: "G-2G2DNCNNT3"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      
+      db.collection("pages").doc("details").onSnapshot((doc) => {
+        if(doc.exists) {
+          const data = doc.data();
+          document.getElementById("productName").innerText = data.productName || "Product Name";
+          document.getElementById("productPrice").innerText = "PKR " + (data.price || "0");
+          document.getElementById("productDescription").innerText = data.description || "Product description goes here.";
+          document.getElementById("productImage").src = data.productImageURL || "https://via.placeholder.com/400x300?text=Product+Image";
+          document.getElementById("productStats").innerText = (data.added || 0) + " Added | " + (data.sold || 0) + " Sold";
+          document.getElementById("productRating").innerHTML = generateStars(data.rating || 0);
+        }
+      });
+      
+      function generateStars(rating) {
+        let html = "";
+        const fullStars = Math.floor(rating);
+        const halfStar = rating - fullStars >= 0.5 ? 1 : 0;
+        for(let i = 0; i < fullStars; i++){
+          html += '<i class="fa fa-star text-warning"></i>';
+        }
+        if(halfStar){
+          html += '<i class="fa fa-star-half-alt text-warning"></i>';
+        }
+        return html;
+      }
+      
+      // Toggle "Read More" in description
+      const descReadMoreBtn = document.getElementById("descReadMore");
+      const descContent = document.getElementById("descriptionContent");
+      descReadMoreBtn.addEventListener("click", function() {
+        descContent.classList.toggle("expanded");
+        this.textContent = descContent.classList.contains("expanded") ? "Show Less" : "Read More";
+      });
+    </script>
+  </body>
 </html>
