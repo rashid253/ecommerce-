@@ -1,468 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel – User‑Friendly E-commerce Editor</title>
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <!-- Bootstrap 5 CSS & Font Awesome -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
-  <style>
-    /* Basic Reset & Layout */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; }
-    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NextGen E-commerce - Shop Now</title>
 
-    /* Top Bar */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #fff;
-      padding: 10px 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      flex-shrink: 0;
-    }
-    .topbar-left { display: flex; align-items: center; }
-    .hamburger { font-size: 1.5rem; cursor: pointer; color: #2c3e50; }
-    .topbar-center { flex: 1; text-align: center; font-weight: bold; }
-    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-    /* Wrapper for Sidebar + Content */
-    .wrapper { flex: 1; display: flex; overflow: hidden; }
-
-    /* Sidebar */
-    .sidebar {
-      width: 250px;
-      background: #2c3e50;
-      color: #ecf0f1;
-      padding: 15px;
-      transition: transform 0.3s ease;
-    }
-    .sidebar h2 { margin-bottom: 15px; font-size: 1.2rem; }
-    .sidebar ul { list-style: none; padding: 0; margin: 0; }
-    .sidebar ul li {
-      padding: 10px 15px;
-      margin-bottom: 5px;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-    }
-    .sidebar ul li i { margin-right: 8px; }
-    .sidebar ul li:hover, .sidebar ul li.active { background: #34495e; }
-
-    /* Content Area */
-    .content { flex: 1; overflow-y: auto; padding: 15px; }
-
-    /* Mobile Responsiveness */
-    @media (max-width: 767.98px) {
-      .sidebar {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        height: calc(100% - 60px);
-        transform: translateX(-100%);
-        z-index: 2000;
+    <!-- Page-Specific Inline CSS -->
+    <style>
+      /* Global body settings */
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f3f4f6;
+        color: #2d3748;
       }
-      .sidebar.open { transform: translateX(0); }
-    }
-
-    /* Content Sections */
-    .content-section { display: none; margin-top: 10px; }
-    .content-section.active { display: block; }
-    .form-group { margin-bottom: 15px; }
-    .form-check { margin-bottom: 5px; }
-    .d-none { display: none !important; }
-
-    /* Dynamic List Editor */
-    .list-editor-item {
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 4px;
-      position: relative;
-    }
-    .remove-item-btn {
-      position: absolute;
-      top: 5px; right: 5px;
-      color: red; cursor: pointer;
-    }
-
-    /* Sub-lists for categories and products */
-    .category-block {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
-      background: #fafafa;
-      position: relative;
-    }
-    .category-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .product-block {
-      border: 1px solid #ddd;
-      padding: 8px;
-      border-radius: 4px;
-      margin-bottom: 10px;
-      position: relative;
-      background: #fff;
-    }
-  </style>
-</head>
-<body>
-  <!-- Top Bar -->
-  <div class="topbar">
-    <div class="topbar-left">
-      <i class="fas fa-bars hamburger" id="hamburger"></i>
-    </div>
-    <div class="topbar-center" id="pageTitle">E-commerce Admin</div>
-    <div class="topbar-right">
-      <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-user"></i> Admin</button>
-      <button class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </div>
-  </div>
-
-  <!-- Wrapper -->
-  <div class="wrapper">
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar" id="sidebar">
-      <h2>Admin Panel</h2>
-      <ul id="pagesList">
-        <li data-target="ecommerce" class="active"><i class="fas fa-shopping-bag"></i> E-commerce</li>
-        <!-- You can add more sections (Home, Header, etc.) similarly -->
-      </ul>
-    </nav>
-
-    <!-- Main Content Area -->
-    <div class="content" id="mainContent">
-      <!-- E-commerce Section -->
-      <div id="ecommerce" class="content-section active">
-        <h4>E-commerce Page Content</h4>
-        <form id="ecommerceForm">
-          <!-- 1. Hero Section Fields -->
-          <div class="form-group">
-            <label for="ecomPageTitle">Page Title</label>
-            <input type="text" class="form-control" id="ecomPageTitle" placeholder="Enter page title" value="Default E-commerce Title">
-          </div>
-          <div class="form-group">
-            <label for="ecomHeroSubtitle">Hero Subtitle</label>
-            <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Enter hero subtitle" value="Your one‑stop shop for the latest trends & exclusive deals.">
-          </div>
-          <div class="form-group">
-            <label>E-commerce Hero Media Options</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="ecomHeroOption" id="ecomOptionURL" value="url" checked>
-              <label class="form-check-label" for="ecomOptionURL">Manual URL</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="ecomHeroOption" id="ecomOptionUpload" value="upload">
-              <label class="form-check-label" for="ecomOptionUpload">Direct Upload</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="ecomHeroOption" id="ecomOptionDefault" value="default">
-              <label class="form-check-label" for="ecomOptionDefault">Use Default</label>
-            </div>
-          </div>
-          <div class="form-group" id="ecomURLField">
-            <label for="ecomMediaURL">Hero Media URL</label>
-            <input type="text" class="form-control" id="ecomMediaURL" placeholder="Enter hero media URL" value="https://i.imgur.com/OXCPyAw.mp4">
-          </div>
-          <div class="form-group d-none" id="ecomUploadField">
-            <label for="ecomMediaFile">Upload Hero Media</label>
-            <input type="file" id="ecomMediaFile" accept="image/*">
-            <small>Auto-resized (max 1920×1080) &amp; uploaded via Imgur.</small>
-          </div>
-          <div class="form-group d-none" id="ecomDefaultField">
-            <p class="text-muted">Default hero media will be used.</p>
-          </div>
-
-          <!-- 2. Carousel / Banner Items -->
-          <h5 class="mt-3">Carousel Items</h5>
-          <div id="carouselContainer">
-            <div class="list-editor-item">
-              <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-              <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL" value="https://via.placeholder.com/300x200">
-              <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title" value="Sample Carousel Item">
-              <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description" value="Sample description">
-              <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link" value="ecommerce.html">
-            </div>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn">
-            <i class="fas fa-plus"></i> Add Carousel Item
-          </button>
-
-          <!-- 3. Categories & Products (User-friendly, no raw JSON) -->
-          <h5 class="mt-4">Categories & Products</h5>
-          <div id="categoriesContainer"></div>
-          <button type="button" class="btn btn-sm btn-outline-success" id="addCategoryBtn">
-            <i class="fas fa-plus"></i> Add Category
-          </button>
-
-          <!-- Submit Button -->
-          <button type="submit" class="btn btn-primary mt-3">Save E-commerce Content</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap Bundle JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <script>
-    /* Firebase Initialization */
-    const firebaseConfig = {
-      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
-      authDomain: "e-commerce-pk.firebaseapp.com",
-      projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.appspot.com",
-      messagingSenderId: "126517093225",
-      appId: "1:126517093225:web:c2352620c6d32c582513f8",
-      measurementId: "G-2G2DNCNNT3"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    /* Sidebar Toggle for Mobile */
-    const hamburger = document.getElementById("hamburger");
-    const sidebar = document.getElementById("sidebar");
-    hamburger.addEventListener("click", () => { sidebar.classList.toggle("open"); });
-    document.addEventListener("click", (e) => {
-      if(window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target)){
-        sidebar.classList.remove("open");
+      main {
+        padding-bottom: 100px;
       }
-    });
+      /* HERO SECTION */
+      .hero {
+        position: relative;
+        min-height: 500px;
+        background: url("https://i.imgur.com/OgzOGSK.jpg") no-repeat center center/cover,
+                    linear-gradient(135deg, #2a2a72, #009ffd);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        overflow: hidden;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 0 20px;
+      }
+      .hero-content h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: #fff;
+      }
+      .hero-content p {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: #fff;
+      }
+      .hero-content .btn {
+        font-size: 1.1rem;
+        padding: 0.75rem 1.5rem;
+        background-color: #ff9900;
+        border: none;
+        border-radius: 4px;
+        color: #fff;
+        transition: background 0.3s, transform 0.3s;
+      }
+      .hero-content .btn:hover {
+        background-color: #e68a00;
+        transform: scale(1.05);
+      }
+      /* CATEGORY NAVIGATION (Below Hero) */
+      #categoriesNav {
+        margin: 20px 0;
+      }
+      #categoriesNavContainer {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+      .category-button {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px 15px;
+        cursor: pointer;
+        text-align: center;
+        max-width: 150px;
+        transition: background 0.3s, border-color 0.3s;
+      }
+      .category-button:hover {
+        background: #f0f0f0;
+      }
+      .active-category {
+        background: #e0f7fa !important;
+        border-color: #00acc1 !important;
+      }
+      .category-icon {
+        font-size: 1.5rem;
+        color: #007bff;
+        margin-bottom: 5px;
+      }
+      /* HORIZONTAL SCROLL for product tiles */
+      .horizontal-scroll {
+        display: flex;
+        overflow-x: auto;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+      }
+      .horizontal-scroll::-webkit-scrollbar {
+        display: none;
+      }
+      /* BANNER STYLES */
+      .banner {
+        margin: 1rem 0;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: 150px;
+      }
+      .banner img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+      }
+      .fullwidth-banner {
+        position: relative;
+      }
+      .fullwidth-banner img {
+        height: 150px;
+        opacity: 0.85;
+      }
+      .fullwidth-banner .banner-text {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .accordion-banner .accordion-button {
+        font-weight: bold;
+        font-size: 1rem;
+      }
+      /* THREE-PART BANNER */
+      .three-part-banner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 150px;
+        padding: 0 1rem;
+      }
+      .three-part-banner .banner-title {
+        flex: 1;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .three-part-banner .banner-desc {
+        flex: 2;
+        font-size: 1rem;
+      }
+      .three-part-banner .banner-img {
+        flex: 1;
+        text-align: right;
+      }
+      .three-part-banner .banner-img img {
+        height: 100%;
+        object-fit: contain;
+      }
+      /* PRODUCT TILE STYLES */
+      .product-tile {
+        min-width: 150px;
+        margin-right: 0.75rem;
+        cursor: pointer;
+      }
+      .product-tile .card {
+        border: none;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      }
+      .product-tile .card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+      }
+      .product-details {
+        text-align: center;
+        margin-top: 4px;
+      }
+      .product-price {
+        font-weight: bold;
+        color: #e4393c;
+        font-size: 1.1rem;
+        margin: 0;
+      }
+      .product-old-price {
+        text-decoration: line-through;
+        color: #999;
+        margin-left: 5px;
+        font-size: 0.9rem;
+      }
+      .star-rating {
+        margin: 2px 0;
+      }
+      .star-rating i {
+        font-size: 1rem;
+        color: #ffc107;
+        transition: transform 0.2s ease;
+      }
+      .star-rating i:hover {
+        transform: scale(1.1);
+      }
+      .product-stats small {
+        font-size: 0.75rem;
+        color: #666;
+      }
+      /* Stock status badge */
+      .stock-status {
+        margin-top: 4px;
+      }
+      .stock-status .badge {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+      }
+      @media (max-width: 576px) {
+        .product-tile { min-width: 130px; }
+        .product-tile .card img { height: 150px; }
+      }
+    </style>
 
-    /* Basic Sidebar Navigation (only one page: ecommerce) */
-    document.querySelector("#pagesList li").classList.add("active");
-    
-    /* Remove item function (for carousel items) */
-    function removeItem(span) {
-      span.parentNode.remove();
-    }
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+      // Firebase configuration – update with your Firebase project credentials.
+      const firebaseConfig = {
+        apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
+        authDomain: "e-commerce-pk.firebaseapp.com",
+        projectId: "e-commerce-pk",
+        storageBucket: "e-commerce-pk.firebasestorage.app",
+        messagingSenderId: "126517093225",
+        appId: "1:126517093225:web:c2352620c6d32c582513f8",
+        measurementId: "G-2G2DNCNNT3"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
 
-    /* Add new carousel item */
-    document.getElementById("addCarouselBtn").addEventListener("click", () => {
-      const container = document.getElementById("carouselContainer");
-      const div = document.createElement("div");
-      div.classList.add("list-editor-item");
-      div.innerHTML = `
-        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-        <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL">
-        <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title">
-        <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description">
-        <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link">
-      `;
-      container.appendChild(div);
-    });
-
-    /* Add Category block */
-    document.getElementById("addCategoryBtn").addEventListener("click", () => {
-      const container = document.getElementById("categoriesContainer");
-      const div = document.createElement("div");
-      div.classList.add("category-block");
-      div.innerHTML = `
-        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-        <div class="form-group">
-          <label class="category-title">Category Name</label>
-          <input type="text" class="form-control mb-2" name="categoryName" placeholder="e.g. Countdown Sales">
-        </div>
-        <div class="productsContainer"></div>
-        <button type="button" class="btn btn-sm btn-outline-info addProductBtn">+ Add Product</button>
-      `;
-      container.appendChild(div);
-
-      // Add event listener for "Add Product" inside this new category
-      const addProductBtn = div.querySelector(".addProductBtn");
-      addProductBtn.addEventListener("click", () => {
-        const productsContainer = div.querySelector(".productsContainer");
-        const productDiv = document.createElement("div");
-        productDiv.classList.add("product-block");
-        productDiv.innerHTML = `
-          <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-          <div class="form-group mb-1">
-            <label>Product Name</label>
-            <input type="text" class="form-control" name="prodName" placeholder="e.g. Smartphone A">
-          </div>
-          <div class="form-group mb-1">
-            <label>Original Price</label>
-            <input type="text" class="form-control" name="prodOriginalPrice" placeholder="e.g. PKR 999">
-          </div>
-          <div class="form-group mb-1">
-            <label>Discount (%)</label>
-            <input type="text" class="form-control" name="prodDiscount" placeholder="e.g. 10%">
-          </div>
-          <div class="form-group mb-1">
-            <label>New Price</label>
-            <input type="text" class="form-control" name="prodNewPrice" placeholder="e.g. PKR 899">
-          </div>
-          <div class="form-group mb-1">
-            <label>Description</label>
-            <input type="text" class="form-control" name="prodDesc" placeholder="Short product description">
-          </div>
-          <div class="form-group mb-1">
-            <label>Image URL</label>
-            <input type="text" class="form-control" name="prodImage" placeholder="https://via.placeholder.com/300x200">
-          </div>
-          <div class="form-group mb-1">
-            <label>Rating</label>
-            <input type="number" class="form-control" name="prodRating" placeholder="e.g. 4.5">
-          </div>
-          <div class="form-group mb-1">
-            <label>Added Count</label>
-            <input type="text" class="form-control" name="prodAdded" placeholder="e.g. 500">
-          </div>
-          <div class="form-group mb-1">
-            <label>Sold Count</label>
-            <input type="text" class="form-control" name="prodSold" placeholder="e.g. 3k">
-          </div>
-          <div class="form-group mb-1">
-            <label>Stock</label>
-            <input type="number" class="form-control" name="prodStock" placeholder="e.g. 20">
-          </div>
-        `;
-        productsContainer.appendChild(productDiv);
-      });
-    });
-
-    /* Setup hero media option radios for E-commerce section */
-    function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
-      const radios = document.getElementsByName(radioName);
-      radios.forEach(radio => {
-        radio.addEventListener("change", function() {
-          document.getElementById(urlFieldId).classList.add("d-none");
-          document.getElementById(uploadFieldId).classList.add("d-none");
-          document.getElementById(defaultFieldId).classList.add("d-none");
-          if(this.value === "url") {
-            document.getElementById(urlFieldId).classList.remove("d-none");
-          } else if(this.value === "upload") {
-            document.getElementById(uploadFieldId).classList.remove("d-none");
-          } else if(this.value === "default") {
-            document.getElementById(defaultFieldId).classList.remove("d-none");
+      // Listen for ecommerce page data from Firestore
+      db.collection("pages").doc("ecommerce").onSnapshot((doc) => {
+        if(doc.exists) {
+          const data = doc.data();
+          const heroContent = document.querySelector(".hero-content");
+          if(heroContent) {
+            heroContent.querySelector("h1").innerText = data.pageTitle || "Welcome to NextGen E-commerce";
+            heroContent.querySelector("p").innerText = data.heroSubtitle || "Your one‑stop shop for the latest trends & exclusive deals.";
           }
-        });
+          const heroMedia = document.querySelector(".hero video");
+          if(heroMedia) {
+            heroMedia.src = data.mediaURL || "https://i.imgur.com/OXCPyAw.mp4";
+          }
+          if(data.productData) {
+            window.productData = data.productData;
+          } else {
+            // Use dummy data if Firestore returns nothing
+            window.productData = {
+              "Countdown Sales": [
+                { name: "Smartphone A", price: "PKR 894", description: "High-performance smartphone.", image: "https://via.placeholder.com/300x200?text=Smartphone+A", rating: 4.5, added: "500", sold: "3k", stock: 20 }
+              ],
+              "Discount Offers": [
+                { name: "Headphones D", price: "PKR 600", description: "Noise cancelling headphones.", image: "https://via.placeholder.com/300x200?text=Headphones+D", rating: 4, added: "350", sold: "2k", stock: 0 }
+              ]
+            };
+          }
+          initCategoriesNav();
+          initMainPage();
+        }
       });
-    }
-    setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
+    </script>
+    
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <!-- External Header (loaded from header.html) -->
+    <div id="header-placeholder"></div>
 
-    /* Imgur upload function for direct media uploads */
-    function handleImageUpload(file, maxWidth, maxHeight, callback) {
-      if(!file) return;
-      const reader = new FileReader();
-      const img = new Image();
-      reader.onload = (e) => { img.src = e.target.result; };
-      reader.readAsDataURL(file);
-      img.onload = () => {
-        let w = img.width, h = img.height;
-        if(w > h && w > maxWidth) { h = Math.floor(h * maxWidth / w); w = maxWidth; }
-        else if(h > maxHeight) { w = Math.floor(w * maxHeight / h); h = maxHeight; }
-        const canvas = document.createElement("canvas");
-        canvas.width = w; canvas.height = h;
-        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-        canvas.toBlob((blob) => {
-          const reader2 = new FileReader();
-          reader2.onloadend = () => {
-            const base64data = reader2.result.split(',')[1];
-            const clientId = "048d9400ce02b71"; // your Imgur client ID
-            const formData = new FormData();
-            formData.append("image", base64data);
-            fetch("https://api.imgur.com/3/image", {
-              method: "POST",
-              headers: { Authorization: "Client-ID " + clientId },
-              body: formData
-            })
-            .then(res => res.json())
-            .then(result => {
-              if(result.success) { callback(result.data.link); }
-              else { alert("Upload failed: " + result.data.error); }
-            })
-            .catch(err => {
-              alert("Error uploading image: " + err.message);
-              console.error("Imgur upload error:", err);
-            });
-          };
-          reader2.readAsDataURL(blob);
-        }, "image/jpeg", 0.8);
-      };
-    }
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- HERO SECTION -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Welcome to NextGen E-commerce</h1>
+          <p>Your one‑stop shop for the latest trends & exclusive deals.</p>
+          <a href="#categoriesContainer" class="btn">Shop Now</a>
+        </div>
+      </section>
 
-    const ecomMediaFile = document.getElementById("ecomMediaFile");
-    if(ecomMediaFile) {
-      ecomMediaFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("E-commerce hero media uploaded!\n" + imageUrl);
-          document.getElementById("ecomMediaURL").value = imageUrl;
-        });
+      <!-- CATEGORY NAVIGATION (Below Hero) -->
+      <section id="categoriesNav" class="container my-4">
+        <div id="categoriesNavContainer"></div>
+      </section>
+
+      <!-- MAIN PAGE: Banners and Horizontal Scroll of Product Tiles -->
+      <div class="container my-4" id="mainPage">
+        <h1 class="mb-4 text-center">Product Categories</h1>
+        <div id="categoriesContainer">
+          <!-- Dynamic category sections will be rendered here -->
+        </div>
+      </div>
+
+      <!-- CATEGORY PAGE: Vertical Grid of Products -->
+      <div class="container my-4" id="categoryPage" style="display: none;">
+        <button class="btn btn-secondary mb-3" onclick="backToMain()">Back to Categories</button>
+        <h2 id="categoryTitle" class="mb-4"></h2>
+        <div class="row" id="categoryProducts">
+          <!-- Product grid will be rendered here -->
+        </div>
+      </div>
+    </main>
+
+    <!-- External Footer (loaded from footer.html) -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function loadHTML(elementId, filePath) {
+        fetch(filePath)
+          .then(response => {
+            if (!response.ok) {
+              if (elementId === "header-placeholder") {
+                document.getElementById(elementId).innerHTML =
+                  '<header style="background:#333;color:#fff;padding:10px;text-align:center;">Header</header>';
+              } else if (elementId === "footer-placeholder") {
+                document.getElementById(elementId).innerHTML =
+                  '<footer style="background:#333;color:#fff;padding:10px;text-align:center;">Footer</footer>';
+              }
+              throw new Error("Error fetching " + filePath);
+            }
+            return response.text();
+          })
+          .then(html => {
+            document.getElementById(elementId).innerHTML = html;
+          })
+          .catch(error => console.error(error));
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        loadHTML("header-placeholder", "header.html");
+        loadHTML("footer-placeholder", "footer.html");
       });
-    }
-
-    /* Final form submission – build the data object & save to Firestore */
-    const ecommerceForm = document.getElementById("ecommerceForm");
-    ecommerceForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      // 1) Gather hero section fields
-      const pageTitle = document.getElementById("ecomPageTitle").value.trim();
-      const heroSubtitle = document.getElementById("ecomHeroSubtitle").value.trim();
-      const heroMediaURL = document.getElementById("ecomMediaURL").value.trim();
-      
-      // 2) Gather carousel items
-      const carouselItems = [];
-      document.querySelectorAll("#carouselContainer .list-editor-item").forEach(item => {
-        const inputs = item.querySelectorAll("input");
-        const obj = {};
-        inputs.forEach(inp => { obj[inp.name] = inp.value.trim(); });
-        carouselItems.push(obj);
-      });
-
-      // 3) Gather categories & products
-      const categoriesObj = {}; // e.g. { "Countdown Sales": [ { name, originalPrice, ... }, ... ], ... }
-      document.querySelectorAll("#categoriesContainer .category-block").forEach(catBlock => {
-        const catNameInput = catBlock.querySelector("[name='categoryName']");
-        const categoryName = (catNameInput?.value || "Unnamed Category").trim();
-        const productsArray = [];
-        catBlock.querySelectorAll(".product-block").forEach(prodBlock => {
-          const p = {};
-          p.name = (prodBlock.querySelector("[name='prodName']")?.value || "").trim();
-          p.originalPrice = (prodBlock.querySelector("[name='prodOriginalPrice']")?.value || "").trim();
-          p.discount = (prodBlock.querySelector("[name='prodDiscount']")?.value || "").trim();
-          p.newPrice = (prodBlock.querySelector("[name='prodNewPrice']")?.value || "").trim();
-          p.description = (prodBlock.querySelector("[name='prodDesc']")?.value || "").trim();
-          p.image = (prodBlock.querySelector("[name='prodImage']")?.value || "").trim();
-          p.rating = parseFloat(prodBlock.querySelector("[name='prodRating']")?.value || "0");
-          p.added = (prodBlock.querySelector("[name='prodAdded']")?.value || "0").trim();
-          p.sold = (prodBlock.querySelector("[name='prodSold']")?.value || "0").trim();
-          p.stock = parseInt(prodBlock.querySelector("[name='prodStock']")?.value || "0");
-          productsArray.push(p);
-        });
-        categoriesObj[categoryName] = productsArray;
-      });
-
-      // Build final data object
-      const data = {
-        pageTitle: pageTitle,
-        heroSubtitle: heroSubtitle,
-        mediaURL: heroMediaURL,   // hero background
-        carouselItems: carouselItems, // array
-        productData: categoriesObj    // nested categories
-      };
-
-      // Save to Firestore under "pages/ecommerce"
-      db.collection("pages").doc("ecommerce").set(data, { merge: true })
-        .then(() => {
-          alert("E-commerce content saved successfully!");
-        })
-        .catch(error => {
-          alert("Error saving E-commerce content: " + error.message);
-        });
-    });
-  </script>
-</body>
+      function openPage(page) {
+        window.location.href = page;
+      }
+    </script>
+  </body>
 </html>
