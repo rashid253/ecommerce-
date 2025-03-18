@@ -3,52 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Header - MyBusiness Premium</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>MyBusiness Premium</title>
+  <script src="https://kit.fontawesome.com/YOUR_FONT_AWESOME_KIT.js" crossorigin="anonymous"></script>
   <style>
-    header {
+    *, *::before, *::after { box-sizing: border-box; }
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      padding: 5px 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #333;
-      padding: 10px;
-      color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
+      min-height: 48px;
     }
-    #logoIconElement { font-size: 1.5rem; }
-    #searchPlaceholderElement { flex: 1; margin: 0 10px; padding: 5px; }
-    #supportLinkElement { color: #fff; text-decoration: none; }
+    .logo-container { flex: 0 0 auto; }
+    .logo-container i { font-size: 1.6rem; color: #007bff; }
+    .search-bar { flex: 1 1 auto; margin: 0 10px; }
+    .search-bar input {
+      width: 100%;
+      padding: 6px 12px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+    .support-icon { flex: 0 0 auto; }
+    .support-icon a { text-decoration: none; color: #007bff; display: flex; align-items: center; justify-content: center; }
+    .support-icon i { font-size: 1.6rem; }
+    @media (max-width: 600px) {
+      .header { padding: 4px 8px; min-height: 44px; }
+      .logo-container i { font-size: 1.4rem; }
+      .search-bar input { padding: 5px 10px; font-size: 0.85rem; }
+      .support-icon i { font-size: 1.4rem; }
+    }
   </style>
 </head>
 <body>
-  <header id="siteHeader">
-    <i id="logoIconElement" class="fas fa-briefcase"></i>
-    <input type="text" id="searchPlaceholderElement" placeholder="Search...">
-    <a id="supportLinkElement" href="support.html">Support</a>
-  </header>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
-      authDomain: "e-commerce-pk.firebaseapp.com",
-      projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.firebasestorage.app",
-      messagingSenderId: "126517093225",
-      appId: "1:126517093225:web:c2352620c6d32c582513f8",
-      measurementId: "G-2G2DNCNNT3"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    
-    db.collection("pages").doc("header").onSnapshot((doc) => {
-      if(doc.exists) {
-         const data = doc.data();
-         document.getElementById("logoIconElement").className = data.logoIcon || "fas fa-briefcase";
-         document.getElementById("searchPlaceholderElement").placeholder = data.searchPlaceholder || "Search...";
-         document.getElementById("supportLinkElement").href = data.supportLink || "support.html";
-      }
-    });
-  </script>
+<header class="header">
+  <div class="logo-container">
+    <i class="fas fa-briefcase"></i>
+  </div>
+  <div class="search-bar">
+    <input type="text" placeholder="Search products..."/>
+  </div>
+  <div class="support-icon">
+    <a href="support.html">
+      <i class="fas fa-headset"></i>
+    </a>
+  </div>
+</header>
 </body>
 </html>
