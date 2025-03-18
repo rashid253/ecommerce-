@@ -6,8 +6,11 @@
   <title>Fast Delivery Excellence - MyBusiness Premium</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    /* Global Reset & Base */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Roboto', sans-serif; background: #f4f4f4; color: #333; line-height: 1.6; }
+    
+    /* HERO SECTION */
     .hero {
       position: relative;
       background: url('https://i.imgur.com/KuVyZbv.jpeg') no-repeat center center/cover;
@@ -46,7 +49,7 @@
       transform: perspective(500px);
       margin-top: -10px;
     }
-    .hero-content .cta-btn:hover { 
+    .hero-content .cta-btn:hover {
       background: #218838;
       transform: perspective(500px) rotateX(3deg) rotateY(3deg);
     }
@@ -54,6 +57,8 @@
       from { opacity: 0; transform: translateY(-20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    
+    /* MAIN CONTENT */
     main {
       flex: 1;
       position: relative;
@@ -64,6 +69,8 @@
     .section { padding: 40px 20px; max-width: 1200px; margin: 20px auto; }
     .section h2 { text-align: center; margin-bottom: 20px; font-size: 2.5rem; color: #007BFF; }
     .section p { text-align: center; font-size: 1.1rem; margin-bottom: 20px; }
+    
+    /* DELIVERY DETAILS SECTION */
     .delivery-details {
       display: flex;
       flex-direction: column;
@@ -94,14 +101,53 @@
       color: #555;
       text-align: left;
     }
+    
+    /* TESTIMONIALS SECTION */
+    .testimonials {
+      background: #fff;
+      padding: 40px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 800px;
+      margin: 40px auto;
+    }
+    .testimonials h3 { text-align: center; font-size: 2rem; margin-bottom: 20px; color: #007BFF; }
+    .testimonial { text-align: center; font-size: 1rem; margin-bottom: 20px; color: #555; }
+    
+    /* CTA SECTION */
+    .cta-section {
+      text-align: center;
+      margin: 40px 0 80px 0;
+      position: relative;
+      z-index: 10;
+    }
+    .cta-section a {
+      padding: 10px 20px;
+      background: #007BFF;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: background 0.3s ease, transform 0.3s ease;
+      transform: perspective(500px);
+    }
+    .cta-section a:hover {
+      background: #0056b3;
+      transform: perspective(500px) rotateX(5deg) rotateY(5deg);
+    }
+    
     @media (max-width: 768px) {
       .hero-content h2 { font-size: 2.5rem; }
       .hero-content p { font-size: 1rem; }
+      .delivery-details { flex-direction: column; }
     }
   </style>
 </head>
 <body>
+  <!-- External Header -->
   <div id="header-placeholder"></div>
+  
+  <!-- HERO SECTION -->
   <section class="hero">
     <div class="hero-content">
       <h2>Lightning-Fast Delivery at Your Fingertips</h2>
@@ -109,9 +155,12 @@
       <button class="cta-btn" onclick="document.getElementById('deliveryDetails').scrollIntoView({ behavior: 'smooth' });">Learn More</button>
     </div>
   </section>
+  
+  <!-- MAIN CONTENT -->
   <main>
+    <!-- Delivery Details Section -->
     <section id="deliveryDetails" class="section">
-      <h2>Unmatched Speed &amp; Reliability</h2>
+      <h2>Unmatched Speed & Reliability</h2>
       <div class="delivery-details">
         <div class="delivery-text">
           <h3>Experience Unrivaled Delivery</h3>
@@ -126,19 +175,25 @@
         </div>
       </div>
     </section>
+    
+    <!-- Testimonials Section -->
     <section class="section testimonials">
       <h3>What Our Customers Say</h3>
-      <div class="delivery-text">
+      <div class="testimonial">
         <p>"I was amazed at how quickly my order arrived! The tracking feature kept me informed, and the service was truly exceptional." - Sarah K.</p>
       </div>
-      <div class="delivery-text">
+      <div class="testimonial">
         <p>"Reliable and fast! Their delivery service exceeded my expectations, and the hassle-free returns make it even better." - Michael T.</p>
       </div>
     </section>
-    <section class="section cta-section">
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
       <a href="offers.html">Explore Our Offers</a>
     </section>
   </main>
+  
+  <!-- External Footer -->
   <div id="footer-placeholder"></div>
   
   <script>
@@ -152,9 +207,35 @@
         .catch(error => console.error(error));
     }
     document.addEventListener("DOMContentLoaded", function() {
-      loadHTML("header-placeholder", "header.html");
-      loadHTML("footer-placeholder", "footer.html");
+      loadHTML('header-placeholder', 'header.html');
+      loadHTML('footer-placeholder', 'footer.html');
+    });
+    
+    // Firebase integration: load delivery page content from Firestore
+    const firebaseConfig = {
+      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
+      authDomain: "e-commerce-pk.firebaseapp.com",
+      projectId: "e-commerce-pk",
+      storageBucket: "e-commerce-pk.firebasestorage.app",
+      messagingSenderId: "126517093225",
+      appId: "1:126517093225:web:c2352620c6d32c582513f8",
+      measurementId: "G-2G2DNCNNT3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    
+    db.collection("pages").doc("delivery").onSnapshot((doc) => {
+      if(doc.exists) {
+        const data = doc.data();
+        document.querySelector(".hero-content h2").innerText = data.pageTitle || "Lightning-Fast Delivery at Your Fingertips";
+        document.querySelector(".hero-content p").innerText = data.heroSubtitle || "We partner with the world's most reliable courier companies to ensure your products arrive in record time.";
+        // If a video URL is provided, replace the hero background media
+        const heroVideo = document.querySelector(".hero video");
+        if(heroVideo) { heroVideo.src = data.mediaURL || "https://i.imgur.com/KuVyZbv.jpeg"; }
+      }
     });
   </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
