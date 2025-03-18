@@ -11,11 +11,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Global Reset & Layout */
+    /* --------------------- Global Reset & Layout --------------------- */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
     body { font-family: Arial, sans-serif; display: flex; flex-direction: column; }
-    /* Top Bar */
+    
+    /* --------------------- Top Bar --------------------- */
     .topbar {
       display: flex;
       align-items: center;
@@ -29,9 +30,11 @@
     .hamburger { font-size: 1.5rem; cursor: pointer; color: #2c3e50; }
     .topbar-center { flex: 1; text-align: center; font-weight: bold; }
     .topbar-right { display: flex; align-items: center; gap: 8px; }
-    /* Wrapper for Sidebar + Content */
+    
+    /* --------------------- Wrapper (Sidebar + Content) --------------------- */
     .wrapper { flex: 1; display: flex; overflow: hidden; }
-    /* Sidebar */
+    
+    /* --------------------- Sidebar --------------------- */
     .sidebar {
       width: 250px;
       background: #2c3e50;
@@ -51,9 +54,11 @@
     }
     .sidebar ul li i { margin-right: 8px; }
     .sidebar ul li:hover, .sidebar ul li.active { background: #34495e; }
-    /* Content Area */
+    
+    /* --------------------- Content Area --------------------- */
     .content { flex: 1; overflow-y: auto; padding: 15px; }
-    /* Mobile Responsiveness */
+    
+    /* --------------------- Mobile Responsive --------------------- */
     @media (max-width: 767.98px) {
       .sidebar {
         position: fixed;
@@ -65,20 +70,22 @@
       }
       .sidebar.open { transform: translateX(0); }
     }
-    /* Content Sections */
+    
+    /* --------------------- Content Sections --------------------- */
     .content-section { display: none; margin-top: 10px; }
     .content-section.active { display: block; }
     .d-none { display: none !important; }
     .form-group { margin-bottom: 15px; }
     .form-check { margin-bottom: 5px; }
-    /* Dynamic List Editor for Carousel, Categories, Products */
+    
+    /* --------------------- Dynamic List Editors --------------------- */
     .list-editor-item, .category-block, .product-block {
       border: 1px solid #ddd;
       padding: 10px;
       border-radius: 4px;
       margin-bottom: 10px;
-      position: relative;
       background: #fff;
+      position: relative;
     }
     .remove-item-btn {
       position: absolute;
@@ -86,9 +93,7 @@
       color: red; cursor: pointer;
     }
     .category-block { background: #fafafa; }
-    .category-block .category-title {
-      font-weight: bold; margin-bottom: 8px;
-    }
+    .category-block .category-title { font-weight: bold; margin-bottom: 8px; }
   </style>
 </head>
 <body>
@@ -119,6 +124,8 @@
         <li data-target="delivery"><i class="fas fa-truck"></i> Delivery</li>
         <li data-target="support"><i class="fas fa-headset"></i> Support</li>
         <li data-target="contact"><i class="fas fa-envelope"></i> Contact</li>
+        <li data-target="analytics"><i class="fas fa-chart-line"></i> Analytics</li>
+        <li data-target="about"><i class="fas fa-eye"></i> About</li>
       </ul>
     </nav>
     
@@ -136,6 +143,7 @@
             <label for="homeHeroDesc">Hero Description</label>
             <input type="text" class="form-control" id="homeHeroDesc" placeholder="Enter hero description">
           </div>
+          <!-- Optionally add hero media options similar to E-commerce if needed -->
           <button type="submit" class="btn btn-primary">Save Home Content</button>
         </form>
       </div>
@@ -200,7 +208,6 @@
           <div class="form-group d-none" id="ecomDefaultField">
             <p class="text-muted">Default hero media will be used.</p>
           </div>
-          
           <!-- Carousel/Banner Items -->
           <h5 class="mt-3">Carousel Items</h5>
           <div id="carouselContainer">
@@ -213,14 +220,12 @@
             </div>
           </div>
           <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn"><i class="fas fa-plus"></i> Add Carousel Item</button>
-          
           <!-- Categories & Products -->
           <h5 class="mt-4">Categories & Products</h5>
           <div id="categoriesContainer"></div>
           <button type="button" class="btn btn-sm btn-outline-success" id="addCategoryBtn">
             <i class="fas fa-plus"></i> Add Category
           </button>
-          
           <button type="submit" class="btn btn-primary mt-3">Save E-commerce Content</button>
         </form>
       </div>
@@ -320,7 +325,39 @@
           <button type="submit" class="btn btn-primary">Save Contact Content</button>
         </form>
       </div>
-
+      
+      <!-- ANALYTICS Section -->
+      <div id="analytics" class="content-section d-none">
+        <h4>Analytics Page Content</h4>
+        <form id="analyticsForm">
+          <div class="form-group">
+            <label for="analyticsHeading">Heading</label>
+            <input type="text" class="form-control" id="analyticsHeading" placeholder="e.g. Data-Driven Insights">
+          </div>
+          <div class="form-group">
+            <label for="analyticsDesc">Description</label>
+            <textarea class="form-control" id="analyticsDesc" rows="3" placeholder="Enter description"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Analytics Content</button>
+        </form>
+      </div>
+      
+      <!-- ABOUT Section -->
+      <div id="about" class="content-section d-none">
+        <h4>About Page Content</h4>
+        <form id="aboutForm">
+          <div class="form-group">
+            <label for="aboutHeading">Heading</label>
+            <input type="text" class="form-control" id="aboutHeading" placeholder="e.g. Learn More About Us">
+          </div>
+          <div class="form-group">
+            <label for="aboutDesc">Description</label>
+            <textarea class="form-control" id="aboutDesc" rows="3" placeholder="Enter description"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save About Content</button>
+        </form>
+      </div>
+      
     </div> <!-- End Main Content -->
   </div> <!-- End Wrapper -->
 
@@ -328,7 +365,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    /* Firebase Initialization */
+    /* --------------------- Firebase Initialization --------------------- */
     const firebaseConfig = {
       apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
@@ -341,7 +378,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    /* Sidebar Mobile Toggle */
+    /* --------------------- Sidebar Mobile Toggle --------------------- */
     const hamburger = document.getElementById("hamburger");
     const sidebar = document.getElementById("sidebar");
     hamburger.addEventListener("click", () => { sidebar.classList.toggle("open"); });
@@ -351,8 +388,8 @@
       }
     });
 
-    /* Sidebar Navigation */
-    const pages = ["home", "header", "ecommerce", "details", "payments", "checkout", "delivery", "support", "contact"];
+    /* --------------------- Sidebar Navigation --------------------- */
+    const pages = ["home", "header", "ecommerce", "details", "payments", "checkout", "delivery", "support", "contact", "analytics", "about"];
     const pageIcons = {
       home: "fas fa-home",
       header: "fas fa-ellipsis-h",
@@ -362,7 +399,9 @@
       checkout: "fas fa-shopping-cart",
       delivery: "fas fa-truck",
       support: "fas fa-headset",
-      contact: "fas fa-envelope"
+      contact: "fas fa-envelope",
+      analytics: "fas fa-chart-line",
+      about: "fas fa-eye"
     };
     function renderPagesList() {
       const pagesList = document.getElementById("pagesList");
@@ -388,30 +427,29 @@
       });
     }
     renderPagesList();
-    // Set first page active by default
     document.getElementById("pageTitle").innerText = pages[0];
 
-    /* Remove item function for dynamic lists */
+    /* --------------------- Remove Item (for dynamic lists) --------------------- */
     function removeItem(element) {
       element.parentNode.remove();
     }
 
-    /* Add Carousel Item */
+    /* --------------------- E-commerce: Add Carousel Item --------------------- */
     document.getElementById("addCarouselBtn").addEventListener("click", () => {
       const container = document.getElementById("carouselContainer");
       const div = document.createElement("div");
       div.classList.add("list-editor-item");
       div.innerHTML = `
         <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-        <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Image URL">
-        <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Title">
-        <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Description">
-        <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Link">
+        <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL">
+        <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title">
+        <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description">
+        <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link">
       `;
       container.appendChild(div);
     });
 
-    /* Add Category Block (with nested products) */
+    /* --------------------- E-commerce: Add Category & Products --------------------- */
     document.getElementById("addCategoryBtn").addEventListener("click", () => {
       const container = document.getElementById("categoriesContainer");
       const div = document.createElement("div");
@@ -426,7 +464,6 @@
         <button type="button" class="btn btn-sm btn-outline-info addProductBtn">+ Add Product</button>
       `;
       container.appendChild(div);
-      // Attach event for add product button in this category block
       div.querySelector(".addProductBtn").addEventListener("click", () => {
         const prodContainer = div.querySelector(".productsContainer");
         const prodDiv = document.createElement("div");
@@ -478,7 +515,7 @@
       });
     });
 
-    /* Setup Hero Media Option Radios for E-commerce Section */
+    /* --------------------- Hero Media Options (E-commerce) --------------------- */
     function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
       const radios = document.getElementsByName(radioName);
       radios.forEach(radio => {
@@ -498,7 +535,7 @@
     }
     setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
 
-    /* Imgur Upload Function */
+    /* --------------------- Imgur Upload Function --------------------- */
     function handleImageUpload(file, maxWidth, maxHeight, callback) {
       if(!file) return;
       const reader = new FileReader();
@@ -548,7 +585,7 @@
       });
     }
 
-    /* Save Form Data to Firestore */
+    /* --------------------- Firestore Save Helpers --------------------- */
     function saveFormData(formId, docId) {
       const form = document.getElementById(formId);
       if(!form) return;
@@ -562,7 +599,7 @@
           .catch(err => { alert("Error saving " + docId + ": " + err.message); });
       });
     }
-    // Save other sections using saveFormData
+    // Save simple sections
     saveFormData("homeForm", "home");
     saveFormData("headerForm", "header");
     saveFormData("detailsForm", "details");
@@ -571,13 +608,15 @@
     saveFormData("deliveryForm", "delivery");
     saveFormData("supportForm", "support");
     saveFormData("contactForm", "contact");
+    saveFormData("analyticsForm", "analytics");
+    saveFormData("aboutForm", "about");
 
     /* Custom Save for E-commerce Section */
     function saveEcommerce() {
       const form = document.getElementById("ecommerceForm");
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-        // Gather hero data
+        // Gather hero section fields
         const pageTitle = document.getElementById("ecomPageTitle").value.trim();
         const heroSubtitle = document.getElementById("ecomHeroSubtitle").value.trim();
         const heroMediaURL = document.getElementById("ecomMediaURL").value.trim();
@@ -585,12 +624,10 @@
         const carouselItems = [];
         document.querySelectorAll("#carouselContainer .list-editor-item").forEach(item => {
           const obj = {};
-          item.querySelectorAll("input").forEach(inp => {
-            obj[inp.name] = inp.value.trim();
-          });
+          item.querySelectorAll("input").forEach(inp => { obj[inp.name] = inp.value.trim(); });
           carouselItems.push(obj);
         });
-        // Gather categories & products
+        // Gather categories and products
         const categoriesObj = {};
         document.querySelectorAll("#categoriesContainer .category-block").forEach(catBlock => {
           const catName = (catBlock.querySelector("[name='categoryName']")?.value || "Unnamed Category").trim();
@@ -624,7 +661,6 @@
       });
     }
     saveEcommerce();
-
   </script>
 </body>
 </html>
