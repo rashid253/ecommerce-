@@ -3,39 +3,214 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payments - MyBusiness Premium</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Secure Payments Excellence - MyBusiness Premium</title>
+  <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    header, footer { background: #333; color: #fff; padding: 10px; text-align: center; }
-    main { padding: 20px; }
-    .hero { position: relative; height: 50vh; overflow: hidden; }
-    .hero video, .hero img { width: 100%; height: 100%; object-fit: cover; }
-    .hero-content { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); color: #fff; text-align: center; }
+    /* Global Reset & Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Roboto', sans-serif; 
+      background: #f4f4f4; 
+      color: #333; 
+      line-height: 1.6; 
+    }
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      background: url('https://i.imgur.com/mZN9XTi.png') no-repeat center center/cover;
+      height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      perspective: 1000px;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 90%;
+      padding: 20px;
+      animation: fadeInDown 1s ease;
+    }
+    .hero-content h2 { font-size: 3rem; margin-bottom: 20px; }
+    .hero-content p { font-size: 1.2rem; margin-bottom: 30px; }
+    .hero-content .cta-btn {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      background: #28a745;
+      border: none;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+      transform: perspective(500px);
+      margin-top: -10px;
+    }
+    .hero-content .cta-btn:hover { 
+      background: #218838;
+      transform: perspective(500px) rotateX(3deg) rotateY(3deg);
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* MAIN CONTENT */
+    main {
+      flex: 1;
+      position: relative;
+      overflow-y: auto;
+      padding-top: 20px;
+      padding-bottom: 60px;
+    }
+    .section { padding: 40px 20px; max-width: 1200px; margin: 20px auto; }
+    .section h2 { text-align: center; margin-bottom: 20px; font-size: 2.5rem; color: #007BFF; }
+    .section p { text-align: center; font-size: 1.1rem; margin-bottom: 20px; }
+    /* PAYMENT DETAILS SECTION */
+    .payment-details {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+    }
+    .payment-text {
+      max-width: 800px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .payment-text:hover {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .payment-text h3 { font-size: 2rem; color: #28a745; margin-bottom: 10px; }
+    .payment-text p { font-size: 1rem; margin-bottom: 20px; }
+    .payment-text ul {
+      list-style: disc;
+      padding-left: 20px;
+      margin: 0 auto;
+      max-width: 400px;
+      color: #555;
+      text-align: left;
+    }
+    /* TESTIMONIALS SECTION */
+    .testimonials {
+      background: #fff; 
+      padding: 40px 20px;
+      border-radius: 8px; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 800px; 
+      margin: 40px auto;
+    }
+    .testimonials h3 { text-align: center; font-size: 2rem; margin-bottom: 20px; color: #007BFF; }
+    .testimonial { text-align: center; font-size: 1rem; margin-bottom: 20px; color: #555; }
+    /* CTA SECTION */
+    .cta-section {
+      text-align: center;
+      margin: 40px 0 80px 0;
+      position: relative;
+      z-index: 10;
+    }
+    .cta-section a {
+      padding: 10px 20px;
+      background: #007BFF;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: background 0.3s ease, transform 0.3s ease;
+      transform: perspective(500px);
+    }
+    .cta-section a:hover {
+      background: #0056b3;
+      transform: perspective(500px) rotateX(5deg) rotateY(5deg);
+    }
+    @media (max-width: 768px) {
+      .hero-content h2 { font-size: 2.5rem; }
+      .hero-content p { font-size: 1rem; }
+    }
   </style>
 </head>
 <body>
-  <header id="siteHeader">MyBusiness Premium</header>
+  <!-- External Header -->
+  <div id="header-placeholder"></div>
+  
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Secure & Flexible Payments</h2>
+      <p>Our robust system ensures every transaction is encrypted and monitored for your peace of mind.</p>
+      <button class="cta-btn" onclick="document.getElementById('paymentDetails').scrollIntoView({ behavior: 'smooth' });">Learn More</button>
+    </div>
+  </section>
+  
+  <!-- MAIN CONTENT -->
   <main>
-    <section class="hero">
-      <video id="paymentsHeroMedia" autoplay muted loop playsinline>
-        <source src="default-payments-video.mp4" type="video/mp4">
-      </video>
-      <div class="hero-content">
-        <h1 id="paymentsPageTitleElement">Payments Default Title</h1>
-        <p id="paymentsDescElement">Default description for payments page.</p>
+    <!-- Payment Details Section -->
+    <section id="paymentDetails" class="section">
+      <h2>Our Payment Options</h2>
+      <div class="payment-details">
+        <div class="payment-text">
+          <h3>Secure & Flexible Payments</h3>
+          <p>Our system supports various payment methods:</p>
+          <ul>
+            <li>JazzCash: Quick digital transactions</li>
+            <li>EasyPaisa: Seamless mobile payments</li>
+            <li>Bank Transfers: Secure and reliable</li>
+            <li>Cash on Delivery: Convenience at your doorstep</li>
+          </ul>
+          <p>We partner with top financial institutions to ensure swift and secure transactions.</p>
+        </div>
       </div>
     </section>
-    <section id="paymentDetailsSection">
-      <!-- Payment details will be rendered dynamically -->
+    
+    <!-- Testimonials Section -->
+    <section class="section testimonials">
+      <h3>What Our Customers Say</h3>
+      <div class="testimonial">
+        <p>"The secure payment options give me complete confidence when shopping. I appreciate the variety and robust security measures." - Ayesha R.</p>
+      </div>
+      <div class="testimonial">
+        <p>"My transactions are smooth and secure. The multiple payment methods make it very convenient." - Imran S.</p>
+      </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <a href="ecommerce.html">Shop Now</a>
     </section>
   </main>
-  <footer id="siteFooter">© 2025 MyBusiness. All rights reserved.</footer>
   
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- External Footer -->
+  <div id="footer-placeholder"></div>
+  
   <script>
+    function loadHTML(elementId, filePath) {
+      fetch(filePath)
+        .then(response => {
+          if (!response.ok) throw new Error("Error fetching " + filePath);
+          return response.text();
+        })
+        .then(html => { document.getElementById(elementId).innerHTML = html; })
+        .catch(error => console.error(error));
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+      loadHTML("header-placeholder", "header.html");
+      loadHTML("footer-placeholder", "footer.html");
+    });
+    
+    // Initialize Firebase and load payment page content from Firestore
     const firebaseConfig = {
       apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
@@ -51,20 +226,24 @@
     db.collection("pages").doc("payments").onSnapshot((doc) => {
       if(doc.exists) {
         const data = doc.data();
-        document.getElementById("paymentsPageTitleElement").innerText = data.pageTitle || "Payments Default Title";
-        document.getElementById("paymentsDescElement").innerText = data.description || "Default description for payments page.";
-        document.getElementById("paymentsHeroMedia").src = data.mediaURL || "default-payments-video.mp4";
+        document.querySelector(".hero-content h2").innerText = data.pageTitle || "Secure & Flexible Payments";
+        document.querySelector(".hero-content p").innerText = data.description || "Our robust system ensures every transaction is encrypted and monitored for your peace of mind.";
+        const heroMedia = document.querySelector(".hero video");
+        if(heroMedia) { heroMedia.src = data.mediaURL || "https://i.imgur.com/mZN9XTi.png"; }
         if(data.paymentDetails && Array.isArray(data.paymentDetails)) {
-          const container = document.getElementById("paymentDetailsSection");
-          container.innerHTML = "";
+          const paymentContainer = document.querySelector(".payment-details");
+          paymentContainer.innerHTML = "";
           data.paymentDetails.forEach(item => {
             const div = document.createElement("div");
-            div.innerHTML = `<h5>${item.paymentTitle}</h5><p>${item.paymentDesc}</p>`;
-            container.appendChild(div);
+            div.className = "payment-text";
+            div.innerHTML = `<h3>${item.paymentTitle}</h3><p>${item.paymentDesc}</p>`;
+            paymentContainer.appendChild(div);
           });
         }
       }
     });
   </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
