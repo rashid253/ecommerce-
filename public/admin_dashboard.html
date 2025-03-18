@@ -3,53 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - NextGen E-commerce</title>
+  <title>Admin Dashboard – NextGen E-commerce</title>
+  <!-- Bootstrap 5 CSS & Font Awesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; background: #f8f9fa; }
-    .container { margin-top: 20px; }
-    .card { cursor: pointer; transition: transform 0.2s; }
-    .card:hover { transform: scale(1.05); }
+    /* Global Reset & Layout */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; background: #f8f9fa; }
+    
+    /* Top Bar */
+    .topbar {
+      background: #fff;
+      padding: 10px 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .topbar-left { display: flex; align-items: center; }
+    .hamburger { font-size: 1.5rem; cursor: pointer; color: #2c3e50; }
+    .topbar-center { flex: 1; text-align: center; font-weight: bold; font-size: 1.2rem; }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    
+    /* Wrapper for Sidebar + Main Content */
+    .wrapper { flex: 1; display: flex; overflow: hidden; }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 15px;
+      transition: transform 0.3s ease;
+    }
+    .sidebar h2 { font-size: 1.2rem; margin-bottom: 15px; }
+    .sidebar ul { list-style: none; padding: 0; }
+    .sidebar ul li {
+      margin-bottom: 5px;
+    }
+    .sidebar ul li a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      padding: 10px 15px;
+      border-radius: 4px;
+    }
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active { background: #34495e; }
+    
+    /* Main Content Area */
+    .content { flex: 1; padding: 15px; overflow-y: auto; }
+    .dashboard {
+      text-align: center;
+      padding: 20px;
+    }
+    .dashboard h3 {
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+      color: #2c3e50;
+    }
+    .dashboard p {
+      font-size: 1rem;
+      color: #555;
+    }
+    
+    /* Mobile Responsive Sidebar */
+    @media (max-width: 767.98px) {
+      .sidebar {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        height: calc(100% - 60px);
+        transform: translateX(-100%);
+        z-index: 2000;
+      }
+      .sidebar.open { transform: translateX(0); }
+    }
   </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+      const hamburger = document.getElementById("hamburger");
+      const sidebar = document.getElementById("sidebar");
+      hamburger.addEventListener("click", function(e){
+        e.stopPropagation();
+        sidebar.classList.toggle("open");
+      });
+      document.addEventListener("click", function(e){
+        if(window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target)){
+          sidebar.classList.remove("open");
+        }
+      });
+    });
+  </script>
 </head>
 <body>
-  <div class="container">
-    <h1 class="text-center mb-4">Admin Dashboard</h1>
-    <div class="row">
-      <!-- Home Admin -->
-      <div class="col-md-4 mb-3">
-        <div class="card" onclick="location.href='home_admin.html'">
-          <div class="card-body text-center">
-            <i class="fas fa-home fa-3x mb-2"></i>
-            <h5 class="card-title">Home Admin</h5>
-            <p class="card-text">Edit Home page content</p>
-          </div>
-        </div>
-      </div>
-      <!-- E-commerce Admin -->
-      <div class="col-md-4 mb-3">
-        <div class="card" onclick="location.href='ecommerce_admin.html'">
-          <div class="card-body text-center">
-            <i class="fas fa-shopping-bag fa-3x mb-2"></i>
-            <h5 class="card-title">E-commerce Admin</h5>
-            <p class="card-text">Manage shop & product details</p>
-          </div>
-        </div>
-      </div>
-      <!-- Details Admin -->
-      <div class="col-md-4 mb-3">
-        <div class="card" onclick="location.href='details_admin.html'">
-          <div class="card-body text-center">
-            <i class="fas fa-info-circle fa-3x mb-2"></i>
-            <h5 class="card-title">Details Admin</h5>
-            <p class="card-text">Edit product details page</p>
-          </div>
-        </div>
-      </div>
-      <!-- Additional cards for Payments, Checkout, Delivery, Support, Contact, Analytics, About can be added similarly -->
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <i class="fas fa-bars hamburger" id="hamburger"></i>
+    </div>
+    <div class="topbar-center" id="pageTitle">Dashboard</div>
+    <div class="topbar-right">
+      <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-user"></i> Admin</button>
+      <button class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </div>
+  
+  <!-- Wrapper: Sidebar + Main Content -->
+  <div class="wrapper">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+      <h2>Pages</h2>
+      <ul id="pagesList">
+        <li><a href="admin_dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="home_admin.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="header_admin.html"><i class="fas fa-ellipsis-h"></i> Header</a></li>
+        <li><a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i> Shop Now</a></li>
+        <li><a href="details_admin.html"><i class="fas fa-info-circle"></i> Details</a></li>
+        <li><a href="payments_admin.html"><i class="fas fa-credit-card"></i> Payments</a></li>
+        <li><a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i> Checkout</a></li>
+        <li><a href="delivery_admin.html"><i class="fas fa-truck"></i> Delivery</a></li>
+        <li><a href="support_admin.html"><i class="fas fa-headset"></i> Support</a></li>
+        <li><a href="contact_admin.html"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="analytics_admin.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+        <li><a href="about_admin.html"><i class="fas fa-eye"></i> About</a></li>
+      </ul>
+    </nav>
+    
+    <!-- Main Content Area -->
+    <div class="content" id="mainContent">
+      <div class="dashboard">
+        <h3>Welcome to the Admin Dashboard</h3>
+        <p>Select a page from the sidebar to edit its content.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
