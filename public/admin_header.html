@@ -2,42 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Header</title>
   <style>
-    /* Admin Header Styles */
+    /* External Admin Header Styles */
     .admin-header {
       background: #fff;
       padding: 10px 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       display: flex;
-      flex-wrap: wrap; /* Allow wrapping on small screens */
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
       align-items: center;
       justify-content: space-between;
     }
-    /* By default, on small screens, each section takes full width and centers its content */
-    .admin-header .left-section,
-    .admin-header .center-section,
-    .admin-header .right-section {
+    /* Each section takes full width on small screens */
+    .admin-header > .left-section,
+    .admin-header > .center-section,
+    .admin-header > .right-section {
       flex: 1 1 100%;
       text-align: center;
       margin: 5px 0;
     }
-    /* On screens 768px and up, display in one row */
+    /* On screens 768px and wider, display in one row */
     @media (min-width: 768px) {
       .admin-header {
         flex-wrap: nowrap;
       }
-      .admin-header .left-section {
+      .admin-header > .left-section {
         flex: 1;
         text-align: left;
         margin: 0;
       }
-      .admin-header .center-section {
+      .admin-header > .center-section {
         flex: 1;
         text-align: center;
         margin: 0;
       }
-      .admin-header .right-section {
+      .admin-header > .right-section {
         flex: 1;
         text-align: right;
         margin: 0;
@@ -47,6 +48,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      justify-content: center;
     }
     .hamburger {
       font-size: 1.5rem;
@@ -61,13 +63,14 @@
     .right-section button {
       font-size: 0.8rem;
       padding: 5px 10px;
+      margin-left: 5px;
     }
   </style>
 </head>
 <body>
   <header class="admin-header">
     <div class="left-section">
-      <i class="fas fa-bars hamburger" id="hamburger"></i>
+      <i class="fas fa-bars hamburger" id="admin-hamburger"></i>
       <span class="brand">Faiqtech Sol</span>
     </div>
     <div class="center-section" id="pageTitle">Dashboard</div>
