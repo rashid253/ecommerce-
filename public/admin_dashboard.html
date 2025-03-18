@@ -11,34 +11,51 @@
     /* Global Reset & Layout */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
-    body { 
-      font-family: Arial, sans-serif; 
-      display: flex; 
-      flex-direction: column; 
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
       background: #f8f9fa;
     }
-    /* External Header & Footer placeholders */
-    #external-header, #external-footer {
-      width: 100%;
-    }
-    /* Top Bar */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* Admin Header (Internal) */
+    .admin-header {
       background: #fff;
       padding: 10px 15px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       flex-shrink: 0;
     }
-    .topbar-left { display: flex; align-items: center; }
-    .hamburger { font-size: 1.5rem; cursor: pointer; color: #2c3e50; }
-    .topbar-center { flex: 1; text-align: center; font-weight: bold; font-size: 1.2rem; }
-    .topbar-right { display: flex; align-items: center; gap: 8px; }
-    
+    .admin-header .left-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .admin-header .hamburger {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #2c3e50;
+    }
+    .admin-header .brand {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .admin-header .center-section {
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #2c3e50;
+    }
+    .admin-header .right-section {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     /* Wrapper for Sidebar + Main Content */
     .wrapper { flex: 1; display: flex; overflow: hidden; }
-    
     /* Sidebar */
     .sidebar {
       width: 250px;
@@ -61,9 +78,9 @@
     }
     .sidebar ul li a:hover,
     .sidebar ul li a.active { background: #34495e; }
-    
     /* Main Content Area */
     .content { flex: 1; padding: 15px; overflow-y: auto; }
+    /* Dashboard Styles */
     .dashboard {
       text-align: center;
       padding: 20px;
@@ -77,12 +94,37 @@
       font-size: 1rem;
       color: #555;
     }
-    
+    /* Summary Cards */
+    .card-summary {
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 20px;
+      color: #fff;
+    }
+    .card-summary .card-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .card-summary .card-title {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+    .card-summary .card-value {
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    /* Chart Container */
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin-top: 20px;
+    }
     /* Mobile Responsive Sidebar */
     @media (max-width: 767.98px) {
       .sidebar {
         position: fixed;
-        top: 60px;
+        top: 60px; /* admin header height */
         left: 0;
         height: calc(100% - 60px);
         transform: translateX(-100%);
@@ -105,36 +147,22 @@
           sidebar.classList.remove("open");
         }
       });
-      
-      // Load external header and footer into admin panel
-      function loadHTML(containerId, url) {
-        fetch(url)
-          .then(response => response.text())
-          .then(html => {
-            document.getElementById(containerId).innerHTML = html;
-          })
-          .catch(err => console.error("Error loading " + url + ": ", err));
-      }
-      loadHTML("external-header", "header.html");
-      loadHTML("external-footer", "footer.html");
     });
   </script>
 </head>
 <body>
-  <!-- External Header (loaded dynamically) -->
-  <div id="external-header"></div>
-  
-  <!-- Top Bar -->
-  <div class="topbar">
-    <div class="topbar-left">
+  <!-- Admin Header (Internal) -->
+  <header class="admin-header">
+    <div class="left-section">
       <i class="fas fa-bars hamburger" id="hamburger"></i>
+      <span class="brand">Faiqtech Sol</span>
     </div>
-    <div class="topbar-center" id="pageTitle">Dashboard</div>
-    <div class="topbar-right">
+    <div class="center-section" id="pageTitle">Dashboard</div>
+    <div class="right-section">
       <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-user"></i> Admin</button>
       <button class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
-  </div>
+  </header>
   
   <!-- Wrapper: Sidebar + Main Content -->
   <div class="wrapper">
@@ -159,16 +187,94 @@
     
     <!-- Main Content Area -->
     <div class="content" id="mainContent">
+      <!-- Dashboard Landing Content -->
       <div class="dashboard">
         <h3>Welcome to the Admin Dashboard</h3>
-        <p>Select a page from the sidebar to edit its content.</p>
+        <p>Get a quick overview of your e-commerce performance.</p>
+        <div class="row g-3">
+          <!-- Summary Card: Total Sales -->
+          <div class="col-6 col-md-3">
+            <div class="card-summary bg-primary text-center">
+              <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
+              <div class="card-title">Total Sales</div>
+              <div class="card-value">PKR 1,234,567</div>
+            </div>
+          </div>
+          <!-- Summary Card: New Orders -->
+          <div class="col-6 col-md-3">
+            <div class="card-summary bg-success text-center">
+              <div class="card-icon"><i class="fas fa-shopping-cart"></i></div>
+              <div class="card-title">New Orders</div>
+              <div class="card-value">245</div>
+            </div>
+          </div>
+          <!-- Summary Card: Total Products -->
+          <div class="col-6 col-md-3">
+            <div class="card-summary bg-warning text-center">
+              <div class="card-icon"><i class="fas fa-box"></i></div>
+              <div class="card-title">Products</div>
+              <div class="card-value">1,320</div>
+            </div>
+          </div>
+          <!-- Summary Card: Customers -->
+          <div class="col-6 col-md-3">
+            <div class="card-summary bg-danger text-center">
+              <div class="card-icon"><i class="fas fa-users"></i></div>
+              <div class="card-title">Customers</div>
+              <div class="card-value">876</div>
+            </div>
+          </div>
+        </div>
+        <!-- Sales Trend Chart -->
+        <div class="chart-container mt-4">
+          <canvas id="salesChart"></canvas>
+        </div>
+        <!-- Recent Activity -->
+        <div class="mt-4">
+          <h4>Recent Activity</h4>
+          <ul class="list-group">
+            <li class="list-group-item">Order #1234 placed by John Doe.</li>
+            <li class="list-group-item">Product "Smartphone A" updated.</li>
+            <li class="list-group-item">New customer registered: Jane Smith.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
   
-  <!-- External Footer (loaded dynamically) -->
-  <div id="external-footer"></div>
+  <!-- Optional: Admin Footer (if desired) -->
+  <div id="admin-footer-placeholder"></div>
   
+  <!-- Bootstrap Bundle JS & Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Initialize a sample sales trend chart
+    document.addEventListener("DOMContentLoaded", function() {
+      const ctx = document.getElementById('salesChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Monthly Sales (PKR)',
+            data: [200000, 250000, 300000, 280000, 350000, 400000],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>
