@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel – User‑Friendly E-commerce Editor</title>
+  <title>Comprehensive Admin Panel</title>
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <!-- Bootstrap 5 CSS & Font Awesome -->
+  <!-- Bootstrap 5 & Font Awesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link
     rel="stylesheet"
@@ -81,40 +81,26 @@
     .form-check { margin-bottom: 5px; }
     .d-none { display: none !important; }
 
-    /* Dynamic List Editor */
-    .list-editor-item {
+    /* Simple dynamic list styles */
+    .list-editor-item, .category-block, .product-block {
       border: 1px solid #ddd;
       padding: 10px;
-      margin-bottom: 10px;
       border-radius: 4px;
+      margin-bottom: 10px;
       position: relative;
+      background: #fff;
     }
     .remove-item-btn {
       position: absolute;
       top: 5px; right: 5px;
       color: red; cursor: pointer;
     }
-
-    /* Sub-lists for categories and products */
     .category-block {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 6px;
       background: #fafafa;
-      position: relative;
     }
-    .category-title {
+    .category-block .category-title {
       font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .product-block {
-      border: 1px solid #ddd;
-      padding: 8px;
-      border-radius: 4px;
-      margin-bottom: 10px;
-      position: relative;
-      background: #fff;
+      margin-bottom: 8px;
     }
   </style>
 </head>
@@ -124,7 +110,7 @@
     <div class="topbar-left">
       <i class="fas fa-bars hamburger" id="hamburger"></i>
     </div>
-    <div class="topbar-center" id="pageTitle">E-commerce Admin</div>
+    <div class="topbar-center" id="pageTitle">Admin Panel</div>
     <div class="topbar-right">
       <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-user"></i> Admin</button>
       <button class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -135,27 +121,61 @@
   <div class="wrapper">
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
-      <h2>Admin Panel</h2>
-      <ul id="pagesList">
-        <li data-target="ecommerce" class="active"><i class="fas fa-shopping-bag"></i> E-commerce</li>
-        <!-- You can add more sections (Home, Header, etc.) similarly -->
-      </ul>
+      <h2>Pages</h2>
+      <ul id="pagesList"></ul>
     </nav>
 
     <!-- Main Content Area -->
     <div class="content" id="mainContent">
-      <!-- E-commerce Section -->
-      <div id="ecommerce" class="content-section active">
-        <h4>E-commerce Page Content</h4>
+
+      <!-- HOME Section -->
+      <div id="home" class="content-section">
+        <h4>Home Page</h4>
+        <form id="homeForm">
+          <div class="form-group">
+            <label for="homeHeroTitle">Hero Title</label>
+            <input type="text" class="form-control" id="homeHeroTitle" placeholder="e.g. Welcome to MyBusiness">
+          </div>
+          <div class="form-group">
+            <label for="homeHeroDesc">Hero Description</label>
+            <input type="text" class="form-control" id="homeHeroDesc" placeholder="e.g. Best services in town">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Home Content</button>
+        </form>
+      </div>
+
+      <!-- HEADER Section -->
+      <div id="header" class="content-section">
+        <h4>Header</h4>
+        <form id="headerForm">
+          <div class="form-group">
+            <label for="headerLogoIcon">Logo Icon Class</label>
+            <input type="text" class="form-control" id="headerLogoIcon" placeholder="e.g. fas fa-briefcase">
+          </div>
+          <div class="form-group">
+            <label for="headerSearchPlaceholder">Search Placeholder</label>
+            <input type="text" class="form-control" id="headerSearchPlaceholder" placeholder="e.g. Search products...">
+          </div>
+          <div class="form-group">
+            <label for="headerSupportLink">Support Link URL</label>
+            <input type="text" class="form-control" id="headerSupportLink" placeholder="e.g. support.html">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Header Content</button>
+        </form>
+      </div>
+
+      <!-- E-COMMERCE Section -->
+      <div id="ecommerce" class="content-section">
+        <h4>E-commerce Page</h4>
         <form id="ecommerceForm">
-          <!-- 1. Hero Section Fields -->
+          <!-- Ecom Hero Fields -->
           <div class="form-group">
             <label for="ecomPageTitle">Page Title</label>
-            <input type="text" class="form-control" id="ecomPageTitle" placeholder="Enter page title" value="Default E-commerce Title">
+            <input type="text" class="form-control" id="ecomPageTitle" placeholder="Default E-commerce Title">
           </div>
           <div class="form-group">
             <label for="ecomHeroSubtitle">Hero Subtitle</label>
-            <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Enter hero subtitle" value="Your one‑stop shop for the latest trends & exclusive deals.">
+            <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Your one‑stop shop for the latest trends & deals.">
           </div>
           <div class="form-group">
             <label>E-commerce Hero Media Options</label>
@@ -174,41 +194,136 @@
           </div>
           <div class="form-group" id="ecomURLField">
             <label for="ecomMediaURL">Hero Media URL</label>
-            <input type="text" class="form-control" id="ecomMediaURL" placeholder="Enter hero media URL" value="https://i.imgur.com/OXCPyAw.mp4">
+            <input type="text" class="form-control" id="ecomMediaURL" value="https://i.imgur.com/OXCPyAw.mp4">
           </div>
           <div class="form-group d-none" id="ecomUploadField">
             <label for="ecomMediaFile">Upload Hero Media</label>
             <input type="file" id="ecomMediaFile" accept="image/*">
-            <small>Auto-resized (max 1920×1080) &amp; uploaded via Imgur.</small>
+            <small>Auto-resized & uploaded via Imgur.</small>
           </div>
           <div class="form-group d-none" id="ecomDefaultField">
             <p class="text-muted">Default hero media will be used.</p>
           </div>
 
-          <!-- 2. Carousel / Banner Items -->
+          <!-- Carousel Items -->
           <h5 class="mt-3">Carousel Items</h5>
           <div id="carouselContainer">
             <div class="list-editor-item">
               <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-              <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL" value="https://via.placeholder.com/300x200">
-              <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title" value="Sample Carousel Item">
-              <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description" value="Sample description">
-              <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link" value="ecommerce.html">
+              <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Image URL" value="https://via.placeholder.com/300x200">
+              <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Title" value="Sample Carousel Item">
+              <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Description" value="Sample description">
+              <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Link" value="ecommerce.html">
             </div>
           </div>
           <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn">
             <i class="fas fa-plus"></i> Add Carousel Item
           </button>
 
-          <!-- 3. Categories & Products (User-friendly, no raw JSON) -->
+          <!-- Category & Products (User-friendly) -->
           <h5 class="mt-4">Categories & Products</h5>
           <div id="categoriesContainer"></div>
           <button type="button" class="btn btn-sm btn-outline-success" id="addCategoryBtn">
             <i class="fas fa-plus"></i> Add Category
           </button>
 
-          <!-- Submit Button -->
           <button type="submit" class="btn btn-primary mt-3">Save E-commerce Content</button>
+        </form>
+      </div>
+
+      <!-- DETAILS Section -->
+      <div id="details" class="content-section">
+        <h4>Details Page</h4>
+        <form id="detailsForm">
+          <div class="form-group">
+            <label for="detailsHeading">Heading / Title</label>
+            <input type="text" class="form-control" id="detailsHeading" placeholder="e.g. Product Details">
+          </div>
+          <div class="form-group">
+            <label for="detailsNote">Note or Extra Text</label>
+            <input type="text" class="form-control" id="detailsNote" placeholder="e.g. Lorem ipsum...">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Details Content</button>
+        </form>
+      </div>
+
+      <!-- PAYMENTS Section -->
+      <div id="payments" class="content-section">
+        <h4>Payments Page</h4>
+        <form id="paymentsForm">
+          <div class="form-group">
+            <label for="paymentsHeading">Heading</label>
+            <input type="text" class="form-control" id="paymentsHeading" placeholder="e.g. Secure Payments">
+          </div>
+          <div class="form-group">
+            <label for="paymentsDesc">Description</label>
+            <textarea class="form-control" id="paymentsDesc" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Payments Content</button>
+        </form>
+      </div>
+
+      <!-- CHECKOUT Section -->
+      <div id="checkout" class="content-section">
+        <h4>Checkout Page</h4>
+        <form id="checkoutForm">
+          <div class="form-group">
+            <label for="checkoutHeading">Heading</label>
+            <input type="text" class="form-control" id="checkoutHeading" placeholder="e.g. Complete Your Order">
+          </div>
+          <div class="form-group">
+            <label for="checkoutNote">Checkout Note</label>
+            <input type="text" class="form-control" id="checkoutNote" placeholder="e.g. Provide correct info">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Checkout Content</button>
+        </form>
+      </div>
+
+      <!-- DELIVERY Section -->
+      <div id="delivery" class="content-section">
+        <h4>Delivery Page</h4>
+        <form id="deliveryForm">
+          <div class="form-group">
+            <label for="deliveryTitle">Title</label>
+            <input type="text" class="form-control" id="deliveryTitle" placeholder="e.g. Fast Delivery">
+          </div>
+          <div class="form-group">
+            <label for="deliveryDesc">Description</label>
+            <textarea class="form-control" id="deliveryDesc" rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Delivery Content</button>
+        </form>
+      </div>
+
+      <!-- SUPPORT Section -->
+      <div id="support" class="content-section">
+        <h4>Support Page</h4>
+        <form id="supportForm">
+          <div class="form-group">
+            <label for="supportTitle">Title</label>
+            <input type="text" class="form-control" id="supportTitle" placeholder="e.g. Customer Support">
+          </div>
+          <div class="form-group">
+            <label for="supportSubtitle">Subtitle</label>
+            <input type="text" class="form-control" id="supportSubtitle" placeholder="e.g. We are here to help you.">
+          </div>
+          <button type="submit" class="btn btn-primary">Save Support Content</button>
+        </form>
+      </div>
+
+      <!-- CONTACT Section -->
+      <div id="contact" class="content-section">
+        <h4>Contact Page</h4>
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="contactHeading">Heading</label>
+            <input type="text" class="form-control" id="contactHeading" placeholder="e.g. Contact Us">
+          </div>
+          <div class="form-group">
+            <label for="contactInfo">Contact Info</label>
+            <textarea class="form-control" id="contactInfo" rows="3" placeholder="Phone, Email, Address..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Contact Content</button>
         </form>
       </div>
     </div>
@@ -220,12 +335,12 @@
   <script>
     /* Firebase Initialization */
     const firebaseConfig = {
-      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
+      apiKey: "AIzaSy... (Your Key)...",
       authDomain: "e-commerce-pk.firebaseapp.com",
       projectId: "e-commerce-pk",
       storageBucket: "e-commerce-pk.appspot.com",
       messagingSenderId: "126517093225",
-      appId: "1:126517093225:web:c2352620c6d32c582513f8",
+      appId: "1:126517093225:web:....",
       measurementId: "G-2G2DNCNNT3"
     };
     firebase.initializeApp(firebaseConfig);
@@ -241,99 +356,149 @@
       }
     });
 
-    /* Basic Sidebar Navigation (only one page: ecommerce) */
-    document.querySelector("#pagesList li").classList.add("active");
-    
-    /* Remove item function (for carousel items) */
+    /* Pages & Icons */
+    const pages = [
+      "home", "header", "ecommerce", "details", "payments",
+      "checkout", "delivery", "support", "contact"
+    ];
+    const pageIcons = {
+      home: "fas fa-home",
+      header: "fas fa-ellipsis-h",
+      ecommerce: "fas fa-shopping-bag",
+      details: "fas fa-info-circle",
+      payments: "fas fa-credit-card",
+      checkout: "fas fa-shopping-cart",
+      delivery: "fas fa-truck",
+      support: "fas fa-headset",
+      contact: "fas fa-envelope"
+    };
+
+    /* Render Sidebar Items */
+    function renderPagesList() {
+      const pagesList = document.getElementById("pagesList");
+      pagesList.innerHTML = "";
+      pages.forEach((page, idx) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<i class="${pageIcons[page] || 'fas fa-angle-right'}"></i> ${page}`;
+        li.dataset.target = page;
+        if(idx === 0) li.classList.add("active");
+        li.addEventListener("click", function() {
+          document.querySelectorAll("#pagesList li").forEach(item => item.classList.remove("active"));
+          this.classList.add("active");
+          document.getElementById("pageTitle").innerText = page;
+          document.querySelectorAll(".content-section").forEach(sec => {
+            sec.classList.remove("active");
+            sec.classList.add("d-none");
+          });
+          document.getElementById(page).classList.add("active");
+          document.getElementById(page).classList.remove("d-none");
+          if(window.innerWidth < 768) sidebar.classList.remove("open");
+        });
+        pagesList.appendChild(li);
+      });
+    }
+    renderPagesList();
+    /* Set first page active by default */
+    document.getElementById(pages[0]).classList.add("active");
+    document.getElementById(pages[0]).classList.remove("d-none");
+    document.getElementById("pageTitle").innerText = pages[0];
+
+    /* Remove item function (for carousel items, categories, products, etc.) */
     function removeItem(span) {
       span.parentNode.remove();
     }
 
-    /* Add new carousel item */
-    document.getElementById("addCarouselBtn").addEventListener("click", () => {
-      const container = document.getElementById("carouselContainer");
-      const div = document.createElement("div");
-      div.classList.add("list-editor-item");
-      div.innerHTML = `
-        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-        <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL">
-        <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title">
-        <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description">
-        <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link">
-      `;
-      container.appendChild(div);
-    });
-
-    /* Add Category block */
-    document.getElementById("addCategoryBtn").addEventListener("click", () => {
-      const container = document.getElementById("categoriesContainer");
-      const div = document.createElement("div");
-      div.classList.add("category-block");
-      div.innerHTML = `
-        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-        <div class="form-group">
-          <label class="category-title">Category Name</label>
-          <input type="text" class="form-control mb-2" name="categoryName" placeholder="e.g. Countdown Sales">
-        </div>
-        <div class="productsContainer"></div>
-        <button type="button" class="btn btn-sm btn-outline-info addProductBtn">+ Add Product</button>
-      `;
-      container.appendChild(div);
-
-      // Add event listener for "Add Product" inside this new category
-      const addProductBtn = div.querySelector(".addProductBtn");
-      addProductBtn.addEventListener("click", () => {
-        const productsContainer = div.querySelector(".productsContainer");
-        const productDiv = document.createElement("div");
-        productDiv.classList.add("product-block");
-        productDiv.innerHTML = `
+    /* E-commerce: Add new carousel item */
+    const addCarouselBtn = document.getElementById("addCarouselBtn");
+    if(addCarouselBtn) {
+      addCarouselBtn.addEventListener("click", () => {
+        const container = document.getElementById("carouselContainer");
+        const div = document.createElement("div");
+        div.classList.add("list-editor-item");
+        div.innerHTML = `
           <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-          <div class="form-group mb-1">
-            <label>Product Name</label>
-            <input type="text" class="form-control" name="prodName" placeholder="e.g. Smartphone A">
-          </div>
-          <div class="form-group mb-1">
-            <label>Original Price</label>
-            <input type="text" class="form-control" name="prodOriginalPrice" placeholder="e.g. PKR 999">
-          </div>
-          <div class="form-group mb-1">
-            <label>Discount (%)</label>
-            <input type="text" class="form-control" name="prodDiscount" placeholder="e.g. 10%">
-          </div>
-          <div class="form-group mb-1">
-            <label>New Price</label>
-            <input type="text" class="form-control" name="prodNewPrice" placeholder="e.g. PKR 899">
-          </div>
-          <div class="form-group mb-1">
-            <label>Description</label>
-            <input type="text" class="form-control" name="prodDesc" placeholder="Short product description">
-          </div>
-          <div class="form-group mb-1">
-            <label>Image URL</label>
-            <input type="text" class="form-control" name="prodImage" placeholder="https://via.placeholder.com/300x200">
-          </div>
-          <div class="form-group mb-1">
-            <label>Rating</label>
-            <input type="number" class="form-control" name="prodRating" placeholder="e.g. 4.5">
-          </div>
-          <div class="form-group mb-1">
-            <label>Added Count</label>
-            <input type="text" class="form-control" name="prodAdded" placeholder="e.g. 500">
-          </div>
-          <div class="form-group mb-1">
-            <label>Sold Count</label>
-            <input type="text" class="form-control" name="prodSold" placeholder="e.g. 3k">
-          </div>
-          <div class="form-group mb-1">
-            <label>Stock</label>
-            <input type="number" class="form-control" name="prodStock" placeholder="e.g. 20">
-          </div>
+          <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Image URL">
+          <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Title">
+          <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Description">
+          <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Link">
         `;
-        productsContainer.appendChild(productDiv);
+        container.appendChild(div);
       });
-    });
+    }
 
-    /* Setup hero media option radios for E-commerce section */
+    /* E-commerce: Add new category block */
+    const addCategoryBtn = document.getElementById("addCategoryBtn");
+    if(addCategoryBtn) {
+      addCategoryBtn.addEventListener("click", () => {
+        const container = document.getElementById("categoriesContainer");
+        const div = document.createElement("div");
+        div.classList.add("category-block");
+        div.innerHTML = `
+          <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
+          <div class="form-group">
+            <label class="category-title">Category Name</label>
+            <input type="text" class="form-control mb-2" name="categoryName" placeholder="e.g. Countdown Sales">
+          </div>
+          <div class="productsContainer"></div>
+          <button type="button" class="btn btn-sm btn-outline-info addProductBtn">+ Add Product</button>
+        `;
+        container.appendChild(div);
+
+        // Add event listener for "Add Product"
+        const addProductBtn = div.querySelector(".addProductBtn");
+        addProductBtn.addEventListener("click", () => {
+          const productsContainer = div.querySelector(".productsContainer");
+          const productDiv = document.createElement("div");
+          productDiv.classList.add("product-block");
+          productDiv.innerHTML = `
+            <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
+            <div class="form-group mb-1">
+              <label>Product Name</label>
+              <input type="text" class="form-control" name="prodName" placeholder="e.g. Smartphone A">
+            </div>
+            <div class="form-group mb-1">
+              <label>Original Price</label>
+              <input type="text" class="form-control" name="prodOriginalPrice" placeholder="e.g. PKR 999">
+            </div>
+            <div class="form-group mb-1">
+              <label>Discount (%)</label>
+              <input type="text" class="form-control" name="prodDiscount" placeholder="e.g. 10%">
+            </div>
+            <div class="form-group mb-1">
+              <label>New Price</label>
+              <input type="text" class="form-control" name="prodNewPrice" placeholder="e.g. PKR 899">
+            </div>
+            <div class="form-group mb-1">
+              <label>Description</label>
+              <input type="text" class="form-control" name="prodDesc" placeholder="Short description">
+            </div>
+            <div class="form-group mb-1">
+              <label>Image URL</label>
+              <input type="text" class="form-control" name="prodImage" placeholder="https://...">
+            </div>
+            <div class="form-group mb-1">
+              <label>Rating</label>
+              <input type="number" class="form-control" name="prodRating" placeholder="e.g. 4.5">
+            </div>
+            <div class="form-group mb-1">
+              <label>Added Count</label>
+              <input type="text" class="form-control" name="prodAdded" placeholder="e.g. 500">
+            </div>
+            <div class="form-group mb-1">
+              <label>Sold Count</label>
+              <input type="text" class="form-control" name="prodSold" placeholder="e.g. 3k">
+            </div>
+            <div class="form-group mb-1">
+              <label>Stock</label>
+              <input type="number" class="form-control" name="prodStock" placeholder="e.g. 20">
+            </div>
+          `;
+          productsContainer.appendChild(productDiv);
+        });
+      });
+    }
+
+    /* Show/hide hero media fields for ecom */
     function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
       const radios = document.getElementsByName(radioName);
       radios.forEach(radio => {
@@ -353,7 +518,7 @@
     }
     setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
 
-    /* Imgur upload function for direct media uploads */
+    /* Imgur upload function */
     function handleImageUpload(file, maxWidth, maxHeight, callback) {
       if(!file) return;
       const reader = new FileReader();
@@ -393,7 +558,6 @@
         }, "image/jpeg", 0.8);
       };
     }
-
     const ecomMediaFile = document.getElementById("ecomMediaFile");
     if(ecomMediaFile) {
       ecomMediaFile.addEventListener("change", function() {
@@ -404,65 +568,85 @@
       });
     }
 
-    /* Final form submission – build the data object & save to Firestore */
-    const ecommerceForm = document.getElementById("ecommerceForm");
-    ecommerceForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      // 1) Gather hero section fields
-      const pageTitle = document.getElementById("ecomPageTitle").value.trim();
-      const heroSubtitle = document.getElementById("ecomHeroSubtitle").value.trim();
-      const heroMediaURL = document.getElementById("ecomMediaURL").value.trim();
-      
-      // 2) Gather carousel items
-      const carouselItems = [];
-      document.querySelectorAll("#carouselContainer .list-editor-item").forEach(item => {
-        const inputs = item.querySelectorAll("input");
-        const obj = {};
-        inputs.forEach(inp => { obj[inp.name] = inp.value.trim(); });
-        carouselItems.push(obj);
+    /* Firestore Save Helpers: Each form => doc named after page ID */
+    function saveFormData(formId, docId) {
+      const form = document.getElementById(formId);
+      if(!form) return;
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => { data[key] = value.trim(); });
+        db.collection("pages").doc(docId).set(data, { merge: true })
+          .then(() => { alert(docId + " content saved successfully!"); })
+          .catch(err => { alert("Error saving " + docId + ": " + err.message); });
       });
-
-      // 3) Gather categories & products
-      const categoriesObj = {}; // e.g. { "Countdown Sales": [ { name, originalPrice, ... }, ... ], ... }
-      document.querySelectorAll("#categoriesContainer .category-block").forEach(catBlock => {
-        const catNameInput = catBlock.querySelector("[name='categoryName']");
-        const categoryName = (catNameInput?.value || "Unnamed Category").trim();
-        const productsArray = [];
-        catBlock.querySelectorAll(".product-block").forEach(prodBlock => {
-          const p = {};
-          p.name = (prodBlock.querySelector("[name='prodName']")?.value || "").trim();
-          p.originalPrice = (prodBlock.querySelector("[name='prodOriginalPrice']")?.value || "").trim();
-          p.discount = (prodBlock.querySelector("[name='prodDiscount']")?.value || "").trim();
-          p.newPrice = (prodBlock.querySelector("[name='prodNewPrice']")?.value || "").trim();
-          p.description = (prodBlock.querySelector("[name='prodDesc']")?.value || "").trim();
-          p.image = (prodBlock.querySelector("[name='prodImage']")?.value || "").trim();
-          p.rating = parseFloat(prodBlock.querySelector("[name='prodRating']")?.value || "0");
-          p.added = (prodBlock.querySelector("[name='prodAdded']")?.value || "0").trim();
-          p.sold = (prodBlock.querySelector("[name='prodSold']")?.value || "0").trim();
-          p.stock = parseInt(prodBlock.querySelector("[name='prodStock']")?.value || "0");
-          productsArray.push(p);
+    }
+    /* E-commerce is more complex => custom handler */
+    function saveEcommerce() {
+      const form = document.getElementById("ecommerceForm");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        // Gather hero data
+        const pageTitle = document.getElementById("ecomPageTitle").value.trim();
+        const heroSubtitle = document.getElementById("ecomHeroSubtitle").value.trim();
+        const heroMediaURL = document.getElementById("ecomMediaURL").value.trim();
+        // Gather carousel items
+        const carouselItems = [];
+        document.querySelectorAll("#carouselContainer .list-editor-item").forEach(item => {
+          const obj = {};
+          item.querySelectorAll("input").forEach(inp => {
+            obj[inp.name] = inp.value.trim();
+          });
+          carouselItems.push(obj);
         });
-        categoriesObj[categoryName] = productsArray;
+        // Gather categories & products
+        const categoriesObj = {};
+        document.querySelectorAll("#categoriesContainer .category-block").forEach(catBlock => {
+          const catName = (catBlock.querySelector("[name='categoryName']")?.value || "Unnamed Category").trim();
+          const productsArray = [];
+          catBlock.querySelectorAll(".product-block").forEach(prodBlock => {
+            const p = {};
+            p.name = (prodBlock.querySelector("[name='prodName']")?.value || "").trim();
+            p.originalPrice = (prodBlock.querySelector("[name='prodOriginalPrice']")?.value || "").trim();
+            p.discount = (prodBlock.querySelector("[name='prodDiscount']")?.value || "").trim();
+            p.newPrice = (prodBlock.querySelector("[name='prodNewPrice']")?.value || "").trim();
+            p.description = (prodBlock.querySelector("[name='prodDesc']")?.value || "").trim();
+            p.image = (prodBlock.querySelector("[name='prodImage']")?.value || "").trim();
+            p.rating = parseFloat(prodBlock.querySelector("[name='prodRating']")?.value || "0");
+            p.added = (prodBlock.querySelector("[name='prodAdded']")?.value || "0").trim();
+            p.sold = (prodBlock.querySelector("[name='prodSold']")?.value || "0").trim();
+            p.stock = parseInt(prodBlock.querySelector("[name='prodStock']")?.value || "0");
+            productsArray.push(p);
+          });
+          categoriesObj[catName] = productsArray;
+        });
+        // Build final data
+        const data = {
+          pageTitle,
+          heroSubtitle,
+          mediaURL: heroMediaURL,
+          carouselItems,
+          productData: categoriesObj
+        };
+        db.collection("pages").doc("ecommerce").set(data, { merge: true })
+          .then(() => { alert("E-commerce content saved successfully!"); })
+          .catch(err => { alert("Error saving ecommerce: " + err.message); });
       });
+    }
 
-      // Build final data object
-      const data = {
-        pageTitle: pageTitle,
-        heroSubtitle: heroSubtitle,
-        mediaURL: heroMediaURL,   // hero background
-        carouselItems: carouselItems, // array
-        productData: categoriesObj    // nested categories
-      };
-
-      // Save to Firestore under "pages/ecommerce"
-      db.collection("pages").doc("ecommerce").set(data, { merge: true })
-        .then(() => {
-          alert("E-commerce content saved successfully!");
-        })
-        .catch(error => {
-          alert("Error saving E-commerce content: " + error.message);
-        });
-    });
+    /* Attach Save Handlers */
+    saveFormData("homeForm", "home");
+    saveFormData("headerForm", "header");
+    // details, payments, checkout, delivery, support, contact
+    saveFormData("detailsForm", "details");
+    saveFormData("paymentsForm", "payments");
+    saveFormData("checkoutForm", "checkout");
+    saveFormData("deliveryForm", "delivery");
+    saveFormData("supportForm", "support");
+    saveFormData("contactForm", "contact");
+    // E-commerce uses custom approach:
+    saveEcommerce();
   </script>
 </body>
 </html>
