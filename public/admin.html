@@ -11,13 +11,13 @@
     /* Global Reset & Layout */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
-    body {
+    body { 
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       background: #f8f9fa;
     }
-    /* Placeholders for external admin header and footer */
+    /* Placeholders for external header and footer */
     #admin-header-placeholder, #admin-footer-placeholder {
       width: 100%;
       flex-shrink: 0;
@@ -36,17 +36,9 @@
       padding: 15px;
       transition: transform 0.3s ease;
     }
-    .sidebar h2 {
-      font-size: 1.2rem;
-      margin-bottom: 15px;
-    }
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-    }
-    .sidebar ul li {
-      margin-bottom: 5px;
-    }
+    .sidebar h2 { font-size: 1.2rem; margin-bottom: 15px; }
+    .sidebar ul { list-style: none; padding: 0; }
+    .sidebar ul li { margin-bottom: 5px; }
     .sidebar ul li a {
       text-decoration: none;
       color: inherit;
@@ -55,9 +47,7 @@
       border-radius: 4px;
     }
     .sidebar ul li a:hover,
-    .sidebar ul li a.active {
-      background: #34495e;
-    }
+    .sidebar ul li a.active { background: #34495e; }
     /* Main Content Area */
     .content {
       flex: 1;
@@ -109,47 +99,77 @@
     @media (max-width: 767.98px) {
       .sidebar {
         position: fixed;
-        top: 0; /* External admin header is loaded separately */
+        top: 0; /* external header is loaded externally */
         left: 0;
         height: 100%;
         transform: translateX(-100%);
         z-index: 2000;
       }
-      .sidebar.open {
-        transform: translateX(0);
-      }
+      .sidebar.open { transform: translateX(0); }
     }
-    /* Admin Footer Navigation (External file will be loaded) */
+    /* Admin Footer Navigation */
+    .admin-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      padding: 5px 0;
+      font-size: 0.8rem;
+      z-index: 1000;
+    }
+    .admin-footer a {
+      text-decoration: none;
+      color: #2c3e50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      transition: color 0.3s;
+    }
+    .admin-footer a i {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
+    .admin-footer a.active {
+      color: #007bff;
+    }
   </style>
   <script>
+    // Function to load external HTML into a container
+    function loadHTML(containerId, filePath) {
+      fetch(filePath)
+        .then(response => {
+          if (!response.ok) throw new Error("Error fetching " + filePath);
+          return response.text();
+        })
+        .then(html => { document.getElementById(containerId).innerHTML = html; })
+        .catch(error => console.error(error));
+    }
     document.addEventListener("DOMContentLoaded", function() {
-      // Function to load external files into placeholders
-      function loadHTML(containerId, filePath) {
-        fetch(filePath)
-          .then(response => {
-            if (!response.ok) throw new Error("Error fetching " + filePath);
-            return response.text();
-          })
-          .then(html => { document.getElementById(containerId).innerHTML = html; })
-          .catch(error => console.error(error));
-      }
+      // Load external admin header and footer
       loadHTML("admin-header-placeholder", "admin_header.html");
       loadHTML("admin-footer-placeholder", "admin_footer.html");
-
-      // Sidebar toggle for mobile devices
-      const hamburger = document.getElementById("admin-hamburger");
-      const sidebar = document.getElementById("sidebar");
-      if (hamburger) {
-        hamburger.addEventListener("click", function(e) {
-          e.stopPropagation();
-          sidebar.classList.toggle("open");
-        });
-      }
-      document.addEventListener("click", function(e) {
-        if (window.innerWidth < 768 && !sidebar.contains(e.target) && (!hamburger || !hamburger.contains(e.target))) {
-          sidebar.classList.remove("open");
+      
+      // After external header loads, setup hamburger toggle for sidebar
+      setTimeout(() => {
+        const adminHamburger = document.getElementById("admin-hamburger");
+        const sidebar = document.getElementById("sidebar");
+        if (adminHamburger) {
+          adminHamburger.addEventListener("click", function(e) {
+            e.stopPropagation();
+            sidebar.classList.toggle("open");
+          });
         }
-      });
+        document.addEventListener("click", function(e) {
+          if (window.innerWidth < 768 && !sidebar.contains(e.target) && (!adminHamburger || !adminHamburger.contains(e.target))) {
+            sidebar.classList.remove("open");
+          }
+        });
+      }, 500);
     });
   </script>
 </head>
