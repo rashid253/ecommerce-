@@ -98,6 +98,8 @@
     
     <!-- Main Content Area -->
     <div class="content" id="mainContent">
+      <!-- Each content section corresponds to a page that can be edited -->
+      
       <!-- Home Section -->
       <div id="home" class="content-section active">
         <h4>Home Page Content</h4>
@@ -362,7 +364,7 @@
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    
+
     // Mobile sidebar toggle
     const hamburger = document.getElementById("hamburger");
     const sidebar = document.getElementById("sidebar");
@@ -460,7 +462,7 @@
       container.appendChild(div);
     });
     
-    // Show/hide media upload fields
+    // Show/hide media upload fields for Home and E-commerce sections
     function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
       const radios = document.getElementsByName(radioName);
       radios.forEach(radio => {
@@ -481,7 +483,7 @@
     setupHeroRadios("heroMediaOption", "heroURLField", "heroUploadField", "heroDefaultField");
     setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
     
-    // Imgur upload function
+    // Imgur upload function for direct media uploads
     function handleImageUpload(file, maxWidth, maxHeight, callback) {
       if(!file) return;
       const reader = new FileReader();
@@ -499,7 +501,7 @@
           const reader2 = new FileReader();
           reader2.onloadend = () => {
             const base64data = reader2.result.split(',')[1];
-            const clientId = "048d9400ce02b71";
+            const clientId = "048d9400ce02b71"; // Your Imgur Client ID
             const formData = new FormData();
             formData.append("image", base64data);
             fetch("https://api.imgur.com/3/image", {
