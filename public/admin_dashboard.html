@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - NextGen E-commerce</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; }
+    .container { margin-top: 20px; }
+    .card { cursor: pointer; transition: transform 0.2s; }
+    .card:hover { transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mb-4">Admin Dashboard</h1>
+    <div class="row">
+      <!-- Home Admin -->
+      <div class="col-md-4 mb-3">
+        <div class="card" onclick="location.href='home_admin.html'">
+          <div class="card-body text-center">
+            <i class="fas fa-home fa-3x mb-2"></i>
+            <h5 class="card-title">Home Admin</h5>
+            <p class="card-text">Edit Home page content</p>
+          </div>
+        </div>
+      </div>
+      <!-- E-commerce Admin -->
+      <div class="col-md-4 mb-3">
+        <div class="card" onclick="location.href='ecommerce_admin.html'">
+          <div class="card-body text-center">
+            <i class="fas fa-shopping-bag fa-3x mb-2"></i>
+            <h5 class="card-title">E-commerce Admin</h5>
+            <p class="card-text">Manage shop & product details</p>
+          </div>
+        </div>
+      </div>
+      <!-- Details Admin -->
+      <div class="col-md-4 mb-3">
+        <div class="card" onclick="location.href='details_admin.html'">
+          <div class="card-body text-center">
+            <i class="fas fa-info-circle fa-3x mb-2"></i>
+            <h5 class="card-title">Details Admin</h5>
+            <p class="card-text">Edit product details page</p>
+          </div>
+        </div>
+      </div>
+      <!-- Additional cards for Payments, Checkout, Delivery, Support, Contact, Analytics, About can be added similarly -->
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
