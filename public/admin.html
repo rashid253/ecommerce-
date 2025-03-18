@@ -2,21 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel – Comprehensive Content Editor</title>
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – NextGen E-commerce</title>
   <!-- Bootstrap 5 CSS & Font Awesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* --------------------- Global Reset & Layout --------------------- */
+    /* Global Reset & Layout */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
-    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; }
+    body { font-family: Arial, sans-serif; display: flex; flex-direction: column; background: #f8f9fa; }
     
-    /* --------------------- Top Bar --------------------- */
+    /* Top Bar */
     .topbar {
       display: flex;
       align-items: center;
@@ -28,13 +25,13 @@
     }
     .topbar-left { display: flex; align-items: center; }
     .hamburger { font-size: 1.5rem; cursor: pointer; color: #2c3e50; }
-    .topbar-center { flex: 1; text-align: center; font-weight: bold; }
+    .topbar-center { flex: 1; text-align: center; font-weight: bold; font-size: 1.2rem; }
     .topbar-right { display: flex; align-items: center; gap: 8px; }
     
-    /* --------------------- Wrapper (Sidebar + Content) --------------------- */
+    /* Wrapper for Sidebar + Main Content */
     .wrapper { flex: 1; display: flex; overflow: hidden; }
     
-    /* --------------------- Sidebar --------------------- */
+    /* Sidebar */
     .sidebar {
       width: 250px;
       background: #2c3e50;
@@ -42,8 +39,8 @@
       padding: 15px;
       transition: transform 0.3s ease;
     }
-    .sidebar h2 { margin-bottom: 15px; font-size: 1.2rem; }
-    .sidebar ul { list-style: none; padding: 0; margin: 0; }
+    .sidebar h2 { font-size: 1.2rem; margin-bottom: 15px; }
+    .sidebar ul { list-style: none; padding: 0; }
     .sidebar ul li {
       padding: 10px 15px;
       margin-bottom: 5px;
@@ -55,10 +52,10 @@
     .sidebar ul li i { margin-right: 8px; }
     .sidebar ul li:hover, .sidebar ul li.active { background: #34495e; }
     
-    /* --------------------- Content Area --------------------- */
+    /* Main Content Area */
     .content { flex: 1; overflow-y: auto; padding: 15px; }
     
-    /* --------------------- Mobile Responsive --------------------- */
+    /* Mobile Responsive Sidebar */
     @media (max-width: 767.98px) {
       .sidebar {
         position: fixed;
@@ -71,36 +68,39 @@
       .sidebar.open { transform: translateX(0); }
     }
     
-    /* --------------------- Content Sections --------------------- */
-    .content-section { display: none; margin-top: 10px; }
-    .content-section.active { display: block; }
-    .d-none { display: none !important; }
-    .form-group { margin-bottom: 15px; }
-    .form-check { margin-bottom: 5px; }
-    
-    /* --------------------- Dynamic List Editors --------------------- */
-    .list-editor-item, .category-block, .product-block {
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 4px;
-      margin-bottom: 10px;
-      background: #fff;
-      position: relative;
+    /* Dashboard Content Styles */
+    .dashboard {
+      text-align: center;
+      padding: 20px;
     }
-    .remove-item-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      color: red;
-      cursor: pointer;
+    .dashboard h3 {
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+      color: #2c3e50;
     }
-    .category-block { background: #fafafa; }
-    .category-block .category-title {
-      font-weight: bold;
-      margin-bottom: 8px;
+    .dashboard p {
+      font-size: 1rem;
+      color: #555;
     }
   </style>
-  <!-- Firebase and Imgur will be initialized in the script below -->
+  
+  <!-- Bootstrap Bundle JS will be loaded later -->
+  <script>
+    // Mobile Sidebar Toggle
+    document.addEventListener("DOMContentLoaded", function(){
+      const hamburger = document.getElementById("hamburger");
+      const sidebar = document.getElementById("sidebar");
+      hamburger.addEventListener("click", function(e){
+        e.stopPropagation();
+        sidebar.classList.toggle("open");
+      });
+      document.addEventListener("click", function(e){
+        if(window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target)){
+          sidebar.classList.remove("open");
+        }
+      });
+    });
+  </script>
 </head>
 <body>
   <!-- Top Bar -->
@@ -108,569 +108,45 @@
     <div class="topbar-left">
       <i class="fas fa-bars hamburger" id="hamburger"></i>
     </div>
-    <div class="topbar-center" id="pageTitle">Admin Panel</div>
+    <div class="topbar-center" id="pageTitle">Dashboard</div>
     <div class="topbar-right">
       <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-user"></i> Admin</button>
       <button class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </div>
   
-  <!-- Wrapper -->
+  <!-- Wrapper: Sidebar + Main Content -->
   <div class="wrapper">
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
       <h2>Pages</h2>
       <ul id="pagesList">
-        <li data-target="home" class="active"><i class="fas fa-home"></i> Home</li>
-        <li data-target="header"><i class="fas fa-ellipsis-h"></i> Header</li>
-        <li data-target="ecommerce"><i class="fas fa-shopping-bag"></i> E-commerce</li>
-        <li data-target="details"><i class="fas fa-info-circle"></i> Details</li>
-        <li data-target="payments"><i class="fas fa-credit-card"></i> Payments</li>
-        <li data-target="checkout"><i class="fas fa-shopping-cart"></i> Checkout</li>
-        <li data-target="delivery"><i class="fas fa-truck"></i> Delivery</li>
-        <li data-target="support"><i class="fas fa-headset"></i> Support</li>
-        <li data-target="contact"><i class="fas fa-envelope"></i> Contact</li>
-        <li data-target="analytics"><i class="fas fa-chart-line"></i> Analytics</li>
-        <li data-target="about"><i class="fas fa-eye"></i> About</li>
+        <!-- Each list item links to a separate admin file -->
+        <li><a href="admin_dashboard.html" style="text-decoration:none; color:inherit;"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="home_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="ecommerce_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-shopping-bag"></i> Shop Now</a></li>
+        <li><a href="details_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-info-circle"></i> Details</a></li>
+        <li><a href="payments_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-credit-card"></i> Payments</a></li>
+        <li><a href="checkout_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-shopping-cart"></i> Checkout</a></li>
+        <li><a href="delivery_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-truck"></i> Delivery</a></li>
+        <li><a href="support_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-headset"></i> Support</a></li>
+        <li><a href="contact_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="analytics_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-chart-line"></i> Analytics</a></li>
+        <li><a href="about_admin.html" style="text-decoration:none; color:inherit;"><i class="fas fa-eye"></i> About</a></li>
       </ul>
     </nav>
     
     <!-- Main Content Area -->
     <div class="content" id="mainContent">
-      <!-- HOME Section -->
-      <div id="home" class="content-section active">
-        <h4>Home Page Content</h4>
-        <form id="homeForm">
-          <div class="form-group">
-            <label for="homeHeroTitle">Hero Title</label>
-            <input type="text" class="form-control" id="homeHeroTitle" placeholder="Enter hero title">
-          </div>
-          <div class="form-group">
-            <label for="homeHeroDesc">Hero Description</label>
-            <input type="text" class="form-control" id="homeHeroDesc" placeholder="Enter hero description">
-          </div>
-          <button type="submit" class="btn btn-primary">Save Home Content</button>
-        </form>
+      <!-- Default Dashboard Content -->
+      <div class="dashboard">
+        <h3>Welcome to the Admin Dashboard</h3>
+        <p>Select a page from the menu to edit its content.</p>
       </div>
-      
-      <!-- HEADER Section -->
-      <div id="header" class="content-section d-none">
-        <h4>Header Content</h4>
-        <form id="headerForm">
-          <div class="form-group">
-            <label for="headerLogoIcon">Logo Icon Class</label>
-            <input type="text" class="form-control" id="headerLogoIcon" placeholder="e.g. fas fa-briefcase">
-          </div>
-          <div class="form-group">
-            <label for="headerSearchPlaceholder">Search Placeholder</label>
-            <input type="text" class="form-control" id="headerSearchPlaceholder" placeholder="e.g. Search products...">
-          </div>
-          <div class="form-group">
-            <label for="headerSupportLink">Support Link URL</label>
-            <input type="text" class="form-control" id="headerSupportLink" placeholder="e.g. support.html">
-          </div>
-          <button type="submit" class="btn btn-primary">Save Header Content</button>
-        </form>
-      </div>
-      
-      <!-- E-COMMERCE Section -->
-      <div id="ecommerce" class="content-section d-none">
-        <h4>E-commerce Page Content</h4>
-        <form id="ecommerceForm">
-          <!-- Hero Section Fields with 3 options: URL, Direct Upload (Imgur), Default -->
-          <div class="form-group">
-            <label for="ecomPageTitle">Page Title</label>
-            <input type="text" class="form-control" id="ecomPageTitle" placeholder="Enter page title" value="Default E-commerce Title">
-          </div>
-          <div class="form-group">
-            <label for="ecomHeroSubtitle">Hero Subtitle</label>
-            <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Enter hero subtitle" value="Your one‑stop shop for the latest trends & exclusive deals.">
-          </div>
-          <div class="form-group">
-            <label>E-commerce Hero Media Options</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="ecomHeroOption" id="ecomOptionURL" value="url" checked>
-              <label class="form-check-label" for="ecomOptionURL">Manual URL</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="ecomHeroOption" id="ecomOptionUpload" value="upload">
-              <label class="form-check-label" for="ecomOptionUpload">Direct Upload</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="ecomHeroOption" id="ecomOptionDefault" value="default">
-              <label class="form-check-label" for="ecomOptionDefault">Use Default</label>
-            </div>
-          </div>
-          <div class="form-group" id="ecomURLField">
-            <label for="ecomMediaURL">Hero Media URL</label>
-            <input type="text" class="form-control" id="ecomMediaURL" placeholder="Enter hero media URL" value="https://i.imgur.com/OXCPyAw.mp4">
-          </div>
-          <div class="form-group d-none" id="ecomUploadField">
-            <label for="ecomMediaFile">Upload Hero Media</label>
-            <input type="file" id="ecomMediaFile" accept="image/*">
-            <small>Auto-resized (max 1920×1080) &amp; uploaded via Imgur.</small>
-          </div>
-          <div class="form-group d-none" id="ecomDefaultField">
-            <p class="text-muted">Default hero media will be used.</p>
-          </div>
-          <!-- Carousel/Banner Items -->
-          <h5 class="mt-3">Carousel Items</h5>
-          <div id="carouselContainer">
-            <div class="list-editor-item">
-              <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-              <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL" value="https://via.placeholder.com/300x200">
-              <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title" value="Sample Carousel Item">
-              <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description" value="Sample description">
-              <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link" value="ecommerce.html">
-            </div>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn"><i class="fas fa-plus"></i> Add Carousel Item</button>
-          
-          <!-- Categories & Products Editor -->
-          <h5 class="mt-4">Categories & Products</h5>
-          <div id="categoriesContainer"></div>
-          <button type="button" class="btn btn-sm btn-outline-success" id="addCategoryBtn">
-            <i class="fas fa-plus"></i> Add Category
-          </button>
-          <button type="submit" class="btn btn-primary mt-3">Save E-commerce Content</button>
-        </form>
-      </div>
-      
-      <!-- DETAILS Section -->
-      <div id="details" class="content-section d-none">
-        <h4>Details Page Content</h4>
-        <form id="detailsForm">
-          <div class="form-group">
-            <label for="detailsHeading">Heading / Title</label>
-            <input type="text" class="form-control" id="detailsHeading" placeholder="e.g. Product Details">
-          </div>
-          <div class="form-group">
-            <label for="detailsNote">Extra Note</label>
-            <input type="text" class="form-control" id="detailsNote" placeholder="e.g. Additional product info">
-          </div>
-          <button type="submit" class="btn btn-primary">Save Details Content</button>
-        </form>
-      </div>
-      
-      <!-- PAYMENTS Section -->
-      <div id="payments" class="content-section d-none">
-        <h4>Payments Page Content</h4>
-        <form id="paymentsForm">
-          <div class="form-group">
-            <label for="paymentsHeading">Heading</label>
-            <input type="text" class="form-control" id="paymentsHeading" placeholder="e.g. Secure Payments">
-          </div>
-          <div class="form-group">
-            <label for="paymentsDesc">Description</label>
-            <textarea class="form-control" id="paymentsDesc" rows="3" placeholder="Enter description"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Save Payments Content</button>
-        </form>
-      </div>
-      
-      <!-- CHECKOUT Section -->
-      <div id="checkout" class="content-section d-none">
-        <h4>Checkout Page Content</h4>
-        <form id="checkoutForm">
-          <div class="form-group">
-            <label for="checkoutHeading">Heading</label>
-            <input type="text" class="form-control" id="checkoutHeading" placeholder="e.g. Complete Your Order">
-          </div>
-          <div class="form-group">
-            <label for="checkoutNote">Checkout Note</label>
-            <input type="text" class="form-control" id="checkoutNote" placeholder="e.g. Provide correct info">
-          </div>
-          <button type="submit" class="btn btn-primary">Save Checkout Content</button>
-        </form>
-      </div>
-      
-      <!-- DELIVERY Section -->
-      <div id="delivery" class="content-section d-none">
-        <h4>Delivery Page Content</h4>
-        <form id="deliveryForm">
-          <div class="form-group">
-            <label for="deliveryTitle">Title</label>
-            <input type="text" class="form-control" id="deliveryTitle" placeholder="e.g. Fast Delivery">
-          </div>
-          <div class="form-group">
-            <label for="deliveryDesc">Description</label>
-            <textarea class="form-control" id="deliveryDesc" rows="3" placeholder="Enter description"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Save Delivery Content</button>
-        </form>
-      </div>
-      
-      <!-- SUPPORT Section -->
-      <div id="support" class="content-section d-none">
-        <h4>Support Page Content</h4>
-        <form id="supportForm">
-          <div class="form-group">
-            <label for="supportTitle">Title</label>
-            <input type="text" class="form-control" id="supportTitle" placeholder="e.g. Customer Support">
-          </div>
-          <div class="form-group">
-            <label for="supportSubtitle">Subtitle</label>
-            <input type="text" class="form-control" id="supportSubtitle" placeholder="e.g. We are here to help">
-          </div>
-          <button type="submit" class="btn btn-primary">Save Support Content</button>
-        </form>
-      </div>
-      
-      <!-- CONTACT Section -->
-      <div id="contact" class="content-section d-none">
-        <h4>Contact Page Content</h4>
-        <form id="contactForm">
-          <div class="form-group">
-            <label for="contactHeading">Heading</label>
-            <input type="text" class="form-control" id="contactHeading" placeholder="e.g. Contact Us">
-          </div>
-          <div class="form-group">
-            <label for="contactInfo">Contact Info</label>
-            <textarea class="form-control" id="contactInfo" rows="3" placeholder="Phone, Email, Address..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Save Contact Content</button>
-        </form>
-      </div>
-      
-      <!-- ANALYTICS Section -->
-      <div id="analytics" class="content-section d-none">
-        <h4>Analytics Page Content</h4>
-        <form id="analyticsForm">
-          <div class="form-group">
-            <label for="analyticsHeading">Heading</label>
-            <input type="text" class="form-control" id="analyticsHeading" placeholder="e.g. Data-Driven Insights">
-          </div>
-          <div class="form-group">
-            <label for="analyticsDesc">Description</label>
-            <textarea class="form-control" id="analyticsDesc" rows="3" placeholder="Enter description"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Save Analytics Content</button>
-        </form>
-      </div>
-      
-      <!-- ABOUT Section -->
-      <div id="about" class="content-section d-none">
-        <h4>About Page Content</h4>
-        <form id="aboutForm">
-          <div class="form-group">
-            <label for="aboutHeading">Heading</label>
-            <input type="text" class="form-control" id="aboutHeading" placeholder="e.g. Learn More About Us">
-          </div>
-          <div class="form-group">
-            <label for="aboutDesc">Description</label>
-            <textarea class="form-control" id="aboutDesc" rows="3" placeholder="Enter description"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Save About Content</button>
-        </form>
-      </div>
-      
-    </div> <!-- End Main Content -->
-  </div> <!-- End Wrapper -->
-
-  <!-- --------------------- External Footer --------------------- -->
-  <div id="footer-placeholder"></div>
-
-  <!-- --------------------- Bootstrap Bundle JS --------------------- -->
+    </div>
+  </div>
+  
+  <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- --------------------- Admin Panel Script --------------------- -->
-  <script>
-    /* --------------------- Firebase Initialization --------------------- */
-    const firebaseConfig = {
-      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
-      authDomain: "e-commerce-pk.firebaseapp.com",
-      projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.firebasestorage.app",
-      messagingSenderId: "126517093225",
-      appId: "1:126517093225:web:c2352620c6d32c582513f8",
-      measurementId: "G-2G2DNCNNT3"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    /* --------------------- Sidebar Mobile Toggle --------------------- */
-    const hamburger = document.getElementById("hamburger");
-    const sidebar = document.getElementById("sidebar");
-    hamburger.addEventListener("click", () => { sidebar.classList.toggle("open"); });
-    document.addEventListener("click", (e) => {
-      if(window.innerWidth < 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target)){
-        sidebar.classList.remove("open");
-      }
-    });
-
-    /* --------------------- Sidebar Navigation --------------------- */
-    const pages = ["home", "header", "ecommerce", "details", "payments", "checkout", "delivery", "support", "contact", "analytics", "about"];
-    const pageIcons = {
-      home: "fas fa-home",
-      header: "fas fa-ellipsis-h",
-      ecommerce: "fas fa-shopping-bag",
-      details: "fas fa-info-circle",
-      payments: "fas fa-credit-card",
-      checkout: "fas fa-shopping-cart",
-      delivery: "fas fa-truck",
-      support: "fas fa-headset",
-      contact: "fas fa-envelope",
-      analytics: "fas fa-chart-line",
-      about: "fas fa-eye"
-    };
-    function renderPagesList() {
-      const pagesList = document.getElementById("pagesList");
-      pagesList.innerHTML = "";
-      pages.forEach((page, idx) => {
-        const li = document.createElement("li");
-        li.innerHTML = `<i class="${pageIcons[page] || 'fas fa-angle-right'}"></i> ${page}`;
-        li.dataset.target = page;
-        if(idx === 0) li.classList.add("active");
-        li.addEventListener("click", function() {
-          document.querySelectorAll("#pagesList li").forEach(item => item.classList.remove("active"));
-          this.classList.add("active");
-          document.getElementById("pageTitle").innerText = page;
-          document.querySelectorAll(".content-section").forEach(sec => {
-            sec.classList.remove("active");
-            sec.classList.add("d-none");
-          });
-          document.getElementById(page).classList.add("active");
-          document.getElementById(page).classList.remove("d-none");
-          if(window.innerWidth < 768) sidebar.classList.remove("open");
-        });
-        pagesList.appendChild(li);
-      });
-    }
-    renderPagesList();
-    document.getElementById("pageTitle").innerText = pages[0];
-
-    /* --------------------- Remove Item (for dynamic lists) --------------------- */
-    function removeItem(element) {
-      element.parentNode.remove();
-    }
-
-    /* --------------------- E-commerce Section: Add Carousel Item --------------------- */
-    document.getElementById("addCarouselBtn").addEventListener("click", () => {
-      const container = document.getElementById("carouselContainer");
-      const div = document.createElement("div");
-      div.classList.add("list-editor-item");
-      div.innerHTML = `
-        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-        <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL">
-        <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title">
-        <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description">
-        <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link">
-      `;
-      container.appendChild(div);
-    });
-
-    /* --------------------- E-commerce Section: Add Category & Products --------------------- */
-    document.getElementById("addCategoryBtn").addEventListener("click", () => {
-      const container = document.getElementById("categoriesContainer");
-      const div = document.createElement("div");
-      div.classList.add("category-block");
-      div.innerHTML = `
-        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-        <div class="form-group">
-          <label class="category-title">Category Name</label>
-          <input type="text" class="form-control mb-2" name="categoryName" placeholder="e.g. Countdown Sales">
-        </div>
-        <div class="productsContainer"></div>
-        <button type="button" class="btn btn-sm btn-outline-info addProductBtn">+ Add Product</button>
-      `;
-      container.appendChild(div);
-      div.querySelector(".addProductBtn").addEventListener("click", () => {
-        const prodContainer = div.querySelector(".productsContainer");
-        const prodDiv = document.createElement("div");
-        prodDiv.classList.add("product-block");
-        prodDiv.innerHTML = `
-          <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-          <div class="form-group mb-1">
-            <label>Product Name</label>
-            <input type="text" class="form-control" name="prodName" placeholder="e.g. Smartphone A">
-          </div>
-          <div class="form-group mb-1">
-            <label>Original Price</label>
-            <input type="text" class="form-control" name="prodOriginalPrice" placeholder="e.g. PKR 999">
-          </div>
-          <div class="form-group mb-1">
-            <label>Discount (%)</label>
-            <input type="text" class="form-control" name="prodDiscount" placeholder="e.g. 10%">
-          </div>
-          <div class="form-group mb-1">
-            <label>New Price</label>
-            <input type="text" class="form-control" name="prodNewPrice" placeholder="e.g. PKR 899">
-          </div>
-          <div class="form-group mb-1">
-            <label>Description</label>
-            <input type="text" class="form-control" name="prodDesc" placeholder="Short description">
-          </div>
-          <div class="form-group mb-1">
-            <label>Image URL</label>
-            <input type="text" class="form-control" name="prodImage" placeholder="https://...">
-          </div>
-          <div class="form-group mb-1">
-            <label>Rating</label>
-            <input type="number" class="form-control" name="prodRating" placeholder="e.g. 4.5">
-          </div>
-          <div class="form-group mb-1">
-            <label>Added Count</label>
-            <input type="text" class="form-control" name="prodAdded" placeholder="e.g. 500">
-          </div>
-          <div class="form-group mb-1">
-            <label>Sold Count</label>
-            <input type="text" class="form-control" name="prodSold" placeholder="e.g. 3k">
-          </div>
-          <div class="form-group mb-1">
-            <label>Stock</label>
-            <input type="number" class="form-control" name="prodStock" placeholder="e.g. 20">
-          </div>
-        `;
-        prodContainer.appendChild(prodDiv);
-      });
-    });
-
-    /* --------------------- Setup Hero Media Option Radios (E-commerce) --------------------- */
-    function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
-      const radios = document.getElementsByName(radioName);
-      radios.forEach(radio => {
-        radio.addEventListener("change", function() {
-          document.getElementById(urlFieldId).classList.add("d-none");
-          document.getElementById(uploadFieldId).classList.add("d-none");
-          document.getElementById(defaultFieldId).classList.add("d-none");
-          if(this.value === "url") {
-            document.getElementById(urlFieldId).classList.remove("d-none");
-          } else if(this.value === "upload") {
-            document.getElementById(uploadFieldId).classList.remove("d-none");
-          } else if(this.value === "default") {
-            document.getElementById(defaultFieldId).classList.remove("d-none");
-          }
-        });
-      });
-    }
-    setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
-
-    /* --------------------- Imgur Upload Function --------------------- */
-    function handleImageUpload(file, maxWidth, maxHeight, callback) {
-      if(!file) return;
-      const reader = new FileReader();
-      const img = new Image();
-      reader.onload = (e) => { img.src = e.target.result; };
-      reader.readAsDataURL(file);
-      img.onload = () => {
-        let w = img.width, h = img.height;
-        if(w > h && w > maxWidth) { h = Math.floor(h * maxWidth / w); w = maxWidth; }
-        else if(h > maxHeight) { w = Math.floor(w * maxHeight / h); h = maxHeight; }
-        const canvas = document.createElement("canvas");
-        canvas.width = w; canvas.height = h;
-        canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-        canvas.toBlob((blob) => {
-          const reader2 = new FileReader();
-          reader2.onloadend = () => {
-            const base64data = reader2.result.split(',')[1];
-            const clientId = "048d9400ce02b71";
-            const formData = new FormData();
-            formData.append("image", base64data);
-            fetch("https://api.imgur.com/3/image", {
-              method: "POST",
-              headers: { Authorization: "Client-ID " + clientId },
-              body: formData
-            })
-            .then(res => res.json())
-            .then(result => {
-              if(result.success) { callback(result.data.link); }
-              else { alert("Upload failed: " + result.data.error); }
-            })
-            .catch(err => {
-              alert("Error uploading image: " + err.message);
-              console.error("Imgur upload error:", err);
-            });
-          };
-          reader2.readAsDataURL(blob);
-        }, "image/jpeg", 0.8);
-      };
-    }
-    const ecomMediaFile = document.getElementById("ecomMediaFile");
-    if(ecomMediaFile) {
-      ecomMediaFile.addEventListener("change", function() {
-        handleImageUpload(this.files[0], 1920, 1080, (imageUrl) => {
-          alert("E-commerce hero media uploaded!\n" + imageUrl);
-          document.getElementById("ecomMediaURL").value = imageUrl;
-        });
-      });
-    }
-
-    /* --------------------- Firestore Save Helpers --------------------- */
-    function saveFormData(formId, docId) {
-      const form = document.getElementById(formId);
-      if(!form) return;
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const data = {};
-        formData.forEach((value, key) => { data[key] = value.trim(); });
-        db.collection("pages").doc(docId).set(data, { merge: true })
-          .then(() => { alert(docId + " content saved successfully!"); })
-          .catch(err => { alert("Error saving " + docId + ": " + err.message); });
-      });
-    }
-    // Save simple sections
-    saveFormData("homeForm", "home");
-    saveFormData("headerForm", "header");
-    saveFormData("detailsForm", "details");
-    saveFormData("paymentsForm", "payments");
-    saveFormData("checkoutForm", "checkout");
-    saveFormData("deliveryForm", "delivery");
-    saveFormData("supportForm", "support");
-    saveFormData("contactForm", "contact");
-    saveFormData("analyticsForm", "analytics");
-    saveFormData("aboutForm", "about");
-
-    /* --------------------- Custom Save for E-commerce Section --------------------- */
-    function saveEcommerce() {
-      const form = document.getElementById("ecommerceForm");
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        // Gather hero data
-        const pageTitle = document.getElementById("ecomPageTitle").value.trim();
-        const heroSubtitle = document.getElementById("ecomHeroSubtitle").value.trim();
-        const heroMediaURL = document.getElementById("ecomMediaURL").value.trim();
-        // Gather carousel items
-        const carouselItems = [];
-        document.querySelectorAll("#carouselContainer .list-editor-item").forEach(item => {
-          const obj = {};
-          item.querySelectorAll("input").forEach(inp => { obj[inp.name] = inp.value.trim(); });
-          carouselItems.push(obj);
-        });
-        // Gather categories & products
-        const categoriesObj = {};
-        document.querySelectorAll("#categoriesContainer .category-block").forEach(catBlock => {
-          const catName = (catBlock.querySelector("[name='categoryName']")?.value || "Unnamed Category").trim();
-          const productsArray = [];
-          catBlock.querySelectorAll(".product-block").forEach(prodBlock => {
-            const p = {};
-            p.name = (prodBlock.querySelector("[name='prodName']")?.value || "").trim();
-            p.originalPrice = (prodBlock.querySelector("[name='prodOriginalPrice']")?.value || "").trim();
-            p.discount = (prodBlock.querySelector("[name='prodDiscount']")?.value || "").trim();
-            p.newPrice = (prodBlock.querySelector("[name='prodNewPrice']")?.value || "").trim();
-            p.description = (prodBlock.querySelector("[name='prodDesc']")?.value || "").trim();
-            p.image = (prodBlock.querySelector("[name='prodImage']")?.value || "").trim();
-            p.rating = parseFloat(prodBlock.querySelector("[name='prodRating']")?.value || "0");
-            p.added = (prodBlock.querySelector("[name='prodAdded']")?.value || "0").trim();
-            p.sold = (prodBlock.querySelector("[name='prodSold']")?.value || "0").trim();
-            p.stock = parseInt(prodBlock.querySelector("[name='prodStock']")?.value || "0");
-            productsArray.push(p);
-          });
-          categoriesObj[catName] = productsArray;
-        });
-        const data = {
-          pageTitle,
-          heroSubtitle,
-          mediaURL: heroMediaURL,
-          carouselItems,
-          productData: categoriesObj
-        };
-        db.collection("pages").doc("ecommerce").set(data, { merge: true })
-          .then(() => { alert("E-commerce content saved successfully!"); })
-          .catch(err => { alert("Error saving ecommerce: " + err.message); });
-      });
-    }
-    saveEcommerce();
-  </script>
 </body>
 </html>
