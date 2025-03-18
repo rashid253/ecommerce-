@@ -1,58 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Admin Header</title>
-  <style>
-    /* Minimal inline styles for admin header */
-    .admin-header {
-      background: #fff;
-      padding: 10px 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .admin-header .left-section {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .admin-header .hamburger {
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #2c3e50;
-    }
-    .admin-header .brand {
-      font-size: 1rem;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-    .admin-header .center-section {
-      flex: 1;
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.2rem;
-      color: #2c3e50;
-    }
-    .admin-header .right-section {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-  </style>
-</head>
-<body>
-  <header class="admin-header">
-    <div class="left-section">
-      <i class="fas fa-bars hamburger" id="hamburger"></i>
-      <span class="brand">Faiqtech Sol</span>
-    </div>
-    <div class="center-section" id="pageTitle">Dashboard</div>
-    <div class="right-section">
-      <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-user"></i> Admin</button>
-      <button class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </div>
-  </header>
-</body>
-</html>
+<!-- In your admin file's body, at the very top: -->
+<div id="admin-header-placeholder"></div>
+
+<script>
+  function loadHTML(containerId, filePath) {
+    fetch(filePath)
+      .then(response => response.text())
+      .then(html => { document.getElementById(containerId).innerHTML = html; })
+      .catch(error => console.error("Error loading " + filePath, error));
+  }
+  document.addEventListener("DOMContentLoaded", function () {
+    loadHTML("admin-header-placeholder", "admin_header.html");
+  });
+</script>
