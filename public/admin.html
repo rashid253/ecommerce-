@@ -3,22 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comprehensive Admin Panel</title>
+  <title>Admin Panel – Comprehensive Content Editor</title>
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <!-- Bootstrap 5 & Font Awesome -->
+  <!-- Bootstrap 5 CSS & Font Awesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Basic Reset & Layout */
+    /* Global Reset & Layout */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
     body { font-family: Arial, sans-serif; display: flex; flex-direction: column; }
-
     /* Top Bar */
     .topbar {
       display: flex;
@@ -33,10 +29,8 @@
     .hamburger { font-size: 1.5rem; cursor: pointer; color: #2c3e50; }
     .topbar-center { flex: 1; text-align: center; font-weight: bold; }
     .topbar-right { display: flex; align-items: center; gap: 8px; }
-
     /* Wrapper for Sidebar + Content */
     .wrapper { flex: 1; display: flex; overflow: hidden; }
-
     /* Sidebar */
     .sidebar {
       width: 250px;
@@ -57,10 +51,8 @@
     }
     .sidebar ul li i { margin-right: 8px; }
     .sidebar ul li:hover, .sidebar ul li.active { background: #34495e; }
-
     /* Content Area */
     .content { flex: 1; overflow-y: auto; padding: 15px; }
-
     /* Mobile Responsiveness */
     @media (max-width: 767.98px) {
       .sidebar {
@@ -73,15 +65,13 @@
       }
       .sidebar.open { transform: translateX(0); }
     }
-
     /* Content Sections */
     .content-section { display: none; margin-top: 10px; }
     .content-section.active { display: block; }
+    .d-none { display: none !important; }
     .form-group { margin-bottom: 15px; }
     .form-check { margin-bottom: 5px; }
-    .d-none { display: none !important; }
-
-    /* Simple dynamic list styles */
+    /* Dynamic List Editor for Carousel, Categories, Products */
     .list-editor-item, .category-block, .product-block {
       border: 1px solid #ddd;
       padding: 10px;
@@ -95,12 +85,9 @@
       top: 5px; right: 5px;
       color: red; cursor: pointer;
     }
-    .category-block {
-      background: #fafafa;
-    }
+    .category-block { background: #fafafa; }
     .category-block .category-title {
-      font-weight: bold;
-      margin-bottom: 8px;
+      font-weight: bold; margin-bottom: 8px;
     }
   </style>
 </head>
@@ -116,37 +103,46 @@
       <button class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </div>
-
+  
   <!-- Wrapper -->
   <div class="wrapper">
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
       <h2>Pages</h2>
-      <ul id="pagesList"></ul>
+      <ul id="pagesList">
+        <li data-target="home" class="active"><i class="fas fa-home"></i> Home</li>
+        <li data-target="header"><i class="fas fa-ellipsis-h"></i> Header</li>
+        <li data-target="ecommerce"><i class="fas fa-shopping-bag"></i> E-commerce</li>
+        <li data-target="details"><i class="fas fa-info-circle"></i> Details</li>
+        <li data-target="payments"><i class="fas fa-credit-card"></i> Payments</li>
+        <li data-target="checkout"><i class="fas fa-shopping-cart"></i> Checkout</li>
+        <li data-target="delivery"><i class="fas fa-truck"></i> Delivery</li>
+        <li data-target="support"><i class="fas fa-headset"></i> Support</li>
+        <li data-target="contact"><i class="fas fa-envelope"></i> Contact</li>
+      </ul>
     </nav>
-
+    
     <!-- Main Content Area -->
     <div class="content" id="mainContent">
-
       <!-- HOME Section -->
-      <div id="home" class="content-section">
-        <h4>Home Page</h4>
+      <div id="home" class="content-section active">
+        <h4>Home Page Content</h4>
         <form id="homeForm">
           <div class="form-group">
             <label for="homeHeroTitle">Hero Title</label>
-            <input type="text" class="form-control" id="homeHeroTitle" placeholder="e.g. Welcome to MyBusiness">
+            <input type="text" class="form-control" id="homeHeroTitle" placeholder="Enter hero title">
           </div>
           <div class="form-group">
             <label for="homeHeroDesc">Hero Description</label>
-            <input type="text" class="form-control" id="homeHeroDesc" placeholder="e.g. Best services in town">
+            <input type="text" class="form-control" id="homeHeroDesc" placeholder="Enter hero description">
           </div>
           <button type="submit" class="btn btn-primary">Save Home Content</button>
         </form>
       </div>
-
+      
       <!-- HEADER Section -->
-      <div id="header" class="content-section">
-        <h4>Header</h4>
+      <div id="header" class="content-section d-none">
+        <h4>Header Content</h4>
         <form id="headerForm">
           <div class="form-group">
             <label for="headerLogoIcon">Logo Icon Class</label>
@@ -163,19 +159,19 @@
           <button type="submit" class="btn btn-primary">Save Header Content</button>
         </form>
       </div>
-
+      
       <!-- E-COMMERCE Section -->
-      <div id="ecommerce" class="content-section">
-        <h4>E-commerce Page</h4>
+      <div id="ecommerce" class="content-section d-none">
+        <h4>E-commerce Page Content</h4>
         <form id="ecommerceForm">
-          <!-- Ecom Hero Fields -->
+          <!-- Hero Section Fields -->
           <div class="form-group">
             <label for="ecomPageTitle">Page Title</label>
-            <input type="text" class="form-control" id="ecomPageTitle" placeholder="Default E-commerce Title">
+            <input type="text" class="form-control" id="ecomPageTitle" placeholder="Enter page title" value="Default E-commerce Title">
           </div>
           <div class="form-group">
             <label for="ecomHeroSubtitle">Hero Subtitle</label>
-            <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Your one‑stop shop for the latest trends & deals.">
+            <input type="text" class="form-control" id="ecomHeroSubtitle" placeholder="Enter hero subtitle" value="Your one‑stop shop for the latest trends & exclusive deals.">
           </div>
           <div class="form-group">
             <label>E-commerce Hero Media Options</label>
@@ -194,62 +190,60 @@
           </div>
           <div class="form-group" id="ecomURLField">
             <label for="ecomMediaURL">Hero Media URL</label>
-            <input type="text" class="form-control" id="ecomMediaURL" value="https://i.imgur.com/OXCPyAw.mp4">
+            <input type="text" class="form-control" id="ecomMediaURL" placeholder="Enter hero media URL" value="https://i.imgur.com/OXCPyAw.mp4">
           </div>
           <div class="form-group d-none" id="ecomUploadField">
             <label for="ecomMediaFile">Upload Hero Media</label>
             <input type="file" id="ecomMediaFile" accept="image/*">
-            <small>Auto-resized & uploaded via Imgur.</small>
+            <small>Auto-resized (max 1920×1080) &amp; uploaded via Imgur.</small>
           </div>
           <div class="form-group d-none" id="ecomDefaultField">
             <p class="text-muted">Default hero media will be used.</p>
           </div>
-
-          <!-- Carousel Items -->
+          
+          <!-- Carousel/Banner Items -->
           <h5 class="mt-3">Carousel Items</h5>
           <div id="carouselContainer">
             <div class="list-editor-item">
               <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-              <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Image URL" value="https://via.placeholder.com/300x200">
-              <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Title" value="Sample Carousel Item">
-              <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Description" value="Sample description">
-              <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Link" value="ecommerce.html">
+              <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL" value="https://via.placeholder.com/300x200">
+              <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title" value="Sample Carousel Item">
+              <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description" value="Sample description">
+              <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link" value="ecommerce.html">
             </div>
           </div>
-          <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn">
-            <i class="fas fa-plus"></i> Add Carousel Item
-          </button>
-
-          <!-- Category & Products (User-friendly) -->
+          <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn"><i class="fas fa-plus"></i> Add Carousel Item</button>
+          
+          <!-- Categories & Products -->
           <h5 class="mt-4">Categories & Products</h5>
           <div id="categoriesContainer"></div>
           <button type="button" class="btn btn-sm btn-outline-success" id="addCategoryBtn">
             <i class="fas fa-plus"></i> Add Category
           </button>
-
+          
           <button type="submit" class="btn btn-primary mt-3">Save E-commerce Content</button>
         </form>
       </div>
-
+      
       <!-- DETAILS Section -->
-      <div id="details" class="content-section">
-        <h4>Details Page</h4>
+      <div id="details" class="content-section d-none">
+        <h4>Details Page Content</h4>
         <form id="detailsForm">
           <div class="form-group">
             <label for="detailsHeading">Heading / Title</label>
             <input type="text" class="form-control" id="detailsHeading" placeholder="e.g. Product Details">
           </div>
           <div class="form-group">
-            <label for="detailsNote">Note or Extra Text</label>
-            <input type="text" class="form-control" id="detailsNote" placeholder="e.g. Lorem ipsum...">
+            <label for="detailsNote">Extra Note</label>
+            <input type="text" class="form-control" id="detailsNote" placeholder="e.g. Additional product info">
           </div>
           <button type="submit" class="btn btn-primary">Save Details Content</button>
         </form>
       </div>
-
+      
       <!-- PAYMENTS Section -->
-      <div id="payments" class="content-section">
-        <h4>Payments Page</h4>
+      <div id="payments" class="content-section d-none">
+        <h4>Payments Page Content</h4>
         <form id="paymentsForm">
           <div class="form-group">
             <label for="paymentsHeading">Heading</label>
@@ -257,15 +251,15 @@
           </div>
           <div class="form-group">
             <label for="paymentsDesc">Description</label>
-            <textarea class="form-control" id="paymentsDesc" rows="3"></textarea>
+            <textarea class="form-control" id="paymentsDesc" rows="3" placeholder="Enter description"></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Save Payments Content</button>
         </form>
       </div>
-
+      
       <!-- CHECKOUT Section -->
-      <div id="checkout" class="content-section">
-        <h4>Checkout Page</h4>
+      <div id="checkout" class="content-section d-none">
+        <h4>Checkout Page Content</h4>
         <form id="checkoutForm">
           <div class="form-group">
             <label for="checkoutHeading">Heading</label>
@@ -278,10 +272,10 @@
           <button type="submit" class="btn btn-primary">Save Checkout Content</button>
         </form>
       </div>
-
+      
       <!-- DELIVERY Section -->
-      <div id="delivery" class="content-section">
-        <h4>Delivery Page</h4>
+      <div id="delivery" class="content-section d-none">
+        <h4>Delivery Page Content</h4>
         <form id="deliveryForm">
           <div class="form-group">
             <label for="deliveryTitle">Title</label>
@@ -289,15 +283,15 @@
           </div>
           <div class="form-group">
             <label for="deliveryDesc">Description</label>
-            <textarea class="form-control" id="deliveryDesc" rows="3"></textarea>
+            <textarea class="form-control" id="deliveryDesc" rows="3" placeholder="Enter description"></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Save Delivery Content</button>
         </form>
       </div>
-
+      
       <!-- SUPPORT Section -->
-      <div id="support" class="content-section">
-        <h4>Support Page</h4>
+      <div id="support" class="content-section d-none">
+        <h4>Support Page Content</h4>
         <form id="supportForm">
           <div class="form-group">
             <label for="supportTitle">Title</label>
@@ -305,15 +299,15 @@
           </div>
           <div class="form-group">
             <label for="supportSubtitle">Subtitle</label>
-            <input type="text" class="form-control" id="supportSubtitle" placeholder="e.g. We are here to help you.">
+            <input type="text" class="form-control" id="supportSubtitle" placeholder="e.g. We are here to help">
           </div>
           <button type="submit" class="btn btn-primary">Save Support Content</button>
         </form>
       </div>
-
+      
       <!-- CONTACT Section -->
-      <div id="contact" class="content-section">
-        <h4>Contact Page</h4>
+      <div id="contact" class="content-section d-none">
+        <h4>Contact Page Content</h4>
         <form id="contactForm">
           <div class="form-group">
             <label for="contactHeading">Heading</label>
@@ -326,27 +320,28 @@
           <button type="submit" class="btn btn-primary">Save Contact Content</button>
         </form>
       </div>
-    </div>
-  </div>
+
+    </div> <!-- End Main Content -->
+  </div> <!-- End Wrapper -->
 
   <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
+
   <script>
     /* Firebase Initialization */
     const firebaseConfig = {
-      apiKey: "AIzaSy... (Your Key)...",
+      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
       projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.appspot.com",
+      storageBucket: "e-commerce-pk.firebasestorage.app",
       messagingSenderId: "126517093225",
-      appId: "1:126517093225:web:....",
+      appId: "1:126517093225:web:c2352620c6d32c582513f8",
       measurementId: "G-2G2DNCNNT3"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    /* Sidebar Toggle for Mobile */
+    /* Sidebar Mobile Toggle */
     const hamburger = document.getElementById("hamburger");
     const sidebar = document.getElementById("sidebar");
     hamburger.addEventListener("click", () => { sidebar.classList.toggle("open"); });
@@ -356,11 +351,8 @@
       }
     });
 
-    /* Pages & Icons */
-    const pages = [
-      "home", "header", "ecommerce", "details", "payments",
-      "checkout", "delivery", "support", "contact"
-    ];
+    /* Sidebar Navigation */
+    const pages = ["home", "header", "ecommerce", "details", "payments", "checkout", "delivery", "support", "contact"];
     const pageIcons = {
       home: "fas fa-home",
       header: "fas fa-ellipsis-h",
@@ -372,8 +364,6 @@
       support: "fas fa-headset",
       contact: "fas fa-envelope"
     };
-
-    /* Render Sidebar Items */
     function renderPagesList() {
       const pagesList = document.getElementById("pagesList");
       pagesList.innerHTML = "";
@@ -398,107 +388,97 @@
       });
     }
     renderPagesList();
-    /* Set first page active by default */
-    document.getElementById(pages[0]).classList.add("active");
-    document.getElementById(pages[0]).classList.remove("d-none");
+    // Set first page active by default
     document.getElementById("pageTitle").innerText = pages[0];
 
-    /* Remove item function (for carousel items, categories, products, etc.) */
-    function removeItem(span) {
-      span.parentNode.remove();
+    /* Remove item function for dynamic lists */
+    function removeItem(element) {
+      element.parentNode.remove();
     }
 
-    /* E-commerce: Add new carousel item */
-    const addCarouselBtn = document.getElementById("addCarouselBtn");
-    if(addCarouselBtn) {
-      addCarouselBtn.addEventListener("click", () => {
-        const container = document.getElementById("carouselContainer");
-        const div = document.createElement("div");
-        div.classList.add("list-editor-item");
-        div.innerHTML = `
-          <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-          <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Image URL">
-          <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Title">
-          <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Description">
-          <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Link">
-        `;
-        container.appendChild(div);
-      });
-    }
+    /* Add Carousel Item */
+    document.getElementById("addCarouselBtn").addEventListener("click", () => {
+      const container = document.getElementById("carouselContainer");
+      const div = document.createElement("div");
+      div.classList.add("list-editor-item");
+      div.innerHTML = `
+        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
+        <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Image URL">
+        <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Title">
+        <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Description">
+        <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Link">
+      `;
+      container.appendChild(div);
+    });
 
-    /* E-commerce: Add new category block */
-    const addCategoryBtn = document.getElementById("addCategoryBtn");
-    if(addCategoryBtn) {
-      addCategoryBtn.addEventListener("click", () => {
-        const container = document.getElementById("categoriesContainer");
-        const div = document.createElement("div");
-        div.classList.add("category-block");
-        div.innerHTML = `
+    /* Add Category Block (with nested products) */
+    document.getElementById("addCategoryBtn").addEventListener("click", () => {
+      const container = document.getElementById("categoriesContainer");
+      const div = document.createElement("div");
+      div.classList.add("category-block");
+      div.innerHTML = `
+        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
+        <div class="form-group">
+          <label class="category-title">Category Name</label>
+          <input type="text" class="form-control mb-2" name="categoryName" placeholder="e.g. Countdown Sales">
+        </div>
+        <div class="productsContainer"></div>
+        <button type="button" class="btn btn-sm btn-outline-info addProductBtn">+ Add Product</button>
+      `;
+      container.appendChild(div);
+      // Attach event for add product button in this category block
+      div.querySelector(".addProductBtn").addEventListener("click", () => {
+        const prodContainer = div.querySelector(".productsContainer");
+        const prodDiv = document.createElement("div");
+        prodDiv.classList.add("product-block");
+        prodDiv.innerHTML = `
           <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-          <div class="form-group">
-            <label class="category-title">Category Name</label>
-            <input type="text" class="form-control mb-2" name="categoryName" placeholder="e.g. Countdown Sales">
+          <div class="form-group mb-1">
+            <label>Product Name</label>
+            <input type="text" class="form-control" name="prodName" placeholder="e.g. Smartphone A">
           </div>
-          <div class="productsContainer"></div>
-          <button type="button" class="btn btn-sm btn-outline-info addProductBtn">+ Add Product</button>
+          <div class="form-group mb-1">
+            <label>Original Price</label>
+            <input type="text" class="form-control" name="prodOriginalPrice" placeholder="e.g. PKR 999">
+          </div>
+          <div class="form-group mb-1">
+            <label>Discount (%)</label>
+            <input type="text" class="form-control" name="prodDiscount" placeholder="e.g. 10%">
+          </div>
+          <div class="form-group mb-1">
+            <label>New Price</label>
+            <input type="text" class="form-control" name="prodNewPrice" placeholder="e.g. PKR 899">
+          </div>
+          <div class="form-group mb-1">
+            <label>Description</label>
+            <input type="text" class="form-control" name="prodDesc" placeholder="Short description">
+          </div>
+          <div class="form-group mb-1">
+            <label>Image URL</label>
+            <input type="text" class="form-control" name="prodImage" placeholder="https://...">
+          </div>
+          <div class="form-group mb-1">
+            <label>Rating</label>
+            <input type="number" class="form-control" name="prodRating" placeholder="e.g. 4.5">
+          </div>
+          <div class="form-group mb-1">
+            <label>Added Count</label>
+            <input type="text" class="form-control" name="prodAdded" placeholder="e.g. 500">
+          </div>
+          <div class="form-group mb-1">
+            <label>Sold Count</label>
+            <input type="text" class="form-control" name="prodSold" placeholder="e.g. 3k">
+          </div>
+          <div class="form-group mb-1">
+            <label>Stock</label>
+            <input type="number" class="form-control" name="prodStock" placeholder="e.g. 20">
+          </div>
         `;
-        container.appendChild(div);
-
-        // Add event listener for "Add Product"
-        const addProductBtn = div.querySelector(".addProductBtn");
-        addProductBtn.addEventListener("click", () => {
-          const productsContainer = div.querySelector(".productsContainer");
-          const productDiv = document.createElement("div");
-          productDiv.classList.add("product-block");
-          productDiv.innerHTML = `
-            <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
-            <div class="form-group mb-1">
-              <label>Product Name</label>
-              <input type="text" class="form-control" name="prodName" placeholder="e.g. Smartphone A">
-            </div>
-            <div class="form-group mb-1">
-              <label>Original Price</label>
-              <input type="text" class="form-control" name="prodOriginalPrice" placeholder="e.g. PKR 999">
-            </div>
-            <div class="form-group mb-1">
-              <label>Discount (%)</label>
-              <input type="text" class="form-control" name="prodDiscount" placeholder="e.g. 10%">
-            </div>
-            <div class="form-group mb-1">
-              <label>New Price</label>
-              <input type="text" class="form-control" name="prodNewPrice" placeholder="e.g. PKR 899">
-            </div>
-            <div class="form-group mb-1">
-              <label>Description</label>
-              <input type="text" class="form-control" name="prodDesc" placeholder="Short description">
-            </div>
-            <div class="form-group mb-1">
-              <label>Image URL</label>
-              <input type="text" class="form-control" name="prodImage" placeholder="https://...">
-            </div>
-            <div class="form-group mb-1">
-              <label>Rating</label>
-              <input type="number" class="form-control" name="prodRating" placeholder="e.g. 4.5">
-            </div>
-            <div class="form-group mb-1">
-              <label>Added Count</label>
-              <input type="text" class="form-control" name="prodAdded" placeholder="e.g. 500">
-            </div>
-            <div class="form-group mb-1">
-              <label>Sold Count</label>
-              <input type="text" class="form-control" name="prodSold" placeholder="e.g. 3k">
-            </div>
-            <div class="form-group mb-1">
-              <label>Stock</label>
-              <input type="number" class="form-control" name="prodStock" placeholder="e.g. 20">
-            </div>
-          `;
-          productsContainer.appendChild(productDiv);
-        });
+        prodContainer.appendChild(prodDiv);
       });
-    }
+    });
 
-    /* Show/hide hero media fields for ecom */
+    /* Setup Hero Media Option Radios for E-commerce Section */
     function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
       const radios = document.getElementsByName(radioName);
       radios.forEach(radio => {
@@ -518,7 +498,7 @@
     }
     setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
 
-    /* Imgur upload function */
+    /* Imgur Upload Function */
     function handleImageUpload(file, maxWidth, maxHeight, callback) {
       if(!file) return;
       const reader = new FileReader();
@@ -536,7 +516,7 @@
           const reader2 = new FileReader();
           reader2.onloadend = () => {
             const base64data = reader2.result.split(',')[1];
-            const clientId = "048d9400ce02b71"; // your Imgur client ID
+            const clientId = "048d9400ce02b71";
             const formData = new FormData();
             formData.append("image", base64data);
             fetch("https://api.imgur.com/3/image", {
@@ -568,7 +548,7 @@
       });
     }
 
-    /* Firestore Save Helpers: Each form => doc named after page ID */
+    /* Save Form Data to Firestore */
     function saveFormData(formId, docId) {
       const form = document.getElementById(formId);
       if(!form) return;
@@ -582,7 +562,17 @@
           .catch(err => { alert("Error saving " + docId + ": " + err.message); });
       });
     }
-    /* E-commerce is more complex => custom handler */
+    // Save other sections using saveFormData
+    saveFormData("homeForm", "home");
+    saveFormData("headerForm", "header");
+    saveFormData("detailsForm", "details");
+    saveFormData("paymentsForm", "payments");
+    saveFormData("checkoutForm", "checkout");
+    saveFormData("deliveryForm", "delivery");
+    saveFormData("supportForm", "support");
+    saveFormData("contactForm", "contact");
+
+    /* Custom Save for E-commerce Section */
     function saveEcommerce() {
       const form = document.getElementById("ecommerceForm");
       form.addEventListener("submit", (e) => {
@@ -621,7 +611,6 @@
           });
           categoriesObj[catName] = productsArray;
         });
-        // Build final data
         const data = {
           pageTitle,
           heroSubtitle,
@@ -634,19 +623,8 @@
           .catch(err => { alert("Error saving ecommerce: " + err.message); });
       });
     }
-
-    /* Attach Save Handlers */
-    saveFormData("homeForm", "home");
-    saveFormData("headerForm", "header");
-    // details, payments, checkout, delivery, support, contact
-    saveFormData("detailsForm", "details");
-    saveFormData("paymentsForm", "payments");
-    saveFormData("checkoutForm", "checkout");
-    saveFormData("deliveryForm", "delivery");
-    saveFormData("supportForm", "support");
-    saveFormData("contactForm", "contact");
-    // E-commerce uses custom approach:
     saveEcommerce();
+
   </script>
 </body>
 </html>
