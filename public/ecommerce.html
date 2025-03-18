@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel – E-commerce Content Editor</title>
+  <title>Admin Panel – User‑Friendly E-commerce Editor</title>
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <!-- Bootstrap 5 CSS & Font Awesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
   <style>
-    /* Global Reset & Layout */
+    /* Basic Reset & Layout */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
     body { font-family: Arial, sans-serif; display: flex; flex-direction: column; }
+
     /* Top Bar */
     .topbar {
       display: flex;
@@ -29,8 +33,10 @@
     .hamburger { font-size: 1.5rem; cursor: pointer; color: #2c3e50; }
     .topbar-center { flex: 1; text-align: center; font-weight: bold; }
     .topbar-right { display: flex; align-items: center; gap: 8px; }
+
     /* Wrapper for Sidebar + Content */
     .wrapper { flex: 1; display: flex; overflow: hidden; }
+
     /* Sidebar */
     .sidebar {
       width: 250px;
@@ -51,8 +57,10 @@
     }
     .sidebar ul li i { margin-right: 8px; }
     .sidebar ul li:hover, .sidebar ul li.active { background: #34495e; }
+
     /* Content Area */
     .content { flex: 1; overflow-y: auto; padding: 15px; }
+
     /* Mobile Responsiveness */
     @media (max-width: 767.98px) {
       .sidebar {
@@ -65,14 +73,49 @@
       }
       .sidebar.open { transform: translateX(0); }
     }
+
     /* Content Sections */
     .content-section { display: none; margin-top: 10px; }
     .content-section.active { display: block; }
     .form-group { margin-bottom: 15px; }
     .form-check { margin-bottom: 5px; }
     .d-none { display: none !important; }
+
     /* Dynamic List Editor */
-    .list-editor-item { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+    .list-editor-item {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      position: relative;
+    }
+    .remove-item-btn {
+      position: absolute;
+      top: 5px; right: 5px;
+      color: red; cursor: pointer;
+    }
+
+    /* Sub-lists for categories and products */
+    .category-block {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      background: #fafafa;
+      position: relative;
+    }
+    .category-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .product-block {
+      border: 1px solid #ddd;
+      padding: 8px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      position: relative;
+      background: #fff;
+    }
   </style>
 </head>
 <body>
@@ -81,32 +124,31 @@
     <div class="topbar-left">
       <i class="fas fa-bars hamburger" id="hamburger"></i>
     </div>
-    <div class="topbar-center" id="pageTitle">Dashboard</div>
+    <div class="topbar-center" id="pageTitle">E-commerce Admin</div>
     <div class="topbar-right">
       <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-user"></i> Admin</button>
       <button class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </div>
-  
+
   <!-- Wrapper -->
   <div class="wrapper">
     <!-- Sidebar Navigation -->
     <nav class="sidebar" id="sidebar">
       <h2>Admin Panel</h2>
       <ul id="pagesList">
-        <!-- For now, we include only the Ecommerce section -->
         <li data-target="ecommerce" class="active"><i class="fas fa-shopping-bag"></i> E-commerce</li>
-        <!-- You can later add other pages like Home, Header, Details, Payments, etc. -->
+        <!-- You can add more sections (Home, Header, etc.) similarly -->
       </ul>
     </nav>
-    
+
     <!-- Main Content Area -->
     <div class="content" id="mainContent">
       <!-- E-commerce Section -->
       <div id="ecommerce" class="content-section active">
         <h4>E-commerce Page Content</h4>
         <form id="ecommerceForm">
-          <!-- Hero Section Fields -->
+          <!-- 1. Hero Section Fields -->
           <div class="form-group">
             <label for="ecomPageTitle">Page Title</label>
             <input type="text" class="form-control" id="ecomPageTitle" placeholder="Enter page title" value="Default E-commerce Title">
@@ -142,61 +184,36 @@
           <div class="form-group d-none" id="ecomDefaultField">
             <p class="text-muted">Default hero media will be used.</p>
           </div>
-          
-          <!-- Carousel/Banner Items -->
+
+          <!-- 2. Carousel / Banner Items -->
           <h5 class="mt-3">Carousel Items</h5>
           <div id="carouselContainer">
             <div class="list-editor-item">
+              <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
               <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL" value="https://via.placeholder.com/300x200">
               <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title" value="Sample Carousel Item">
               <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description" value="Sample description">
               <input type="text" class="form-control mb-1" name="carouselLink" placeholder="Carousel Link" value="ecommerce.html">
             </div>
           </div>
-          <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn"><i class="fas fa-plus"></i> Add Carousel Item</button>
-          
-          <!-- Product Data JSON Editor -->
-          <h5 class="mt-3">Product Data (JSON)</h5>
-          <div class="form-group">
-            <label for="productDataJSON">Paste JSON here</label>
-            <textarea class="form-control" id="productDataJSON" rows="5" placeholder='Paste valid JSON data here'>{
-  "Countdown Sales": [
-    {
-      "name": "Smartphone A",
-      "originalPrice": "PKR 999",
-      "discount": "10%",
-      "newPrice": "PKR 899",
-      "description": "High-performance smartphone.",
-      "image": "https://via.placeholder.com/300x200?text=Smartphone+A",
-      "rating": 4.5,
-      "added": "500",
-      "sold": "3k",
-      "stock": 20
-    }
-  ],
-  "Discount Offers": [
-    {
-      "name": "Headphones D",
-      "originalPrice": "PKR 700",
-      "discount": "15%",
-      "newPrice": "PKR 600",
-      "description": "Noise cancelling headphones.",
-      "image": "https://via.placeholder.com/300x200?text=Headphones+D",
-      "rating": 4,
-      "added": "350",
-      "sold": "2k",
-      "stock": 0
-    }
-  ]
-}</textarea>
-          </div>
+          <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn">
+            <i class="fas fa-plus"></i> Add Carousel Item
+          </button>
+
+          <!-- 3. Categories & Products (User-friendly, no raw JSON) -->
+          <h5 class="mt-4">Categories & Products</h5>
+          <div id="categoriesContainer"></div>
+          <button type="button" class="btn btn-sm btn-outline-success" id="addCategoryBtn">
+            <i class="fas fa-plus"></i> Add Category
+          </button>
+
+          <!-- Submit Button -->
           <button type="submit" class="btn btn-primary mt-3">Save E-commerce Content</button>
         </form>
       </div>
-      <!-- (Other sections like Header, Details, Payments, Checkout, Delivery, Support, Contact can be added similarly) -->
     </div>
   </div>
-  
+
   <!-- Bootstrap Bundle JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   
@@ -206,15 +223,15 @@
       apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
       projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.firebasestorage.app",
+      storageBucket: "e-commerce-pk.appspot.com",
       messagingSenderId: "126517093225",
       appId: "1:126517093225:web:c2352620c6d32c582513f8",
       measurementId: "G-2G2DNCNNT3"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    
-    /* Mobile Sidebar Toggle */
+
+    /* Sidebar Toggle for Mobile */
     const hamburger = document.getElementById("hamburger");
     const sidebar = document.getElementById("sidebar");
     hamburger.addEventListener("click", () => { sidebar.classList.toggle("open"); });
@@ -223,58 +240,22 @@
         sidebar.classList.remove("open");
       }
     });
-    
-    /* Sidebar Navigation (only Ecommerce for now) */
-    const pages = ["ecommerce"];
-    const pageIcons = { ecommerce: "fas fa-shopping-bag" };
-    function renderPagesList() {
-      const pagesList = document.getElementById("pagesList");
-      pagesList.innerHTML = "";
-      pages.forEach(page => {
-        const li = document.createElement("li");
-        li.innerHTML = `<i class="${pageIcons[page] || 'fas fa-angle-right'}"></i> ${page}`;
-        li.dataset.target = page;
-        li.addEventListener("click", function() {
-          document.querySelectorAll("#pagesList li").forEach(item => item.classList.remove("active"));
-          this.classList.add("active");
-          document.getElementById("pageTitle").innerText = page;
-          document.querySelectorAll(".content-section").forEach(sec => sec.classList.remove("active"));
-          document.querySelectorAll(".content-section").forEach(sec => sec.classList.add("d-none"));
-          document.getElementById(page).classList.add("active");
-          document.getElementById(page).classList.remove("d-none");
-          if(window.innerWidth < 768) sidebar.classList.remove("open");
-        });
-        pagesList.appendChild(li);
-      });
-    }
-    renderPagesList();
-    // Set default active section
+
+    /* Basic Sidebar Navigation (only one page: ecommerce) */
     document.querySelector("#pagesList li").classList.add("active");
-    document.getElementById("pageTitle").innerText = "ecommerce";
     
-    /* Form Submission – Save Ecommerce Data to Firestore */
-    function handleFormSubmit(formId, pageName, docId) {
-      const form = document.getElementById(formId);
-      if(!form) return;
-      form.addEventListener("submit", function(e) {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const data = {};
-        formData.forEach((value, key) => { data[key] = value; });
-        // For carousel items, you might want to convert them into an array (left as JSON text in this example)
-        db.collection("pages").doc(docId).set(data, { merge: true })
-        .then(() => { alert(`${pageName} content saved successfully!`); })
-        .catch(error => { alert(`Error saving ${pageName} content: ` + error.message); });
-      });
+    /* Remove item function (for carousel items) */
+    function removeItem(span) {
+      span.parentNode.remove();
     }
-    handleFormSubmit("ecommerceForm", "E-commerce", "ecommerce");
-    
-    /* Dynamic List Editor for Carousel Items */
+
+    /* Add new carousel item */
     document.getElementById("addCarouselBtn").addEventListener("click", () => {
       const container = document.getElementById("carouselContainer");
       const div = document.createElement("div");
       div.classList.add("list-editor-item");
       div.innerHTML = `
+        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
         <input type="text" class="form-control mb-1" name="carouselImageUrl" placeholder="Carousel Image URL">
         <input type="text" class="form-control mb-1" name="carouselTitle" placeholder="Carousel Title">
         <input type="text" class="form-control mb-1" name="carouselDesc" placeholder="Carousel Description">
@@ -282,8 +263,77 @@
       `;
       container.appendChild(div);
     });
-    
-    /* Setup Hero Media Option Radios for Ecommerce Section */
+
+    /* Add Category block */
+    document.getElementById("addCategoryBtn").addEventListener("click", () => {
+      const container = document.getElementById("categoriesContainer");
+      const div = document.createElement("div");
+      div.classList.add("category-block");
+      div.innerHTML = `
+        <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
+        <div class="form-group">
+          <label class="category-title">Category Name</label>
+          <input type="text" class="form-control mb-2" name="categoryName" placeholder="e.g. Countdown Sales">
+        </div>
+        <div class="productsContainer"></div>
+        <button type="button" class="btn btn-sm btn-outline-info addProductBtn">+ Add Product</button>
+      `;
+      container.appendChild(div);
+
+      // Add event listener for "Add Product" inside this new category
+      const addProductBtn = div.querySelector(".addProductBtn");
+      addProductBtn.addEventListener("click", () => {
+        const productsContainer = div.querySelector(".productsContainer");
+        const productDiv = document.createElement("div");
+        productDiv.classList.add("product-block");
+        productDiv.innerHTML = `
+          <span class="remove-item-btn" onclick="removeItem(this)">✕</span>
+          <div class="form-group mb-1">
+            <label>Product Name</label>
+            <input type="text" class="form-control" name="prodName" placeholder="e.g. Smartphone A">
+          </div>
+          <div class="form-group mb-1">
+            <label>Original Price</label>
+            <input type="text" class="form-control" name="prodOriginalPrice" placeholder="e.g. PKR 999">
+          </div>
+          <div class="form-group mb-1">
+            <label>Discount (%)</label>
+            <input type="text" class="form-control" name="prodDiscount" placeholder="e.g. 10%">
+          </div>
+          <div class="form-group mb-1">
+            <label>New Price</label>
+            <input type="text" class="form-control" name="prodNewPrice" placeholder="e.g. PKR 899">
+          </div>
+          <div class="form-group mb-1">
+            <label>Description</label>
+            <input type="text" class="form-control" name="prodDesc" placeholder="Short product description">
+          </div>
+          <div class="form-group mb-1">
+            <label>Image URL</label>
+            <input type="text" class="form-control" name="prodImage" placeholder="https://via.placeholder.com/300x200">
+          </div>
+          <div class="form-group mb-1">
+            <label>Rating</label>
+            <input type="number" class="form-control" name="prodRating" placeholder="e.g. 4.5">
+          </div>
+          <div class="form-group mb-1">
+            <label>Added Count</label>
+            <input type="text" class="form-control" name="prodAdded" placeholder="e.g. 500">
+          </div>
+          <div class="form-group mb-1">
+            <label>Sold Count</label>
+            <input type="text" class="form-control" name="prodSold" placeholder="e.g. 3k">
+          </div>
+          <div class="form-group mb-1">
+            <label>Stock</label>
+            <input type="number" class="form-control" name="prodStock" placeholder="e.g. 20">
+          </div>
+        `;
+        productsContainer.appendChild(productDiv);
+      });
+    });
+
+    /* Setup hero media option radios for E-commerce section */
     function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
       const radios = document.getElementsByName(radioName);
       radios.forEach(radio => {
@@ -302,8 +352,8 @@
       });
     }
     setupHeroRadios("ecomHeroOption", "ecomURLField", "ecomUploadField", "ecomDefaultField");
-    
-    /* Imgur Upload Function for Direct Media Uploads */
+
+    /* Imgur upload function for direct media uploads */
     function handleImageUpload(file, maxWidth, maxHeight, callback) {
       if(!file) return;
       const reader = new FileReader();
@@ -321,7 +371,7 @@
           const reader2 = new FileReader();
           reader2.onloadend = () => {
             const base64data = reader2.result.split(',')[1];
-            const clientId = "048d9400ce02b71";
+            const clientId = "048d9400ce02b71"; // your Imgur client ID
             const formData = new FormData();
             formData.append("image", base64data);
             fetch("https://api.imgur.com/3/image", {
@@ -343,7 +393,7 @@
         }, "image/jpeg", 0.8);
       };
     }
-    
+
     const ecomMediaFile = document.getElementById("ecomMediaFile");
     if(ecomMediaFile) {
       ecomMediaFile.addEventListener("change", function() {
@@ -353,6 +403,66 @@
         });
       });
     }
+
+    /* Final form submission – build the data object & save to Firestore */
+    const ecommerceForm = document.getElementById("ecommerceForm");
+    ecommerceForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      // 1) Gather hero section fields
+      const pageTitle = document.getElementById("ecomPageTitle").value.trim();
+      const heroSubtitle = document.getElementById("ecomHeroSubtitle").value.trim();
+      const heroMediaURL = document.getElementById("ecomMediaURL").value.trim();
+      
+      // 2) Gather carousel items
+      const carouselItems = [];
+      document.querySelectorAll("#carouselContainer .list-editor-item").forEach(item => {
+        const inputs = item.querySelectorAll("input");
+        const obj = {};
+        inputs.forEach(inp => { obj[inp.name] = inp.value.trim(); });
+        carouselItems.push(obj);
+      });
+
+      // 3) Gather categories & products
+      const categoriesObj = {}; // e.g. { "Countdown Sales": [ { name, originalPrice, ... }, ... ], ... }
+      document.querySelectorAll("#categoriesContainer .category-block").forEach(catBlock => {
+        const catNameInput = catBlock.querySelector("[name='categoryName']");
+        const categoryName = (catNameInput?.value || "Unnamed Category").trim();
+        const productsArray = [];
+        catBlock.querySelectorAll(".product-block").forEach(prodBlock => {
+          const p = {};
+          p.name = (prodBlock.querySelector("[name='prodName']")?.value || "").trim();
+          p.originalPrice = (prodBlock.querySelector("[name='prodOriginalPrice']")?.value || "").trim();
+          p.discount = (prodBlock.querySelector("[name='prodDiscount']")?.value || "").trim();
+          p.newPrice = (prodBlock.querySelector("[name='prodNewPrice']")?.value || "").trim();
+          p.description = (prodBlock.querySelector("[name='prodDesc']")?.value || "").trim();
+          p.image = (prodBlock.querySelector("[name='prodImage']")?.value || "").trim();
+          p.rating = parseFloat(prodBlock.querySelector("[name='prodRating']")?.value || "0");
+          p.added = (prodBlock.querySelector("[name='prodAdded']")?.value || "0").trim();
+          p.sold = (prodBlock.querySelector("[name='prodSold']")?.value || "0").trim();
+          p.stock = parseInt(prodBlock.querySelector("[name='prodStock']")?.value || "0");
+          productsArray.push(p);
+        });
+        categoriesObj[categoryName] = productsArray;
+      });
+
+      // Build final data object
+      const data = {
+        pageTitle: pageTitle,
+        heroSubtitle: heroSubtitle,
+        mediaURL: heroMediaURL,   // hero background
+        carouselItems: carouselItems, // array
+        productData: categoriesObj    // nested categories
+      };
+
+      // Save to Firestore under "pages/ecommerce"
+      db.collection("pages").doc("ecommerce").set(data, { merge: true })
+        .then(() => {
+          alert("E-commerce content saved successfully!");
+        })
+        .catch(error => {
+          alert("Error saving E-commerce content: " + error.message);
+        });
+    });
   </script>
 </body>
 </html>
