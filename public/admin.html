@@ -89,12 +89,18 @@
     }
     .remove-item-btn {
       position: absolute;
-      top: 5px; right: 5px;
-      color: red; cursor: pointer;
+      top: 5px;
+      right: 5px;
+      color: red;
+      cursor: pointer;
     }
     .category-block { background: #fafafa; }
-    .category-block .category-title { font-weight: bold; margin-bottom: 8px; }
+    .category-block .category-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
   </style>
+  <!-- Firebase and Imgur will be initialized in the script below -->
 </head>
 <body>
   <!-- Top Bar -->
@@ -143,7 +149,6 @@
             <label for="homeHeroDesc">Hero Description</label>
             <input type="text" class="form-control" id="homeHeroDesc" placeholder="Enter hero description">
           </div>
-          <!-- Optionally add hero media options similar to E-commerce if needed -->
           <button type="submit" class="btn btn-primary">Save Home Content</button>
         </form>
       </div>
@@ -172,7 +177,7 @@
       <div id="ecommerce" class="content-section d-none">
         <h4>E-commerce Page Content</h4>
         <form id="ecommerceForm">
-          <!-- Hero Section Fields -->
+          <!-- Hero Section Fields with 3 options: URL, Direct Upload (Imgur), Default -->
           <div class="form-group">
             <label for="ecomPageTitle">Page Title</label>
             <input type="text" class="form-control" id="ecomPageTitle" placeholder="Enter page title" value="Default E-commerce Title">
@@ -220,7 +225,8 @@
             </div>
           </div>
           <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn"><i class="fas fa-plus"></i> Add Carousel Item</button>
-          <!-- Categories & Products -->
+          
+          <!-- Categories & Products Editor -->
           <h5 class="mt-4">Categories & Products</h5>
           <div id="categoriesContainer"></div>
           <button type="button" class="btn btn-sm btn-outline-success" id="addCategoryBtn">
@@ -361,9 +367,13 @@
     </div> <!-- End Main Content -->
   </div> <!-- End Wrapper -->
 
-  <!-- Bootstrap Bundle JS -->
+  <!-- --------------------- External Footer --------------------- -->
+  <div id="footer-placeholder"></div>
+
+  <!-- --------------------- Bootstrap Bundle JS --------------------- -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- --------------------- Admin Panel Script --------------------- -->
   <script>
     /* --------------------- Firebase Initialization --------------------- */
     const firebaseConfig = {
@@ -434,7 +444,7 @@
       element.parentNode.remove();
     }
 
-    /* --------------------- E-commerce: Add Carousel Item --------------------- */
+    /* --------------------- E-commerce Section: Add Carousel Item --------------------- */
     document.getElementById("addCarouselBtn").addEventListener("click", () => {
       const container = document.getElementById("carouselContainer");
       const div = document.createElement("div");
@@ -449,7 +459,7 @@
       container.appendChild(div);
     });
 
-    /* --------------------- E-commerce: Add Category & Products --------------------- */
+    /* --------------------- E-commerce Section: Add Category & Products --------------------- */
     document.getElementById("addCategoryBtn").addEventListener("click", () => {
       const container = document.getElementById("categoriesContainer");
       const div = document.createElement("div");
@@ -515,7 +525,7 @@
       });
     });
 
-    /* --------------------- Hero Media Options (E-commerce) --------------------- */
+    /* --------------------- Setup Hero Media Option Radios (E-commerce) --------------------- */
     function setupHeroRadios(radioName, urlFieldId, uploadFieldId, defaultFieldId) {
       const radios = document.getElementsByName(radioName);
       radios.forEach(radio => {
@@ -611,12 +621,12 @@
     saveFormData("analyticsForm", "analytics");
     saveFormData("aboutForm", "about");
 
-    /* Custom Save for E-commerce Section */
+    /* --------------------- Custom Save for E-commerce Section --------------------- */
     function saveEcommerce() {
       const form = document.getElementById("ecommerceForm");
       form.addEventListener("submit", (e) => {
         e.preventDefault();
-        // Gather hero section fields
+        // Gather hero data
         const pageTitle = document.getElementById("ecomPageTitle").value.trim();
         const heroSubtitle = document.getElementById("ecomHeroSubtitle").value.trim();
         const heroMediaURL = document.getElementById("ecomMediaURL").value.trim();
@@ -627,7 +637,7 @@
           item.querySelectorAll("input").forEach(inp => { obj[inp.name] = inp.value.trim(); });
           carouselItems.push(obj);
         });
-        // Gather categories and products
+        // Gather categories & products
         const categoriesObj = {};
         document.querySelectorAll("#categoriesContainer .category-block").forEach(catBlock => {
           const catName = (catBlock.querySelector("[name='categoryName']")?.value || "Unnamed Category").trim();
