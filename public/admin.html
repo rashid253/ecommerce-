@@ -98,12 +98,11 @@
     
     <!-- Main Content Area -->
     <div class="content" id="mainContent">
-      <!-- Each content section corresponds to a page that can be edited -->
-      
       <!-- Home Section -->
       <div id="home" class="content-section active">
         <h4>Home Page Content</h4>
         <form id="homeForm">
+          <!-- Home page fields (e.g., hero title, description, background media options, feature cards) -->
           <div class="form-group">
             <label for="homeHeroTitle">Hero Title</label>
             <input type="text" class="form-control" id="homeHeroTitle" placeholder="Enter hero title" value="Default Home Hero Title">
@@ -200,6 +199,40 @@
             </div>
           </div>
           <button type="button" class="btn btn-sm btn-outline-primary" id="addCarouselBtn"><i class="fas fa-plus"></i> Add Carousel Item</button>
+          <h5 class="mt-3">Product Data (JSON)</h5>
+          <div class="form-group">
+            <label for="productDataJSON">Paste JSON here</label>
+            <textarea class="form-control" id="productDataJSON" rows="5" placeholder='Paste valid JSON data here'>{
+  "Countdown Sales": [
+    {
+      "name": "Smartphone A",
+      "originalPrice": "PKR 999",
+      "discount": "10%",
+      "newPrice": "PKR 899",
+      "description": "High-performance smartphone.",
+      "image": "https://via.placeholder.com/300x200?text=Smartphone+A",
+      "rating": 4.5,
+      "added": "500",
+      "sold": "3k",
+      "stock": 20
+    }
+  ],
+  "Discount Offers": [
+    {
+      "name": "Headphones D",
+      "originalPrice": "PKR 700",
+      "discount": "15%",
+      "newPrice": "PKR 600",
+      "description": "Noise cancelling headphones.",
+      "image": "https://via.placeholder.com/300x200?text=Headphones+D",
+      "rating": 4,
+      "added": "350",
+      "sold": "2k",
+      "stock": 0
+    }
+  ]
+}</textarea>
+          </div>
           <button type="submit" class="btn btn-primary mt-3">Save E-commerce Content</button>
         </form>
       </div>
@@ -365,7 +398,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Mobile sidebar toggle
+    // Mobile sidebar toggle functionality
     const hamburger = document.getElementById("hamburger");
     const sidebar = document.getElementById("sidebar");
     hamburger.addEventListener("click", () => { sidebar.classList.toggle("open"); });
@@ -501,7 +534,7 @@
           const reader2 = new FileReader();
           reader2.onloadend = () => {
             const base64data = reader2.result.split(',')[1];
-            const clientId = "048d9400ce02b71"; // Your Imgur Client ID
+            const clientId = "048d9400ce02b71";
             const formData = new FormData();
             formData.append("image", base64data);
             fetch("https://api.imgur.com/3/image", {
