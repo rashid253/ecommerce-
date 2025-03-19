@@ -9,11 +9,7 @@
     "rewrites": [
       {
         "source": "/admin/**",
-        "destination": "/admin/admin_dashboard.html"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
+        "destination": "/admin/admin.html"
       }
     ]
   }
