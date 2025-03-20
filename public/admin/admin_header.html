@@ -2,85 +2,134 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Header</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Header</title>
   <style>
-    /* Updated Admin Header Styles */
+    /* Basic header styling */
     .admin-header {
-      background: #fff;
-      padding: 5px 10px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #343a40;
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 50px; /* Reduced overall height */
+      padding: 10px 20px;
+      z-index: 1000;
     }
-    /* Left Section: Hamburger & Brand */
-    .left-section {
+    .admin-header .left-section, 
+    .admin-header .center-section, 
+    .admin-header .right-section {
       display: flex;
       align-items: center;
-      flex: 0 0 auto;
     }
+    /* Hamburger icon */
     .hamburger {
       font-size: 1.5rem;
       cursor: pointer;
-      color: #2c3e50;
-      margin-right: 5px;
+      margin-right: 15px;
     }
-    .brand {
-      font-size: 0.85rem; /* Smaller, stylish font */
+    /* Dynamic page title */
+    .page-title {
+      font-size: 1.2rem;
       font-weight: bold;
-      color: #2c3e50;
     }
-    /* Center Section: Page Title */
-    .center-section {
-      flex: 1;
-      text-align: center;
-      font-size: 1rem;
-      color: #2c3e50;
-    }
-    /* Right Section: Admin & Logout Buttons */
-    .right-section {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      flex: 0 0 auto;
-    }
-    .right-section button {
-      font-size: 0.75rem; /* Shrink button text */
-      padding: 3px 6px;
-      border: 1px solid #ccc;
+    /* Admin/logout buttons */
+    .admin-actions button {
+      background: #007bff;
+      border: none;
+      color: #fff;
+      padding: 5px 10px;
+      margin-left: 10px;
       border-radius: 4px;
-      background: #fff;
       cursor: pointer;
     }
-    .right-section button i {
-      vertical-align: middle;
+    .admin-actions button:hover {
+      background: #0056b3;
     }
-    /* Responsive Adjustments */
-    @media (max-width: 600px) {
-      .admin-header {
-        flex-wrap: wrap;
-        height: auto;
-        padding: 5px;
-      }
-      .center-section {
-        margin-top: 3px;
-      }
+    /* Sidebar styling */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background: #212529;
+      color: #fff;
+      overflow-y: auto;
+      transition: left 0.3s ease;
+      z-index: 1100;
+      padding-top: 60px;
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      padding: 15px 20px;
+      border-bottom: 1px solid #343a40;
+      cursor: pointer;
+    }
+    .sidebar ul li:hover {
+      background: #343a40;
     }
   </style>
 </head>
 <body>
   <header class="admin-header">
     <div class="left-section">
-      <i class="fas fa-bars hamburger" id="admin-hamburger"></i>
-      <span class="brand">Faiqtech Sol</span>
+      <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+      <span class="page-title" id="adminPageTitle">Dashboard</span>
     </div>
-    <div class="center-section" id="pageTitle">Dashboard</div>
-    <div class="right-section">
-      <button class="btn btn-outline-secondary btn-sm"><i class="fas fa-user"></i></button>
-      <button class="btn btn-outline-danger btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+    <div class="right-section admin-actions">
+      <button onclick="goToAdminHome()">Home</button>
+      <button onclick="logout()">Logout</button>
     </div>
   </header>
+  
+  <!-- Sidebar for navigation -->
+  <nav id="adminSidebar" class="sidebar">
+    <ul>
+      <li onclick="navigateTo('admin_dashboard.html')">Dashboard</li>
+      <li onclick="navigateTo('home_admin.html')">Home</li>
+      <li onclick="navigateTo('header_admin.html')">Header</li>
+      <li onclick="navigateTo('ecommerce_admin.html')">Shop</li>
+      <li onclick="navigateTo('details_admin.html')">Details</li>
+      <li onclick="navigateTo('payments_admin.html')">Payments</li>
+      <li onclick="navigateTo('checkout_admin.html')">Checkout</li>
+      <li onclick="navigateTo('delivery_admin.html')">Delivery</li>
+      <li onclick="navigateTo('support_admin.html')">Support</li>
+      <li onclick="navigateTo('contact_admin.html')">Contact</li>
+      <li onclick="navigateTo('analytics_admin.html')">Analytics</li>
+      <li onclick="navigateTo('about_admin.html')">About</li>
+    </ul>
+  </nav>
+  
+  <script>
+    // Toggle sidebar visibility
+    function toggleSidebar() {
+      const sidebar = document.getElementById("adminSidebar");
+      sidebar.classList.toggle("active");
+    }
+    // Navigation functions (customize as needed)
+    function navigateTo(page) {
+      window.location.href = page;
+    }
+    function goToAdminHome() {
+      window.location.href = "admin_dashboard.html";
+    }
+    function logout() {
+      // Implement logout functionality
+      alert("Logging out...");
+      window.location.href = "../index.html";
+    }
+    // Optionally, you can set the page title dynamically if needed
+    // document.getElementById("adminPageTitle").innerText = "Your Dynamic Title";
+  </script>
 </body>
 </html>
