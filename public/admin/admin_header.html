@@ -4,22 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Header</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    /* Header styling */
+    /* Force updated header styles */
+    body { margin: 0; padding: 0; }
     .admin-header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: #343a40;
+      background: #222; /* Changed background */
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
       z-index: 1002;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
     .admin-header .left-section,
     .admin-header .right-section {
@@ -30,9 +31,10 @@
       font-size: 1.8rem;
       cursor: pointer;
       margin-right: 15px;
+      color: #fff;
     }
     .page-title {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: bold;
     }
     .admin-actions button {
@@ -52,15 +54,15 @@
     .sidebar {
       position: fixed;
       top: 0;
-      left: -250px;
-      width: 250px;
+      left: -260px;
+      width: 260px;
       height: 100%;
-      background: #212529;
+      background: #333;
       color: #fff;
       overflow-y: auto;
       transition: left 0.3s ease;
       z-index: 1102;
-      padding-top: 60px;
+      padding-top: 70px;
     }
     .sidebar.active {
       left: 0;
@@ -72,14 +74,14 @@
     }
     .sidebar ul li {
       padding: 15px 20px;
-      border-bottom: 1px solid #343a40;
+      border-bottom: 1px solid #444;
       cursor: pointer;
       transition: background 0.3s;
     }
     .sidebar ul li:hover {
-      background: #343a40;
+      background: #444;
     }
-    /* Overlay styling */
+    /* Sidebar overlay */
     .sidebar-overlay {
       display: none;
       position: fixed;
@@ -87,7 +89,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0,0,0,0.5);
       z-index: 1101;
     }
     .sidebar-overlay.active {
@@ -107,7 +109,7 @@
     </div>
   </header>
 
-  <!-- Sidebar for navigation -->
+  <!-- Sidebar Navigation -->
   <nav id="adminSidebar" class="sidebar">
     <ul>
       <li onclick="navigateTo('admin_dashboard.html')">Dashboard</li>
@@ -125,7 +127,7 @@
     </ul>
   </nav>
 
-  <!-- Overlay -->
+  <!-- Sidebar Overlay -->
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
   <script>
@@ -142,7 +144,6 @@
       window.location.href = "admin_dashboard.html";
     }
     function logout() {
-      // Implement logout functionality as needed
       alert("Logging out...");
       window.location.href = "../index.html";
     }
