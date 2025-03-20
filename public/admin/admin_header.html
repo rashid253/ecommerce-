@@ -2,69 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Header</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    /* Force updated header styles */
-    body { margin: 0; padding: 0; }
+    body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    /* Header styling */
     .admin-header {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
-      background: #222; /* Changed background */
+      background: #222;
       color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       padding: 10px 20px;
-      z-index: 1002;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
       box-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
-    .admin-header .left-section,
-    .admin-header .right-section {
-      display: flex;
-      align-items: center;
-    }
-    .hamburger {
+    .admin-header .hamburger {
       font-size: 1.8rem;
       cursor: pointer;
-      margin-right: 15px;
       color: #fff;
     }
-    .page-title {
+    .admin-header .page-title {
       font-size: 1.4rem;
       font-weight: bold;
     }
-    .admin-actions button {
+    .admin-header .actions button {
+      margin-left: 10px;
       background: #007bff;
       border: none;
-      color: #fff;
       padding: 6px 12px;
-      margin-left: 10px;
       border-radius: 4px;
+      color: #fff;
       cursor: pointer;
-      transition: background 0.3s;
     }
-    .admin-actions button:hover {
+    .admin-header .actions button:hover {
       background: #0056b3;
     }
     /* Sidebar styling */
     .sidebar {
       position: fixed;
       top: 0;
-      left: -260px;
-      width: 260px;
+      left: -250px;
+      width: 250px;
       height: 100%;
       background: #333;
       color: #fff;
       overflow-y: auto;
       transition: left 0.3s ease;
-      z-index: 1102;
-      padding-top: 70px;
+      z-index: 1100;
+      padding-top: 60px;
     }
-    .sidebar.active {
+    .sidebar.open {
       left: 0;
     }
     .sidebar ul {
@@ -76,71 +70,76 @@
       padding: 15px 20px;
       border-bottom: 1px solid #444;
       cursor: pointer;
-      transition: background 0.3s;
     }
     .sidebar ul li:hover {
       background: #444;
     }
-    /* Sidebar overlay */
-    .sidebar-overlay {
-      display: none;
+    /* Overlay styling */
+    .overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background: rgba(0,0,0,0.5);
-      z-index: 1101;
+      z-index: 1050;
+      display: none;
     }
-    .sidebar-overlay.active {
+    .overlay.show {
       display: block;
     }
   </style>
 </head>
 <body>
   <header class="admin-header">
-    <div class="left-section">
-      <span class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
-      <span class="page-title" id="adminPageTitle">Dashboard</span>
-    </div>
-    <div class="right-section admin-actions">
-      <button onclick="goToAdminHome()">Home</button>
+    <span class="hamburger" id="hamburger"><i class="fas fa-bars"></i></span>
+    <span class="page-title" id="adminPageTitle">Dashboard</span>
+    <div class="actions">
+      <button onclick="goHome()">Home</button>
       <button onclick="logout()">Logout</button>
     </div>
   </header>
 
   <!-- Sidebar Navigation -->
-  <nav id="adminSidebar" class="sidebar">
+  <nav class="sidebar" id="sidebar">
     <ul>
-      <li onclick="navigateTo('admin_dashboard.html')">Dashboard</li>
-      <li onclick="navigateTo('home_admin.html')">Home</li>
-      <li onclick="navigateTo('header_admin.html')">Header</li>
-      <li onclick="navigateTo('ecommerce_admin.html')">Shop</li>
-      <li onclick="navigateTo('details_admin.html')">Details</li>
-      <li onclick="navigateTo('payments_admin.html')">Payments</li>
-      <li onclick="navigateTo('checkout_admin.html')">Checkout</li>
-      <li onclick="navigateTo('delivery_admin.html')">Delivery</li>
-      <li onclick="navigateTo('support_admin.html')">Support</li>
-      <li onclick="navigateTo('contact_admin.html')">Contact</li>
-      <li onclick="navigateTo('analytics_admin.html')">Analytics</li>
-      <li onclick="navigateTo('about_admin.html')">About</li>
+      <li onclick="navigate('admin_dashboard.html')">Dashboard</li>
+      <li onclick="navigate('home_admin.html')">Home</li>
+      <li onclick="navigate('header_admin.html')">Header</li>
+      <li onclick="navigate('ecommerce_admin.html')">Shop</li>
+      <li onclick="navigate('details_admin.html')">Details</li>
+      <li onclick="navigate('payments_admin.html')">Payments</li>
+      <li onclick="navigate('checkout_admin.html')">Checkout</li>
+      <li onclick="navigate('delivery_admin.html')">Delivery</li>
+      <li onclick="navigate('support_admin.html')">Support</li>
+      <li onclick="navigate('contact_admin.html')">Contact</li>
+      <li onclick="navigate('analytics_admin.html')">Analytics</li>
+      <li onclick="navigate('about_admin.html')">About</li>
     </ul>
   </nav>
 
-  <!-- Sidebar Overlay -->
-  <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+  <!-- Overlay for sidebar -->
+  <div class="overlay" id="overlay"></div>
 
   <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById("adminSidebar");
-      const overlay = document.getElementById("sidebarOverlay");
-      sidebar.classList.toggle("active");
-      overlay.classList.toggle("active");
-    }
-    function navigateTo(page) {
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    hamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("open");
+      overlay.classList.toggle("show");
+    });
+
+    overlay.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+    });
+
+    function navigate(page) {
       window.location.href = page;
     }
-    function goToAdminHome() {
+    function goHome() {
       window.location.href = "admin_dashboard.html";
     }
     function logout() {
