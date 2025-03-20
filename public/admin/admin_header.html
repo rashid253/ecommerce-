@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Header</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     /* Header styling */
     .admin-header {
@@ -17,11 +18,10 @@
       align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
-      z-index: 1001;
+      z-index: 1002;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     .admin-header .left-section,
-    .admin-header .center-section,
     .admin-header .right-section {
       display: flex;
       align-items: center;
@@ -59,7 +59,7 @@
       color: #fff;
       overflow-y: auto;
       transition: left 0.3s ease;
-      z-index: 1101;
+      z-index: 1102;
       padding-top: 60px;
     }
     .sidebar.active {
@@ -79,7 +79,7 @@
     .sidebar ul li:hover {
       background: #343a40;
     }
-    /* Overlay for sidebar */
+    /* Overlay styling */
     .sidebar-overlay {
       display: none;
       position: fixed;
@@ -88,7 +88,7 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
-      z-index: 1100;
+      z-index: 1101;
     }
     .sidebar-overlay.active {
       display: block;
@@ -98,7 +98,7 @@
 <body>
   <header class="admin-header">
     <div class="left-section">
-      <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+      <span class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
       <span class="page-title" id="adminPageTitle">Dashboard</span>
     </div>
     <div class="right-section admin-actions">
@@ -142,7 +142,7 @@
       window.location.href = "admin_dashboard.html";
     }
     function logout() {
-      // Implement your logout functionality here
+      // Implement logout functionality as needed
       alert("Logging out...");
       window.location.href = "../index.html";
     }
