@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Header</title>
   <style>
-    /* Basic header styling */
+    /* Header styling */
     .admin-header {
       position: fixed;
       top: 0;
@@ -17,34 +17,33 @@
       align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
-      z-index: 1000;
+      z-index: 1001;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
-    .admin-header .left-section, 
-    .admin-header .center-section, 
+    .admin-header .left-section,
+    .admin-header .center-section,
     .admin-header .right-section {
       display: flex;
       align-items: center;
     }
-    /* Hamburger icon */
     .hamburger {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       cursor: pointer;
       margin-right: 15px;
     }
-    /* Dynamic page title */
     .page-title {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: bold;
     }
-    /* Admin/logout buttons */
     .admin-actions button {
       background: #007bff;
       border: none;
       color: #fff;
-      padding: 5px 10px;
+      padding: 6px 12px;
       margin-left: 10px;
       border-radius: 4px;
       cursor: pointer;
+      transition: background 0.3s;
     }
     .admin-actions button:hover {
       background: #0056b3;
@@ -60,7 +59,7 @@
       color: #fff;
       overflow-y: auto;
       transition: left 0.3s ease;
-      z-index: 1100;
+      z-index: 1101;
       padding-top: 60px;
     }
     .sidebar.active {
@@ -69,14 +68,30 @@
     .sidebar ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
     .sidebar ul li {
       padding: 15px 20px;
       border-bottom: 1px solid #343a40;
       cursor: pointer;
+      transition: background 0.3s;
     }
     .sidebar ul li:hover {
       background: #343a40;
+    }
+    /* Overlay for sidebar */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1100;
+    }
+    .sidebar-overlay.active {
+      display: block;
     }
   </style>
 </head>
@@ -91,7 +106,7 @@
       <button onclick="logout()">Logout</button>
     </div>
   </header>
-  
+
   <!-- Sidebar for navigation -->
   <nav id="adminSidebar" class="sidebar">
     <ul>
@@ -109,14 +124,17 @@
       <li onclick="navigateTo('about_admin.html')">About</li>
     </ul>
   </nav>
-  
+
+  <!-- Overlay -->
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
   <script>
-    // Toggle sidebar visibility
     function toggleSidebar() {
       const sidebar = document.getElementById("adminSidebar");
+      const overlay = document.getElementById("sidebarOverlay");
       sidebar.classList.toggle("active");
+      overlay.classList.toggle("active");
     }
-    // Navigation functions (customize as needed)
     function navigateTo(page) {
       window.location.href = page;
     }
@@ -124,12 +142,10 @@
       window.location.href = "admin_dashboard.html";
     }
     function logout() {
-      // Implement logout functionality
+      // Implement your logout functionality here
       alert("Logging out...");
       window.location.href = "../index.html";
     }
-    // Optionally, you can set the page title dynamically if needed
-    // document.getElementById("adminPageTitle").innerText = "Your Dynamic Title";
   </script>
 </body>
 </html>
