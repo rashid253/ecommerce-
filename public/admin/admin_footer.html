@@ -7,7 +7,8 @@
   <!-- FontAwesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; }
     .admin-footer {
       position: fixed;
       bottom: 0;
@@ -23,8 +24,8 @@
       overflow: hidden;
     }
     .admin-footer a {
-      color: #fff;
       text-decoration: none;
+      color: #fff;
       font-size: 0.95rem;
       text-align: center;
       flex: 1;
@@ -43,7 +44,6 @@
     }
     .more-dropdown > a {
       cursor: pointer;
-      white-space: nowrap;
     }
     .more-dropdown-content {
       position: absolute;
