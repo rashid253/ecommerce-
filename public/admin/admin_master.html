@@ -1,1 +1,252 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Master - Self-Contained</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Reset & Basic Setup */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
+
+    /****************************************
+     * 1) ADMIN HEADER
+     ****************************************/
+    .admin-header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      background: #222;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px;
+      z-index: 1000; /* High z-index to ensure it’s on top */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .admin-header .left-section {
+      display: flex; align-items: center;
+    }
+    .hamburger {
+      font-size: 1.8rem; cursor: pointer; color: #fff;
+      margin-right: 10px;
+    }
+    .page-title {
+      font-size: 1.4rem; font-weight: bold;
+    }
+    .actions button {
+      background: #007bff; border: none; padding: 6px 12px;
+      border-radius: 4px; color: #fff; cursor: pointer;
+      margin-left: 10px; transition: background 0.3s;
+    }
+    .actions button:hover { background: #0056b3; }
+
+    /****************************************
+     * 2) SIDEBAR & OVERLAY
+     ****************************************/
+    .sidebar-overlay {
+      display: none; position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999; /* Just below header’s 1000 */
+    }
+    .sidebar-overlay.show { display: block; }
+    .sidebar {
+      position: fixed; top: 0; left: -240px; width: 240px; height: 100%;
+      background: #333; color: #fff;
+      padding-top: 60px; /* So it doesn’t overlap header */
+      transition: left 0.3s ease;
+      z-index: 1001; /* Below the header but above overlay */
+    }
+    .sidebar.open { left: 0; }
+    .sidebar ul { list-style: none; }
+    .sidebar ul li {
+      padding: 15px 20px; border-bottom: 1px solid #444;
+      cursor: pointer; transition: background 0.3s;
+    }
+    .sidebar ul li:hover { background: #444; }
+
+    /****************************************
+     * 3) MAIN CONTENT (Dashboard)
+     ****************************************/
+    main {
+      padding: 70px 15px 80px; /* top space for header, bottom for footer */
+      min-height: calc(100vh - 150px);
+    }
+    .dashboard-header { text-align: center; margin-bottom: 20px; }
+    .dashboard-header h1 { font-size: 2rem; margin-bottom: 8px; }
+    .dashboard-header p { color: #555; }
+
+    /* Example summary cards in a 2x2 grid on wide screens */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .summary-card {
+      border-radius: 8px; padding: 15px; text-align: center; color: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .summary-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    .card-sales { background: linear-gradient(135deg, #007bff, #00c6ff); }
+    .card-orders { background: linear-gradient(135deg, #28a745, #85e085); }
+    .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
+    .card-customers { background: linear-gradient(135deg, #fd7e14, #ff9f59); }
+    .summary-card h3 { margin-bottom: 8px; font-size: 1.1rem; }
+    .summary-card p { font-size: 1.4rem; font-weight: bold; margin: 0; }
+
+    /****************************************
+     * 4) ADMIN FOOTER
+     ****************************************/
+    .admin-footer {
+      position: fixed;
+      bottom: 0; left: 0; width: 100%;
+      background: #222; color: #fff;
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 10px 0; z-index: 1000; /* Same as header so it’s on top */
+    }
+    .admin-footer a {
+      color: #fff; text-decoration: none;
+      font-size: 0.9rem; text-align: center;
+      flex: 1; white-space: nowrap;
+    }
+    .admin-footer a i {
+      display: block; font-size: 1.3rem; margin-bottom: 2px;
+    }
+    /* More dropdown container */
+    .more-dropdown { position: relative; flex: 1; text-align: center; }
+    .more-dropdown > a { cursor: pointer; white-space: nowrap; }
+    .more-dropdown-content {
+      position: absolute; bottom: 40px; left: 50%;
+      transform: translateX(-50%);
+      background: #222; border: 1px solid #444; border-radius: 4px;
+      display: none; z-index: 1100; min-width: 140px; overflow: hidden;
+    }
+    .more-dropdown-content a {
+      display: block; color: #fff; padding: 8px 10px;
+      text-decoration: none; font-size: 0.85rem; border-bottom: 1px solid #444;
+    }
+    .more-dropdown-content a:last-child { border-bottom: none; }
+    .more-dropdown-content a:hover { background: #444; }
+    .more-dropdown:hover .more-dropdown-content { display: block; }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="admin-header">
+    <div class="left-section">
+      <span class="hamburger" id="hamburger"><i class="fas fa-bars"></i></span>
+      <span class="page-title">Admin Master</span>
+    </div>
+    <div class="actions">
+      <button onclick="goHome()">Home</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR & OVERLAY -->
+  <div class="sidebar-overlay" id="overlay"></div>
+  <nav class="sidebar" id="sidebar">
+    <ul>
+      <li onclick="navigate('admin_dashboard.html')">Dashboard</li>
+      <li onclick="navigate('home_admin.html')">Home</li>
+      <li onclick="navigate('header_admin.html')">Header</li>
+      <li onclick="navigate('ecommerce_admin.html')">Shop</li>
+      <li onclick="navigate('details_admin.html')">Details</li>
+      <li onclick="navigate('payments_admin.html')">Payments</li>
+      <li onclick="navigate('checkout_admin.html')">Checkout</li>
+      <li onclick="navigate('delivery_admin.html')">Delivery</li>
+      <li onclick="navigate('support_admin.html')">Support</li>
+      <li onclick="navigate('contact_admin.html')">Contact</li>
+      <li onclick="navigate('analytics_admin.html')">Analytics</li>
+      <li onclick="navigate('about_admin.html')">About</li>
+    </ul>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <div class="dashboard-header">
+      <h1>Self-Contained Admin Page</h1>
+      <p>This single file has header, sidebar, footer all in one. No external CSS.</p>
+    </div>
+    <!-- Example summary cards -->
+    <div class="card-grid">
+      <div class="summary-card card-sales">
+        <h3>Total Sales</h3>
+        <p>$12,345</p>
+      </div>
+      <div class="summary-card card-orders">
+        <h3>New Orders</h3>
+        <p>45</p>
+      </div>
+      <div class="summary-card card-products">
+        <h3>Products</h3>
+        <p>120</p>
+      </div>
+      <div class="summary-card card-customers">
+        <h3>Customers</h3>
+        <p>78</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="admin-footer">
+    <a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+    <a href="home_admin.html"><i class="fas fa-home"></i>Home</a>
+    <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i>Shop</a>
+    <a href="details_admin.html"><i class="fas fa-info-circle"></i>Details</a>
+    <div class="more-dropdown">
+      <a><i class="fas fa-ellipsis-h"></i>More</a>
+      <div class="more-dropdown-content">
+        <a href="payments_admin.html"><i class="fas fa-credit-card"></i> Payments</a>
+        <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i> Checkout</a>
+        <a href="delivery_admin.html"><i class="fas fa-truck"></i> Delivery</a>
+        <a href="support_admin.html"><i class="fas fa-headset"></i> Support</a>
+        <a href="contact_admin.html"><i class="fas fa-envelope"></i> Contact</a>
+        <a href="analytics_admin.html"><i class="fas fa-chart-line"></i> Analytics</a>
+        <a href="about_admin.html"><i class="fas fa-info"></i> About</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // SIDEBAR TOGGLE
+    const hamburger = document.getElementById("hamburger");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+
+    hamburger.addEventListener("click", () => {
+      sidebar.classList.toggle("open");
+      overlay.classList.toggle("show");
+    });
+    overlay.addEventListener("click", () => {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("show");
+    });
+
+    // NAVIGATION FUNCTIONS
+    function navigate(page) {
+      alert("Navigate to: " + page);
+      // window.location.href = page; // Uncomment for real navigation
+    }
+    function goHome() {
+      alert("Going Home...");
+      // window.location.href = "admin_dashboard.html";
+    }
+    function logout() {
+      alert("Logging out...");
+      // window.location.href = "../index.html";
+    }
+  </script>
+</body>
+</html>
