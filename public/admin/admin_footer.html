@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Footer with More Dropdown</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Admin Footer</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     .admin-footer {
@@ -12,108 +11,74 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: #fff;
-      border-top: 1px solid #ddd;
+      background: #343a40;
       display: flex;
       justify-content: space-around;
-      padding: 5px 0;
-      font-size: 0.8rem;
+      align-items: center;
+      padding: 10px 0;
+      color: #fff;
       z-index: 1000;
     }
-    .admin-footer a,
-    .admin-footer .dropdown-toggle {
+    .admin-footer a {
       text-decoration: none;
-      color: #2c3e50;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      color: #fff;
+      font-size: 0.9rem;
+      text-align: center;
       flex: 1;
-      transition: color 0.3s;
     }
-    .admin-footer a i,
-    .admin-footer .dropdown-toggle i {
+    .admin-footer a i {
+      display: block;
       font-size: 1.2rem;
       margin-bottom: 2px;
     }
-    .admin-footer a.active {
-      color: #007bff;
+    /* More dropdown styling */
+    .more-dropdown {
+      position: relative;
+      display: inline-block;
     }
-    /* Optional: Adjust dropdown menu style for a mobile-friendly look */
-    .admin-footer .dropdown-menu {
-      min-width: 100px;
-      font-size: 0.8rem;
+    .more-dropdown-content {
+      display: none;
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff;
+      min-width: 150px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      z-index: 1100;
+    }
+    .more-dropdown-content a {
+      color: #333;
+      padding: 10px;
+      text-decoration: none;
+      display: block;
+      font-size: 0.9rem;
+    }
+    .more-dropdown-content a:hover { background-color: #f1f1f1; }
+    .more-dropdown:hover .more-dropdown-content {
+      display: block;
     }
   </style>
 </head>
 <body>
   <footer class="admin-footer">
-    <a href="admin_dashboard.html" class="active">
-      <i class="fas fa-tachometer-alt"></i>
-      <span>Dashboard</span>
-    </a>
-    <a href="home_admin.html">
-      <i class="fas fa-home"></i>
-      <span>Home</span>
-    </a>
-    <a href="header_admin.html">
-      <i class="fas fa-ellipsis-h"></i>
-      <span>Header</span>
-    </a>
-    <a href="ecommerce_admin.html">
-      <i class="fas fa-shopping-bag"></i>
-      <span>Shop</span>
-    </a>
-    <a href="details_admin.html">
-      <i class="fas fa-info-circle"></i>
-      <span>Details</span>
-    </a>
-    <!-- "More" dropdown for remaining items -->
-    <div class="dropdown">
-      <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-        <i class="fas fa-ellipsis-v"></i>
-        <span>More</span>
-      </a>
-      <ul class="dropdown-menu">
-        <li>
-          <a class="dropdown-item" href="payments_admin.html">
-            <i class="fas fa-credit-card"></i> Payments
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="checkout_admin.html">
-            <i class="fas fa-shopping-cart"></i> Checkout
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="delivery_admin.html">
-            <i class="fas fa-truck"></i> Delivery
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="support_admin.html">
-            <i class="fas fa-headset"></i> Support
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="contact_admin.html">
-            <i class="fas fa-envelope"></i> Contact
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="analytics_admin.html">
-            <i class="fas fa-chart-line"></i> Analytics
-          </a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="about_admin.html">
-            <i class="fas fa-eye"></i> About
-          </a>
-        </li>
-      </ul>
+    <a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
+    <a href="home_admin.html"><i class="fas fa-home"></i>Home</a>
+    <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i>Shop</a>
+    <a href="details_admin.html"><i class="fas fa-info-circle"></i>Details</a>
+    <div class="more-dropdown">
+      <a href="javascript:void(0)"><i class="fas fa-ellipsis-h"></i>More</a>
+      <div class="more-dropdown-content">
+        <a href="payments_admin.html">Payments</a>
+        <a href="checkout_admin.html">Checkout</a>
+        <a href="delivery_admin.html">Delivery</a>
+        <a href="support_admin.html">Support</a>
+        <a href="contact_admin.html">Contact</a>
+        <a href="analytics_admin.html">Analytics</a>
+        <a href="about_admin.html">About</a>
+      </div>
     </div>
   </footer>
-  
-  <!-- Bootstrap Bundle JS (includes Popper) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
