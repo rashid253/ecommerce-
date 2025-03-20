@@ -4,23 +4,60 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard - Faiqtech Sol</title>
-  <!-- Bootstrap 5 CSS for layout (optional) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Chart.js for dashboard charts -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { font-family: 'Roboto', sans-serif; margin: 0; padding: 0; }
-    main { padding: 80px 20px 60px; }
-    .dashboard-header { margin-bottom: 30px; text-align: center; }
-    .dashboard-header h1 { font-size: 2rem; }
-    .card-container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-bottom: 30px; }
-    .summary-card { flex: 1 1 200px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 20px; text-align: center; }
+    body { font-family: 'Roboto', sans-serif; margin: 0; padding: 0; background: #f0f2f5; }
+    main { padding: 100px 20px 80px; }
+    .dashboard-header { text-align: center; margin-bottom: 40px; }
+    .dashboard-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+    .dashboard-header p { font-size: 1.1rem; color: #555; }
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .summary-card {
+      flex: 1 1 220px;
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .summary-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
     .summary-card h3 { margin-bottom: 10px; font-size: 1.2rem; }
-    .summary-card p { font-size: 1.5rem; margin: 0; font-weight: bold; }
-    .chart-section { max-width: 800px; margin: 0 auto 30px; }
-    .recent-activity { max-width: 800px; margin: 0 auto; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .recent-activity h4 { margin-bottom: 10px; }
-    .activity-item { border-bottom: 1px solid #eee; padding: 8px 0; }
+    .summary-card p { font-size: 1.8rem; font-weight: bold; margin: 0; }
+    .chart-section {
+      max-width: 800px;
+      margin: 0 auto 40px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .recent-activity {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .recent-activity h4 { margin-bottom: 15px; }
+    .activity-item {
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
+      color: #333;
+    }
     .activity-item:last-child { border-bottom: none; }
   </style>
 </head>
@@ -31,7 +68,7 @@
   <main>
     <div class="dashboard-header">
       <h1>Admin Dashboard</h1>
-      <p>Welcome, Admin. Manage your site content and view analytics.</p>
+      <p>Welcome, Admin. Manage your site content and view real-time analytics.</p>
     </div>
     
     <!-- Summary Cards -->
@@ -72,9 +109,7 @@
   <!-- External Admin Footer -->
   <div id="admin-footer-placeholder"></div>
   
-  <!-- Scripts -->
   <script>
-    // Load external admin header and footer
     function loadHTML(elementId, filePath) {
       fetch(filePath)
         .then(response => {
@@ -86,7 +121,6 @@
         })
         .catch(error => console.error(error));
     }
-    
     document.addEventListener("DOMContentLoaded", function() {
       loadHTML("admin-header-placeholder", "admin_header.html");
       loadHTML("admin-footer-placeholder", "admin_footer.html");
