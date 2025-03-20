@@ -7,7 +7,9 @@
   <!-- FontAwesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; }
     /* Header styling */
     .admin-header {
       position: fixed;
@@ -16,12 +18,12 @@
       width: 100%;
       background: #222;
       color: #fff;
-      padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 10px 20px;
       z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     .admin-header .hamburger {
       font-size: 1.8rem;
@@ -29,17 +31,19 @@
       color: #fff;
     }
     .admin-header .page-title {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: bold;
+      margin-left: 10px;
     }
     .admin-header .actions button {
-      margin-left: 10px;
       background: #007bff;
       border: none;
       padding: 6px 12px;
       border-radius: 4px;
       color: #fff;
       cursor: pointer;
+      margin-left: 10px;
+      transition: background 0.3s;
     }
     .admin-header .actions button:hover {
       background: #0056b3;
@@ -48,28 +52,26 @@
     .sidebar {
       position: fixed;
       top: 0;
-      left: -250px;
-      width: 250px;
+      left: -260px;
+      width: 260px;
       height: 100%;
       background: #333;
       color: #fff;
-      overflow-y: auto;
+      padding-top: 60px;
       transition: left 0.3s ease;
       z-index: 1100;
-      padding-top: 60px;
     }
     .sidebar.open {
       left: 0;
     }
     .sidebar ul {
       list-style: none;
-      padding: 0;
-      margin: 0;
     }
     .sidebar ul li {
       padding: 15px 20px;
       border-bottom: 1px solid #444;
       cursor: pointer;
+      transition: background 0.3s;
     }
     .sidebar ul li:hover {
       background: #444;
@@ -82,8 +84,8 @@
       width: 100%;
       height: 100%;
       background: rgba(0,0,0,0.5);
-      z-index: 1050;
       display: none;
+      z-index: 1050;
     }
     .overlay.show {
       display: block;
@@ -92,14 +94,16 @@
 </head>
 <body>
   <header class="admin-header">
-    <span class="hamburger" id="hamburger"><i class="fas fa-bars"></i></span>
-    <span class="page-title" id="adminPageTitle">Dashboard</span>
+    <div class="left-section">
+      <span class="hamburger" id="hamburger"><i class="fas fa-bars"></i></span>
+      <span class="page-title" id="adminPageTitle">Dashboard</span>
+    </div>
     <div class="actions">
       <button onclick="goHome()">Home</button>
       <button onclick="logout()">Logout</button>
     </div>
   </header>
-
+  
   <!-- Sidebar Navigation -->
   <nav class="sidebar" id="sidebar">
     <ul>
@@ -117,30 +121,25 @@
       <li onclick="navigate('about_admin.html')">About</li>
     </ul>
   </nav>
-
-  <!-- Overlay for sidebar -->
+  
+  <!-- Sidebar Overlay -->
   <div class="overlay" id="overlay"></div>
-
+  
   <script>
-    const hamburger = document.getElementById("hamburger");
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("overlay");
-
-    hamburger.addEventListener("click", () => {
-      sidebar.classList.toggle("open");
-      overlay.classList.toggle("show");
+    // Toggle sidebar and overlay
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
     });
-
-    overlay.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-      overlay.classList.remove("show");
+    document.getElementById('overlay').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
     });
-
     function navigate(page) {
       window.location.href = page;
     }
     function goHome() {
-      window.location.href = "admin_dashboard.html";
+      window.location.href = 'admin_dashboard.html';
     }
     function logout() {
       alert("Logging out...");
