@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Master - White Theme</title>
+  <title>Admin Master - Professional Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- FontAwesome for icons and Chart.js for charts -->
+  <!-- FontAwesome and Chart.js -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <style>
-    /* RESET & BASE */
+    /* RESET & BASE STYLES */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
     a { text-decoration: none; color: inherit; }
     
-    /* HEADER (White Theme) */
+    /* HEADER (White Theme Minimal) */
     .admin-header {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       background: #fff;
       color: #333;
@@ -30,21 +31,14 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       border-bottom: 1px solid #ddd;
     }
-    .admin-header .left-section {
-      display: flex;
-      align-items: center;
-    }
+    .admin-header .left-section { display: flex; align-items: center; }
     .hamburger {
       font-size: 1.5rem;
       cursor: pointer;
       margin-right: 8px;
       color: #333;
     }
-    .page-title {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #333;
-    }
+    .page-title { font-size: 1.1rem; font-weight: bold; color: #333; }
     .admin-header .actions button {
       background: #007bff;
       border: none;
@@ -56,9 +50,7 @@
       transition: background 0.3s;
       font-size: 0.85rem;
     }
-    .admin-header .actions button:hover {
-      background: #0056b3;
-    }
+    .admin-header .actions button:hover { background: #0056b3; }
     
     /* SIDEBAR & OVERLAY */
     .sidebar {
@@ -68,7 +60,6 @@
       width: 240px;
       height: calc(100% - 50px);
       background: #fff;
-      color: #333;
       border-right: 1px solid #ddd;
       padding-top: 10px;
       transition: left 0.3s ease;
@@ -85,7 +76,7 @@
       align-items: center;
       transition: background 0.3s;
     }
-    .sidebar ul li i { margin-right: 8px; font-size: 1rem; }
+    .sidebar ul li i { margin-right: 8px; font-size: 1rem; color: #333; }
     .sidebar ul li:hover { background: #f7f7f7; }
     .overlay {
       position: fixed;
@@ -105,19 +96,9 @@
       margin-top: 50px;
       min-height: calc(100vh - 120px);
     }
-    .dashboard-header {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    .dashboard-header h1 {
-      font-size: 1.8rem;
-      margin-bottom: 6px;
-      color: #333;
-    }
-    .dashboard-header p {
-      font-size: 0.9rem;
-      color: #555;
-    }
+    .dashboard-header { text-align: center; margin-bottom: 15px; }
+    .dashboard-header h1 { font-size: 1.8rem; margin-bottom: 6px; color: #333; }
+    .dashboard-header p { font-size: 0.9rem; color: #555; }
     .card-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -134,10 +115,10 @@
       font-size: 0.9rem;
     }
     .summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-    .card-sales    { background: linear-gradient(135deg, #007bff, #00c6ff); }
-    .card-orders   { background: linear-gradient(135deg, #28a745, #85e085); }
+    .card-sales { background: linear-gradient(135deg, #007bff, #00c6ff); }
+    .card-orders { background: linear-gradient(135deg, #28a745, #85e085); }
     .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
-    .card-customers{ background: linear-gradient(135deg, #fd7e14, #ff9f59); }
+    .card-customers { background: linear-gradient(135deg, #fd7e14, #ff9f59); }
     .summary-card h3 { margin-bottom: 4px; font-size: 1rem; font-weight: 600; }
     .summary-card p { font-size: 1.2rem; font-weight: bold; }
     .chart-section {
@@ -147,12 +128,7 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
       margin-bottom: 15px;
     }
-    .chart-section h2 {
-      font-size: 1rem;
-      margin-bottom: 8px;
-      text-align: center;
-      color: #333;
-    }
+    .chart-section h2 { font-size: 1rem; margin-bottom: 8px; text-align: center; color: #333; }
     .chart-container { height: 200px; }
     .recent-activity {
       background: #fff;
@@ -164,8 +140,8 @@
     .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
     .activity-item:last-child { border-bottom: none; }
     
-    /* FOOTER (Fixed, White Background, Equal Spacing) */
-    .admin-footer {
+    /* FOOTER (Fixed, White Background, Scrollable with Arrows) */
+    .footer-container {
       position: fixed;
       bottom: 0;
       left: 0;
@@ -173,24 +149,46 @@
       background: #fff;
       border-top: 1px solid #ddd;
       display: flex;
+      align-items: center;
+      z-index: 1000;
+      height: 50px;
+    }
+    .scroll-btn {
+      background: #ddd;
+      border: none;
+      color: #333;
+      padding: 4px 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 50%;
+      margin: 0 5px;
+      flex-shrink: 0;
+    }
+    .footer-scroll {
+      overflow-x: auto;
+      white-space: nowrap;
+      flex-grow: 1;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 6px 0;
-      z-index: 1000;
     }
+    .footer-scroll::-webkit-scrollbar { display: none; }
     .admin-footer a {
+      display: inline-block;
       color: #333;
       text-decoration: none;
       text-align: center;
-      flex: 1;
+      padding: 0 10px;
+      margin: 0 5px;
       font-size: 0.8rem;
+      white-space: nowrap;
     }
     .admin-footer a i {
       display: block;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       margin-bottom: 2px;
     }
-    /* Active link styling for Dashboard */
     .admin-footer a.active {
       font-weight: bold;
       pointer-events: none;
@@ -236,7 +234,7 @@
       <h1>Dashboard</h1>
       <p>Welcome, Admin. Manage your content and view analytics.</p>
     </div>
-    <!-- Summary Cards (2×2 grid) -->
+    <!-- Summary Cards (2x2 grid) -->
     <div class="card-grid">
       <div class="summary-card card-sales">
         <h3>Total Sales</h3>
@@ -272,19 +270,23 @@
     </div>
   </main>
 
-  <!-- FOOTER (Fixed, White Background, Equal Spacing) -->
-  <footer class="admin-footer">
-    <a href="admin_dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard</a>
-    <a href="home_admin.html"><i class="fas fa-home"></i>Home</a>
-    <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i>Shop</a>
-    <a href="details_admin.html"><i class="fas fa-info-circle"></i>Details</a>
-    <a href="payments_admin.html"><i class="fas fa-credit-card"></i>Payments</a>
-    <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i>Checkout</a>
-    <a href="delivery_admin.html"><i class="fas fa-truck"></i>Delivery</a>
-    <a href="support_admin.html"><i class="fas fa-headset"></i>Support</a>
-    <a href="contact_admin.html"><i class="fas fa-envelope"></i>Contact</a>
-    <a href="analytics_admin.html"><i class="fas fa-chart-line"></i>Analytics</a>
-    <a href="about_admin.html"><i class="fas fa-info"></i>About</a>
+  <!-- FOOTER (Fixed, White Background, with Scroll Arrows) -->
+  <footer class="footer-container">
+    <button class="scroll-btn left" id="scrollLeft"><i class="fas fa-angle-double-left"></i></button>
+    <div class="footer-scroll" id="footerScroll">
+      <a href="admin_dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a href="home_admin.html"><i class="fas fa-home"></i> Home</a>
+      <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i> Shop</a>
+      <a href="details_admin.html"><i class="fas fa-info-circle"></i> Details</a>
+      <a href="payments_admin.html"><i class="fas fa-credit-card"></i> Payments</a>
+      <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i> Checkout</a>
+      <a href="delivery_admin.html"><i class="fas fa-truck"></i> Delivery</a>
+      <a href="support_admin.html"><i class="fas fa-headset"></i> Support</a>
+      <a href="contact_admin.html"><i class="fas fa-envelope"></i> Contact</a>
+      <a href="analytics_admin.html"><i class="fas fa-chart-line"></i> Analytics</a>
+      <a href="about_admin.html"><i class="fas fa-info"></i> About</a>
+    </div>
+    <button class="scroll-btn right" id="scrollRight"><i class="fas fa-angle-double-right"></i></button>
   </footer>
 
   <script>
@@ -345,6 +347,19 @@
         }
       });
     });
+
+    // FOOTER SCROLLING BUTTONS
+    const footerScroll = document.getElementById("footerScroll");
+    const scrollLeftBtn = document.getElementById("scrollLeft");
+    const scrollRightBtn = document.getElementById("scrollRight");
+
+    scrollLeftBtn.addEventListener("click", () => {
+      footerScroll.scrollBy({ left: -100, behavior: "smooth" });
+    });
+    scrollRightBtn.addEventListener("click", () => {
+      footerScroll.scrollBy({ left: 100, behavior: "smooth" });
+    });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
