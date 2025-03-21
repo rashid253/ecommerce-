@@ -2,69 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Master - Professional Panel</title>
+  <title>Admin Master - Compact Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- FontAwesome for icons and Chart.js for graphs -->
+  <!-- FontAwesome for icons and Chart.js for charts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /*========================================
-      1. RESET & BASE STYLES
-    ========================================*/
+    /* RESET & BASE */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
 
-    /*========================================
-      2. HEADER SECTION (Compact)
-    ========================================*/
+    /* HEADER (Fixed, Minimal) */
     .admin-header {
       position: fixed;
-      top: 0; left: 0; width: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
       background: #222;
       color: #fff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 12px;
+      padding: 4px 10px;
       z-index: 1000;
       box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      font-size: 0.9rem;
-      height: 50px;
+      height: 45px;
     }
     .admin-header .left-section {
       display: flex;
       align-items: center;
     }
     .hamburger {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       cursor: pointer;
       color: #fff;
-      margin-right: 8px;
+      margin-right: 6px;
     }
-    .page-title { font-size: 1.1rem; font-weight: bold; }
+    .page-title {
+      font-size: 1rem;
+      font-weight: bold;
+    }
     .admin-header .actions button {
       background: #007bff;
       border: none;
-      padding: 4px 8px;
+      padding: 4px 6px;
       border-radius: 4px;
       color: #fff;
       cursor: pointer;
-      margin-left: 8px;
+      margin-left: 6px;
       transition: background 0.3s;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
-    .admin-header .actions button:hover { background: #0056b3; }
+    .admin-header .actions button:hover {
+      background: #0056b3;
+    }
 
-    /*========================================
-      3. SIDEBAR & OVERLAY
-         - Sidebar starts beneath header (top:50px)
-    ========================================*/
+    /* SIDEBAR & OVERLAY */
     .sidebar {
       position: fixed;
-      top: 50px;
+      top: 45px; /* directly beneath header */
       left: -240px;
       width: 240px;
-      height: calc(100% - 50px);
+      height: calc(100% - 45px);
       background: #333;
       color: #fff;
       padding-top: 10px;
@@ -78,94 +77,96 @@
       padding: 10px 15px;
       border-bottom: 1px solid #444;
       cursor: pointer;
-      transition: background 0.3s;
       display: flex;
       align-items: center;
+      transition: background 0.3s;
     }
     .sidebar ul li i {
       margin-right: 8px;
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
     .sidebar ul li:hover { background: #444; }
     .overlay {
       position: fixed;
-      top: 50px;
+      top: 45px;
       left: 0;
       width: 100%;
-      height: calc(100% - 50px);
+      height: calc(100% - 45px);
       background: rgba(0,0,0,0.5);
       display: none;
       z-index: 1050;
     }
     .overlay.show { display: block; }
 
-    /*========================================
-      4. MAIN CONTENT
-         - 2×2 grid cards, chart & recent activity
-    ========================================*/
+    /* MAIN CONTENT */
     main {
-      padding: 60px 10px 70px;
-      margin-top: 50px;
-      min-height: calc(100vh - 120px);
+      padding: 55px 10px 70px;
+      margin-top: 45px;
+      min-height: calc(100vh - 115px);
     }
     .dashboard-header {
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
-    .dashboard-header h1 { font-size: 1.8rem; margin-bottom: 6px; color: #333; }
-    .dashboard-header p { font-size: 0.9rem; color: #555; }
-    /* 2×2 grid for summary cards */
+    .dashboard-header h1 { font-size: 1.6rem; color: #333; margin-bottom: 4px; }
+    .dashboard-header p { font-size: 0.85rem; color: #555; }
+    /* 2x2 Summary Cards */
     .card-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
     .summary-card {
-      border-radius: 6px;
-      padding: 10px;
+      border-radius: 4px;
+      padding: 8px;
       text-align: center;
       color: #fff;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       transition: transform 0.2s, box-shadow 0.2s;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
-    .summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-    .card-sales { background: linear-gradient(135deg, #007bff, #00c6ff); }
-    .card-orders { background: linear-gradient(135deg, #28a745, #85e085); }
+    .summary-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .card-sales    { background: linear-gradient(135deg, #007bff, #00c6ff); }
+    .card-orders   { background: linear-gradient(135deg, #28a745, #85e085); }
     .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
-    .card-customers { background: linear-gradient(135deg, #fd7e14, #ff9f59); }
-    .summary-card h3 { margin-bottom: 4px; font-size: 1rem; font-weight: 600; }
-    .summary-card p { font-size: 1.2rem; font-weight: bold; }
+    .card-customers{ background: linear-gradient(135deg, #fd7e14, #ff9f59); }
+    .summary-card h3 { margin-bottom: 2px; font-size: 0.9rem; font-weight: 600; }
+    .summary-card p { font-size: 1.1rem; font-weight: bold; }
     /* Chart Section */
     .chart-section {
       background: #fff;
-      padding: 10px;
-      border-radius: 6px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-      margin-bottom: 15px;
+      padding: 8px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
     }
-    .chart-section h2 { font-size: 1rem; margin-bottom: 8px; text-align: center; color: #333; }
-    .chart-container { height: 200px; }
-    /* Recent Activity Section */
+    .chart-section h2 { font-size: 0.9rem; margin-bottom: 6px; text-align: center; color: #333; }
+    .chart-container { height: 180px; }
+    /* Recent Activity */
     .recent-activity {
       background: #fff;
-      padding: 10px;
-      border-radius: 6px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      padding: 8px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .recent-activity h4 { font-size: 1rem; margin-bottom: 8px; color: #333; }
-    .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
+    .recent-activity h4 { font-size: 0.9rem; margin-bottom: 6px; color: #333; }
+    .activity-item { padding: 4px 0; border-bottom: 1px solid #eee; font-size: 0.75rem; color: #333; }
     .activity-item:last-child { border-bottom: none; }
 
-    /*========================================
-      5. FOOTER (Horizontally Scrollable with Arrow Buttons)
-    ========================================*/
+    /* FOOTER (Fixed, Horizontally Scrollable with Arrow Buttons) */
     .footer-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #222;
       display: flex;
       align-items: center;
-      overflow: hidden;
-      background: #222;
+      z-index: 1000;
     }
     .scroll-btn {
       background: rgba(0,0,0,0.6);
@@ -175,8 +176,8 @@
       font-size: 1rem;
       cursor: pointer;
       border-radius: 50%;
-      z-index: 1010;
       margin: 0 5px;
+      flex-shrink: 0;
     }
     .footer-scroll {
       overflow-x: auto;
@@ -190,7 +191,7 @@
       color: #fff;
       text-decoration: none;
       text-align: center;
-      padding: 0 8px;
+      padding: 0 6px;
       margin: 0 2px;
       font-size: 0.8rem;
       white-space: nowrap;
@@ -276,21 +277,21 @@
     </div>
   </main>
 
-  <!-- FOOTER with Horizontal Scrolling and Arrow Buttons -->
+  <!-- FOOTER (Fixed at Bottom with Scroll Arrows) -->
   <footer class="footer-container">
     <button class="scroll-btn left" id="scrollLeft"><i class="fas fa-angle-double-left"></i></button>
     <div class="footer-scroll" id="footerScroll">
-      <a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dash</a>
-      <a href="home_admin.html"><i class="fas fa-home"></i> Home</a>
-      <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i> Shop</a>
-      <a href="details_admin.html"><i class="fas fa-info-circle"></i> Info</a>
-      <a href="payments_admin.html"><i class="fas fa-credit-card"></i> Pay</a>
-      <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i> Chkout</a>
-      <a href="delivery_admin.html"><i class="fas fa-truck"></i> Dlvry</a>
-      <a href="support_admin.html"><i class="fas fa-headset"></i> Sup</a>
-      <a href="contact_admin.html"><i class="fas fa-envelope"></i> Cntct</a>
-      <a href="analytics_admin.html"><i class="fas fa-chart-line"></i> Analyt</a>
-      <a href="about_admin.html"><i class="fas fa-info"></i> About</a>
+      <a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i></a>
+      <a href="home_admin.html"><i class="fas fa-home"></i></a>
+      <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i></a>
+      <a href="details_admin.html"><i class="fas fa-info-circle"></i></a>
+      <a href="payments_admin.html"><i class="fas fa-credit-card"></i></a>
+      <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i></a>
+      <a href="delivery_admin.html"><i class="fas fa-truck"></i></a>
+      <a href="support_admin.html"><i class="fas fa-headset"></i></a>
+      <a href="contact_admin.html"><i class="fas fa-envelope"></i></a>
+      <a href="analytics_admin.html"><i class="fas fa-chart-line"></i></a>
+      <a href="about_admin.html"><i class="fas fa-info"></i></a>
     </div>
     <button class="scroll-btn right" id="scrollRight"><i class="fas fa-angle-double-right"></i></button>
   </footer>
@@ -347,9 +348,7 @@
           scales: {
             y: {
               beginAtZero: true,
-              ticks: {
-                callback: function(value) { return '$' + value; }
-              }
+              ticks: { callback: function(value) { return '$' + value; } }
             }
           }
         }
