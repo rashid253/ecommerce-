@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Master - Refined Layout</title>
+  <title>Admin Master - Refined Sidebar & Footer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- FontAwesome and Chart.js -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -10,20 +10,9 @@
   
   <style>
     /* RESET & BASE */
-    * {
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box;
-    }
-    html, body {
-      height: 100%;
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
+    a { text-decoration: none; color: inherit; }
 
     /* HEADER (White Theme) */
     .admin-header {
@@ -53,11 +42,7 @@
       margin-right: 8px;
       color: #333;
     }
-    .page-title {
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #333;
-    }
+    .page-title { font-size: 1.1rem; font-weight: bold; color: #333; }
     .admin-header .actions button {
       background: #007bff;
       border: none;
@@ -69,17 +54,16 @@
       transition: background 0.3s;
       font-size: 0.85rem;
     }
-    .admin-header .actions button:hover {
-      background: #0056b3;
-    }
+    .admin-header .actions button:hover { background: #0056b3; }
 
     /* SIDEBAR & OVERLAY */
     .sidebar {
       position: fixed;
       top: 50px;
-      left: -200px;  /* Reduced width */
-      width: 200px;  /* Reduced sidebar width */
-      height: calc(100% - 50px);
+      left: -240px;
+      width: 240px;
+      /* Adjust height so it stops above the footer (footer height = 65px) */
+      height: calc(100% - 50px - 65px);
       background: #fff;
       border-right: 1px solid #ddd;
       padding-top: 10px;
@@ -87,12 +71,8 @@
       z-index: 1100;
       font-size: 0.9rem;
     }
-    .sidebar.open {
-      left: 0;
-    }
-    .sidebar ul {
-      list-style: none;
-    }
+    .sidebar.open { left: 0; }
+    .sidebar ul { list-style: none; }
     .sidebar ul li {
       padding: 10px 15px;
       border-bottom: 1px solid #eee;
@@ -101,48 +81,29 @@
       align-items: center;
       transition: background 0.3s;
     }
-    /* Increase gap between icon and text */
-    .sidebar ul li i {
-      margin-right: 10px;
-      font-size: 1rem;
-      color: #333;
-    }
-    .sidebar ul li:hover {
-      background: #f7f7f7;
-    }
+    .sidebar ul li i { margin-right: 10px; font-size: 1rem; color: #333; }
+    .sidebar ul li:hover { background: #f7f7f7; }
     .overlay {
       position: fixed;
       top: 50px;
       left: 0;
       width: 100%;
-      height: calc(100% - 50px);
+      height: calc(100% - 50px - 65px);
       background: rgba(0,0,0,0.3);
       display: none;
       z-index: 1050;
     }
-    .overlay.show {
-      display: block;
-    }
+    .overlay.show { display: block; }
 
     /* MAIN CONTENT */
     main {
-      padding: 50px 10px 70px; /* Reduced top padding */
+      padding: 60px 10px 70px;
       margin-top: 50px;
       min-height: calc(100vh - 120px);
     }
-    .dashboard-header {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-    .dashboard-header h1 {
-      font-size: 1.8rem;
-      margin-bottom: 6px;
-      color: #333;
-    }
-    .dashboard-header p {
-      font-size: 0.9rem;
-      color: #555;
-    }
+    .dashboard-header { text-align: center; margin-bottom: 15px; }
+    .dashboard-header h1 { font-size: 1.8rem; margin-bottom: 6px; color: #333; }
+    .dashboard-header p { font-size: 0.9rem; color: #555; }
     .card-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -204,7 +165,7 @@
     }
     .activity-item:last-child { border-bottom: none; }
 
-    /* FOOTER (Fixed, White, with Icons + text below, horizontally scrollable) */
+    /* FOOTER (Fixed, White, Horizontally Scrollable with Arrows) */
     .footer-container {
       position: fixed;
       bottom: 0;
@@ -242,10 +203,10 @@
     .footer-scroll::-webkit-scrollbar { display: none; }
     .admin-footer a {
       display: inline-flex;
-      flex-direction: column;
+      flex-direction: column;  /* Stack icon above text */
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: 3px;
       color: #333;
       text-decoration: none;
       font-size: 0.7rem;
@@ -253,7 +214,9 @@
       margin: 0 2px;
       text-align: center;
     }
-    .admin-footer a i { font-size: 1.1rem; }
+    .admin-footer a i {
+      font-size: 1.1rem;
+    }
     .admin-footer a.active {
       font-weight: bold;
       pointer-events: none;
@@ -335,7 +298,7 @@
     </div>
   </main>
 
-  <!-- FOOTER (Fixed, White, Horizontally Scrollable with Arrows) -->
+  <!-- FOOTER (Fixed, White, with Horizontally Scrollable Icons with Text Underneath) -->
   <footer class="footer-container">
     <button class="scroll-btn left" id="scrollLeft"><i class="fas fa-angle-double-left"></i></button>
     <div class="footer-scroll" id="footerScroll">
