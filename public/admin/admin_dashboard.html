@@ -4,100 +4,202 @@
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap, FontAwesome, and Chart.js -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <style>
-    :root { --header-height: 50px; --footer-height: 65px; --sidebar-width: 200px; }
+    :root {
+      --header-height: 50px;
+      --footer-height: 65px;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
-    
-    /* HEADER */
-    .admin-header {
-      position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
-      background: #fff; color: #333; display: flex; justify-content: space-between;
-      align-items: center; padding: 0 12px; z-index: 1000; border-bottom: 1px solid #ddd;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    main { padding: 60px 10px 70px; margin-top: var(--header-height); min-height: calc(100vh - 120px); }
+    .dashboard-header { text-align: center; margin-bottom: 15px; }
+    .dashboard-header h1 { font-size: 1.8rem; margin-bottom: 6px; color: #333; }
+    .dashboard-header p { font-size: 0.9rem; color: #555; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
     }
-    .hamburger { font-size: 1.5rem; cursor: pointer; color: #333; }
-    .page-title { font-size: 1.1rem; font-weight: bold; color: #333; }
-    .actions button {
-      background: #007bff; border: none; padding: 4px 8px; border-radius: 4px;
-      color: #fff; cursor: pointer; transition: 0.3s; font-size: 0.85rem;
+    .summary-card {
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 0.9rem;
     }
-    .actions button:hover { background: #0056b3; }
-
-    /* SIDEBAR */
-    .sidebar {
-      position: fixed; top: var(--header-height); left: -var(--sidebar-width);
-      width: var(--sidebar-width); height: calc(100% - var(--header-height) - var(--footer-height));
-      background: #fff; border-right: 1px solid #ddd; padding: 10px 0;
-      transition: left 0.3s ease; z-index: 1100;
+    .summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+    .card-sales { background: linear-gradient(135deg, #007bff, #00c6ff); }
+    .card-orders { background: linear-gradient(135deg, #28a745, #85e085); }
+    .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
+    .card-customers { background: linear-gradient(135deg, #fd7e14, #ff9f59); }
+    .summary-card h3 { margin-bottom: 4px; font-size: 1rem; font-weight: 600; }
+    .summary-card p { font-size: 1.2rem; font-weight: bold; }
+    .chart-section {
+      background: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
     }
-    .sidebar.open { left: 0; }
-    .sidebar ul { list-style: none; padding: 0; }
-    .sidebar ul li {
-      padding: 10px 15px; border-bottom: 1px solid #eee; cursor: pointer;
-      display: flex; align-items: center; transition: background 0.3s;
+    .chart-section h2 { font-size: 1rem; margin-bottom: 8px; text-align: center; color: #333; }
+    .chart-container { height: 200px; }
+    .recent-activity {
+      background: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
-    .sidebar ul li i { margin-right: 12px; font-size: 1rem; color: #007bff; }
-    .sidebar ul li:hover { background: #f7f7f7; }
-
-    /* FOOTER */
-    .footer-container {
-      position: fixed; bottom: 0; left: 0; width: 100%; height: var(--footer-height);
-      background: #fff; border-top: 1px solid #ddd; display: flex; align-items: center;
-      z-index: 1000; padding: 0 5px;
-    }
-    .footer-scroll { overflow-x: auto; white-space: nowrap; flex-grow: 1; display: flex; gap: 12px; }
-    .footer-scroll a {
-      display: inline-flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 3px; color: #333; text-decoration: none;
-      font-size: 0.7rem; padding: 0 10px; margin: 0 2px; text-align: center;
-    }
-    .footer-scroll a i { font-size: 1.1rem; }
-
-    /* MAIN CONTENT */
-    main { margin-top: var(--header-height); padding: 60px 10px 70px; }
+    .recent-activity h4 { font-size: 1rem; margin-bottom: 8px; color: #333; }
+    .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
+    .activity-item:last-child { border-bottom: none; }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="admin-header">
-    <span class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
-    <span class="page-title">Admin Dashboard</span>
-    <div class="actions"><button onclick="logout()">Logout</button></div>
-  </header>
-
-  <!-- SIDEBAR -->
-  <nav class="sidebar" id="sidebar">
-    <ul>
-      <li><i class="fas fa-tachometer-alt"></i> Dashboard</li>
-      <li><i class="fas fa-home"></i> Home</li>
-      <li><i class="fas fa-shopping-bag"></i> Shop</li>
-      <li><i class="fas fa-credit-card"></i> Payments</li>
-    </ul>
-  </nav>
-
-  <!-- MAIN CONTENT -->
+  <!-- External Header -->
+  <div id="header-placeholder"></div>
+  <!-- External Sidebar -->
+  <div id="sidebar-placeholder"></div>
+  <!-- Main Content -->
   <main>
-    <h1>Dashboard</h1>
-    <p>Welcome, Admin. Manage your content and view analytics.</p>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="footer-container">
-    <div class="footer-scroll">
-      <a href="#"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
-      <a href="#"><i class="fas fa-shopping-bag"></i> <span>Shop</span></a>
-      <a href="#"><i class="fas fa-credit-card"></i> <span>Payments</span></a>
+    <div class="dashboard-header">
+      <h1>Dashboard</h1>
+      <p>Welcome, Admin. Manage your content and view analytics.</p>
     </div>
-  </footer>
-
+    <div class="card-grid">
+      <div class="summary-card card-sales">
+        <h3>Total Sales</h3>
+        <p>$12,345</p>
+      </div>
+      <div class="summary-card card-orders">
+        <h3>New Orders</h3>
+        <p>45</p>
+      </div>
+      <div class="summary-card card-products">
+        <h3>Products</h3>
+        <p>120</p>
+      </div>
+      <div class="summary-card card-customers">
+        <h3>Customers</h3>
+        <p>78</p>
+      </div>
+    </div>
+    <div class="chart-section">
+      <h2>Sales Overview</h2>
+      <div class="chart-container">
+        <canvas id="salesChart"></canvas>
+      </div>
+    </div>
+    <div class="recent-activity">
+      <h4>Recent Activity</h4>
+      <div class="activity-item">Order #1024 updated</div>
+      <div class="activity-item">New product added: Smartphone X</div>
+      <div class="activity-item">Homepage banner updated</div>
+      <div class="activity-item">User feedback received</div>
+    </div>
+  </main>
+  <!-- External Footer -->
+  <div id="footer-placeholder"></div>
+  
+  <!-- Load External Components -->
   <script>
-    function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("open");
+    // Load Header
+    fetch('admin_header.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        attachHamburger(); // Attach hamburger toggle after header loads
+      })
+      .catch(err => console.error('Error loading header:', err));
+    
+    // Load Sidebar
+    fetch('admin_sidebar.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('sidebar-placeholder').innerHTML = html;
+      })
+      .catch(err => console.error('Error loading sidebar:', err));
+    
+    // Load Footer
+    fetch('admin_footer.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+      })
+      .catch(err => console.error('Error loading footer:', err));
+      
+    // Attach Hamburger Toggle after header loads
+    function attachHamburger() {
+      const hamburger = document.getElementById("hamburger");
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+      if (hamburger && sidebar && overlay) {
+        hamburger.addEventListener("click", () => {
+          sidebar.classList.toggle("open");
+          overlay.classList.toggle("show");
+        });
+        overlay.addEventListener("click", () => {
+          sidebar.classList.remove("open");
+          overlay.classList.remove("show");
+        });
+      } else {
+        console.error("Hamburger, sidebar, or overlay not found.");
+      }
     }
-    function logout() { alert("Logging out..."); }
   </script>
+  
+  <script>
+    // Initialize Chart.js
+    document.addEventListener("DOMContentLoaded", function() {
+      const ctx = document.getElementById('salesChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Monthly Sales',
+            data: [3000, 4500, 4000, 6000, 7000, 6500],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { callback: function(value) { return '$' + value; } }
+            }
+          }
+        }
+      });
+    });
+  </script>
+  
+  <script>
+    // Footer Scrolling Buttons
+    const footerScroll = document.getElementById("footerScroll");
+    const scrollLeftBtn = document.getElementById("scrollLeft");
+    const scrollRightBtn = document.getElementById("scrollRight");
+    scrollLeftBtn.addEventListener("click", () => {
+      footerScroll.scrollBy({ left: -100, behavior: "smooth" });
+    });
+    scrollRightBtn.addEventListener("click", () => {
+      footerScroll.scrollBy({ left: 100, behavior: "smooth" });
+    });
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
