@@ -6,10 +6,7 @@
   <title>Admin Header</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    :root {
-      --header-height: 50px;
-    }
-    /* Header Styles */
+    :root { --header-height: 50px; }
     .admin-header {
       position: fixed;
       top: 0;
@@ -53,9 +50,7 @@
       transition: background 0.3s;
       font-size: 0.85rem;
     }
-    .admin-header .actions button:hover {
-      background: #0056b3;
-    }
+    .admin-header .actions button:hover { background: #0056b3; }
   </style>
 </head>
 <body>
@@ -68,11 +63,12 @@
       <button onclick="logout()">Logout</button>
     </div>
   </header>
-
+  
   <script>
+    // Hamburger toggle for sidebar
     document.addEventListener("DOMContentLoaded", function() {
       const hamburger = document.getElementById("hamburger");
-      // The sidebar and overlay are assumed to be in the parent document.
+      // The sidebar and overlay elements must exist in the parent document
       const sidebar = document.getElementById("sidebar");
       const overlay = document.getElementById("overlay");
       if (hamburger && sidebar && overlay) {
@@ -85,7 +81,7 @@
           overlay.classList.remove("show");
         });
       } else {
-        console.error("Hamburger, sidebar, or overlay element not found.");
+        console.error("Hamburger, sidebar, or overlay not found in parent document.");
       }
     });
   </script>
