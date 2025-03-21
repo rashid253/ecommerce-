@@ -4,173 +4,100 @@
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- FontAwesome and Chart.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Base Reset and Variables */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --header-height: 50px; --footer-height: 65px; --sidebar-width: 200px; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
-    :root {
-      --header-height: 50px;
-      --footer-height: 65px;
-      --sidebar-width: 200px;
+    
+    /* HEADER */
+    .admin-header {
+      position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+      background: #fff; color: #333; display: flex; justify-content: space-between;
+      align-items: center; padding: 0 12px; z-index: 1000; border-bottom: 1px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    a { text-decoration: none; color: inherit; }
-    
-    /* HEADER, SIDEBAR, FOOTER, and MAIN CONTENT styles as before */
-    /* (Use the CSS from the previous final version) */
-    /* ... [Include your CSS here, same as the version above] ... */
-    
-    /* For brevity, I include only the additional necessary JS explanation below */
+    .hamburger { font-size: 1.5rem; cursor: pointer; color: #333; }
+    .page-title { font-size: 1.1rem; font-weight: bold; color: #333; }
+    .actions button {
+      background: #007bff; border: none; padding: 4px 8px; border-radius: 4px;
+      color: #fff; cursor: pointer; transition: 0.3s; font-size: 0.85rem;
+    }
+    .actions button:hover { background: #0056b3; }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed; top: var(--header-height); left: -var(--sidebar-width);
+      width: var(--sidebar-width); height: calc(100% - var(--header-height) - var(--footer-height));
+      background: #fff; border-right: 1px solid #ddd; padding: 10px 0;
+      transition: left 0.3s ease; z-index: 1100;
+    }
+    .sidebar.open { left: 0; }
+    .sidebar ul { list-style: none; padding: 0; }
+    .sidebar ul li {
+      padding: 10px 15px; border-bottom: 1px solid #eee; cursor: pointer;
+      display: flex; align-items: center; transition: background 0.3s;
+    }
+    .sidebar ul li i { margin-right: 12px; font-size: 1rem; color: #007bff; }
+    .sidebar ul li:hover { background: #f7f7f7; }
+
+    /* FOOTER */
+    .footer-container {
+      position: fixed; bottom: 0; left: 0; width: 100%; height: var(--footer-height);
+      background: #fff; border-top: 1px solid #ddd; display: flex; align-items: center;
+      z-index: 1000; padding: 0 5px;
+    }
+    .footer-scroll { overflow-x: auto; white-space: nowrap; flex-grow: 1; display: flex; gap: 12px; }
+    .footer-scroll a {
+      display: inline-flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 3px; color: #333; text-decoration: none;
+      font-size: 0.7rem; padding: 0 10px; margin: 0 2px; text-align: center;
+    }
+    .footer-scroll a i { font-size: 1.1rem; }
+
+    /* MAIN CONTENT */
+    main { margin-top: var(--header-height); padding: 60px 10px 70px; }
   </style>
 </head>
 <body>
-  <!-- External Header -->
-  <div id="header-placeholder"></div>
-  
-  <!-- Sidebar and overlay (make sure these exist in the main document) -->
+  <!-- HEADER -->
+  <header class="admin-header">
+    <span class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></span>
+    <span class="page-title">Admin Dashboard</span>
+    <div class="actions"><button onclick="logout()">Logout</button></div>
+  </header>
+
+  <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <ul>
-      <li onclick="navigate('admin_dashboard.html')"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
-      <li onclick="navigate('home_admin.html')"><i class="fas fa-home"></i> Home</li>
-      <li onclick="navigate('header_admin.html')"><i class="fas fa-columns"></i> Header</li>
-      <li onclick="navigate('ecommerce_admin.html')"><i class="fas fa-shopping-bag"></i> Shop</li>
-      <li onclick="navigate('details_admin.html')"><i class="fas fa-info-circle"></i> Details</li>
-      <li onclick="navigate('payments_admin.html')"><i class="fas fa-credit-card"></i> Payments</li>
-      <li onclick="navigate('checkout_admin.html')"><i class="fas fa-shopping-cart"></i> Checkout</li>
-      <li onclick="navigate('delivery_admin.html')"><i class="fas fa-truck"></i> Delivery</li>
-      <li onclick="navigate('support_admin.html')"><i class="fas fa-headset"></i> Support</li>
-      <li onclick="navigate('contact_admin.html')"><i class="fas fa-envelope"></i> Contact</li>
-      <li onclick="navigate('analytics_admin.html')"><i class="fas fa-chart-line"></i> Analytics</li>
-      <li onclick="navigate('about_admin.html')"><i class="fas fa-info"></i> About</li>
+      <li><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+      <li><i class="fas fa-home"></i> Home</li>
+      <li><i class="fas fa-shopping-bag"></i> Shop</li>
+      <li><i class="fas fa-credit-card"></i> Payments</li>
     </ul>
   </nav>
-  <div class="overlay" id="overlay"></div>
-  
+
   <!-- MAIN CONTENT -->
   <main>
-    <div class="dashboard-header">
-      <h1>Dashboard</h1>
-      <p>Welcome, Admin. Manage your content and view analytics.</p>
-    </div>
-    <!-- (Your summary cards, chart, recent activity, etc.) -->
-    <div class="card-grid">
-      <div class="summary-card card-sales">
-        <h3>Total Sales</h3>
-        <p>$12,345</p>
-      </div>
-      <div class="summary-card card-orders">
-        <h3>New Orders</h3>
-        <p>45</p>
-      </div>
-      <div class="summary-card card-products">
-        <h3>Products</h3>
-        <p>120</p>
-      </div>
-      <div class="summary-card card-customers">
-        <h3>Customers</h3>
-        <p>78</p>
-      </div>
-    </div>
-    <div class="chart-section">
-      <h2>Sales Overview</h2>
-      <div class="chart-container">
-        <canvas id="salesChart"></canvas>
-      </div>
-    </div>
-    <div class="recent-activity">
-      <h4>Recent Activity</h4>
-      <div class="activity-item">Order #1024 updated</div>
-      <div class="activity-item">New product added: Smartphone X</div>
-      <div class="activity-item">Homepage banner updated</div>
-      <div class="activity-item">User feedback received</div>
-    </div>
+    <h1>Dashboard</h1>
+    <p>Welcome, Admin. Manage your content and view analytics.</p>
   </main>
-  
-  <!-- External Footer -->
-  <div id="footer-placeholder"></div>
-  
-  <!-- Script to load external header and footer, then attach hamburger event -->
+
+  <!-- FOOTER -->
+  <footer class="footer-container">
+    <div class="footer-scroll">
+      <a href="#"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+      <a href="#"><i class="fas fa-shopping-bag"></i> <span>Shop</span></a>
+      <a href="#"><i class="fas fa-credit-card"></i> <span>Payments</span></a>
+    </div>
+  </footer>
+
   <script>
-    // Load header
-    fetch('admin_header.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('header-placeholder').innerHTML = html;
-        attachHamburger(); // Attach event listeners after header is loaded
-      })
-      .catch(err => console.error('Error loading header:', err));
-      
-    // Load footer
-    fetch('admin_footer.html')
-      .then(response => response.text())
-      .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
-      .catch(err => console.error('Error loading footer:', err));
-      
-    // Function to attach hamburger toggle listeners
-    function attachHamburger() {
-      const hamburger = document.getElementById("hamburger");
-      const sidebar = document.getElementById("sidebar");
-      const overlay = document.getElementById("overlay");
-      if (hamburger && sidebar && overlay) {
-        hamburger.addEventListener("click", () => {
-          sidebar.classList.toggle("open");
-          overlay.classList.toggle("show");
-        });
-        overlay.addEventListener("click", () => {
-          sidebar.classList.remove("open");
-          overlay.classList.remove("show");
-        });
-      } else {
-        console.error("Hamburger, sidebar, or overlay element not found.");
-      }
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("open");
     }
+    function logout() { alert("Logging out..."); }
   </script>
-  
-  <script>
-    // Initialize Chart.js for Sales Overview
-    document.addEventListener("DOMContentLoaded", function() {
-      const ctx = document.getElementById('salesChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          datasets: [{
-            label: 'Monthly Sales',
-            data: [3000, 4500, 4000, 6000, 7000, 6500],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 2,
-            fill: true,
-            tension: 0.3
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: { callback: function(value) { return '$' + value; } }
-            }
-          }
-        }
-      });
-    });
-  </script>
-  <script>
-    // Footer scrolling buttons
-    const footerScroll = document.getElementById("footerScroll");
-    const scrollLeftBtn = document.getElementById("scrollLeft");
-    const scrollRightBtn = document.getElementById("scrollRight");
-    scrollLeftBtn.addEventListener("click", () => {
-      footerScroll.scrollBy({ left: -100, behavior: "smooth" });
-    });
-    scrollRightBtn.addEventListener("click", () => {
-      footerScroll.scrollBy({ left: 100, behavior: "smooth" });
-    });
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
