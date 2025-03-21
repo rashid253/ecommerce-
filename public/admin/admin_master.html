@@ -2,15 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Master (Compact)</title>
+  <title>Compact Admin with Chart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- FontAwesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     /* RESET & BASE */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
+    html, body {
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+    }
 
     /****************************************
      * HEADER (COMPACT)
@@ -19,14 +25,19 @@
       position: fixed; top: 0; left: 0; width: 100%;
       background: #222; color: #fff;
       display: flex; justify-content: space-between; align-items: center;
-      padding: 6px 10px; /* Reduced padding */
+      padding: 6px 10px;
       z-index: 1000;
       box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      font-size: 0.9rem; /* Smaller text */
+      font-size: 0.9rem;
     }
     .admin-header .left-section { display: flex; align-items: center; }
-    .hamburger { font-size: 1.5rem; cursor: pointer; color: #fff; margin-right: 8px; }
-    .page-title { font-size: 1.1rem; font-weight: bold; }
+    .hamburger {
+      font-size: 1.5rem; cursor: pointer; color: #fff;
+      margin-right: 8px;
+    }
+    .page-title {
+      font-size: 1.1rem; font-weight: bold;
+    }
     .actions button {
       background: #007bff; border: none; padding: 4px 8px;
       border-radius: 4px; color: #fff; cursor: pointer;
@@ -73,7 +84,6 @@
     .card-grid {
       display: grid;
       grid-template-columns: 1fr 1fr; /* 2 columns explicitly */
-      grid-auto-rows: auto; /* rows grow to fit content */
       gap: 10px; /* spacing between cards */
       margin-bottom: 20px;
     }
@@ -98,6 +108,38 @@
       font-size: 1.2rem; font-weight: bold; margin: 0;
     }
 
+    /* Chart container */
+    .chart-section {
+      background: #fff;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .chart-section h2 {
+      font-size: 1rem; margin-bottom: 10px; text-align: center;
+      color: #333;
+    }
+    .chart-container {
+      height: 200px; /* fixed height for chart on mobile */
+    }
+
+    /* Recent activity or other content */
+    .recent-activity {
+      background: #fff;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    .recent-activity h4 {
+      margin-bottom: 10px; font-size: 1rem; color: #333;
+    }
+    .activity-item {
+      padding: 6px 0; border-bottom: 1px solid #eee;
+      font-size: 0.85rem; color: #333;
+    }
+    .activity-item:last-child { border-bottom: none; }
+
     /****************************************
      * FOOTER (COMPACT)
      ****************************************/
@@ -106,7 +148,7 @@
       background: #222; color: #fff;
       display: flex; justify-content: space-around; align-items: center;
       padding: 6px 0; z-index: 1000;
-      font-size: 0.8rem; /* Smaller */
+      font-size: 0.8rem;
     }
     .admin-footer a {
       color: #fff; text-decoration: none;
@@ -173,8 +215,10 @@
   <main>
     <div class="dashboard-header">
       <h1>Compact Admin</h1>
-      <p>A smaller, 2×2 layout with reduced fonts & spacing.</p>
+      <p>A smaller, 2×2 card layout with a chart below.</p>
     </div>
+
+    <!-- 2×2 Cards -->
     <div class="card-grid">
       <div class="summary-card card-sales">
         <h3>Total Sales</h3>
@@ -193,6 +237,23 @@
         <p>78</p>
       </div>
     </div>
+
+    <!-- Chart Section -->
+    <div class="chart-section">
+      <h2>Sales Overview</h2>
+      <div class="chart-container">
+        <canvas id="salesChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="recent-activity">
+      <h4>Recent Activity</h4>
+      <div class="activity-item">Order #1024 updated</div>
+      <div class="activity-item">New product added: Smartphone X</div>
+      <div class="activity-item">Homepage banner updated</div>
+      <div class="activity-item">User feedback received</div>
+    </div>
   </main>
 
   <!-- FOOTER (COMPACT) -->
@@ -205,11 +266,11 @@
       <a><i class="fas fa-ellipsis-h"></i>More</a>
       <div class="more-dropdown-content">
         <a href="payments_admin.html"><i class="fas fa-credit-card"></i>Pay</a>
-        <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i>Checkout</a>
-        <a href="delivery_admin.html"><i class="fas fa-truck"></i>Delivery</a>
-        <a href="support_admin.html"><i class="fas fa-headset"></i>Support</a>
-        <a href="contact_admin.html"><i class="fas fa-envelope"></i>Contact</a>
-        <a href="analytics_admin.html"><i class="fas fa-chart-line"></i>Analytics</a>
+        <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i>Chkout</a>
+        <a href="delivery_admin.html"><i class="fas fa-truck"></i>Dlvry</a>
+        <a href="support_admin.html"><i class="fas fa-headset"></i>Sprt</a>
+        <a href="contact_admin.html"><i class="fas fa-envelope"></i>Cntct</a>
+        <a href="analytics_admin.html"><i class="fas fa-chart-line"></i>Analy</a>
         <a href="about_admin.html"><i class="fas fa-info"></i>About</a>
       </div>
     </div>
@@ -243,6 +304,38 @@
       alert("Logging out...");
       // window.location.href = "../index.html";
     }
+
+    // Initialize Chart.js
+    document.addEventListener("DOMContentLoaded", function() {
+      const ctx = document.getElementById('salesChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Monthly Sales',
+            data: [3000, 4500, 4000, 6000, 7000, 6500],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) { return '$' + value; }
+              }
+            }
+          }
+        }
+      });
+    });
   </script>
 </body>
 </html>
