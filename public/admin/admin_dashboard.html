@@ -1,24 +1,171 @@
-<!-- Inside admin_master.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- FontAwesome for icons, Chart.js for charts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    /* Base Reset and Variables */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
+    :root {
+      --header-height: 50px;
+      --footer-height: 65px;
+    }
+    /* Placeholder styles for main content – same as before */
+    main {
+      padding: 60px 10px 70px;
+      margin-top: var(--header-height);
+      min-height: calc(100vh - 120px);
+    }
+    .dashboard-header { text-align: center; margin-bottom: 15px; }
+    .dashboard-header h1 { font-size: 1.8rem; margin-bottom: 6px; color: #333; }
+    .dashboard-header p { font-size: 0.9rem; color: #555; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .summary-card {
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      font-size: 0.9rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+    .card-sales { background: linear-gradient(135deg, #007bff, #00c6ff); }
+    .card-orders { background: linear-gradient(135deg, #28a745, #85e085); }
+    .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
+    .card-customers { background: linear-gradient(135deg, #fd7e14, #ff9f59); }
+    .summary-card h3 { margin-bottom: 4px; font-size: 1rem; font-weight: 600; }
+    .summary-card p { font-size: 1.2rem; font-weight: bold; }
+    .chart-section {
+      background: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+    .chart-section h2 { font-size: 1rem; margin-bottom: 8px; text-align: center; color: #333; }
+    .chart-container { height: 200px; }
+    .recent-activity {
+      background: #fff;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+    .recent-activity h4 { font-size: 1rem; margin-bottom: 8px; color: #333; }
+    .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
+    .activity-item:last-child { border-bottom: none; }
+  </style>
+</head>
 <body>
+  <!-- External Header -->
   <div id="header-placeholder"></div>
-  <!-- Main Content here -->
+  
+  <!-- Sidebar and overlay should be included in the header or here as needed -->
+  <!-- For this example, we assume the header file (admin_header.html) already includes the hamburger toggle script
+       and that your sidebar and overlay are included in the parent page (or loaded separately) -->
+  
+  <!-- MAIN CONTENT -->
+  <main>
+    <div class="dashboard-header">
+      <h1>Dashboard</h1>
+      <p>Welcome, Admin. Manage your content and view analytics.</p>
+    </div>
+    <!-- Summary Cards -->
+    <div class="card-grid">
+      <div class="summary-card card-sales">
+        <h3>Total Sales</h3>
+        <p>$12,345</p>
+      </div>
+      <div class="summary-card card-orders">
+        <h3>New Orders</h3>
+        <p>45</p>
+      </div>
+      <div class="summary-card card-products">
+        <h3>Products</h3>
+        <p>120</p>
+      </div>
+      <div class="summary-card card-customers">
+        <h3>Customers</h3>
+        <p>78</p>
+      </div>
+    </div>
+    <!-- Chart Section -->
+    <div class="chart-section">
+      <h2>Sales Overview</h2>
+      <div class="chart-container">
+        <canvas id="salesChart"></canvas>
+      </div>
+    </div>
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+      <h4>Recent Activity</h4>
+      <div class="activity-item">Order #1024 updated</div>
+      <div class="activity-item">New product added: Smartphone X</div>
+      <div class="activity-item">Homepage banner updated</div>
+      <div class="activity-item">User feedback received</div>
+    </div>
+  </main>
+  
+  <!-- External Footer -->
   <div id="footer-placeholder"></div>
-
+  
+  <!-- Scripts to load external header and footer -->
   <script>
-    // Load header
+    // Load Header
     fetch('admin_header.html')
       .then(response => response.text())
-      .then(data => {
-        document.getElementById('header-placeholder').innerHTML = data;
-      })
+      .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
       .catch(err => console.error('Error loading header:', err));
-
-    // Load footer
+    
+    // Load Footer
     fetch('admin_footer.html')
       .then(response => response.text())
-      .then(data => {
-        document.getElementById('footer-placeholder').innerHTML = data;
-      })
+      .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
       .catch(err => console.error('Error loading footer:', err));
   </script>
+  
+  <script>
+    // Initialize Chart.js for Sales Overview
+    document.addEventListener("DOMContentLoaded", function() {
+      const ctx = document.getElementById('salesChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'Monthly Sales',
+            data: [3000, 4500, 4000, 6000, 7000, 6500],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { callback: function(value) { return '$' + value; } }
+            }
+          }
+        }
+      });
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+</html>
