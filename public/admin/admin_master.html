@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Master - Refined Sidebar & Footer</title>
+  <title>Admin Master - Refined Sidebar & Footer Scrolling</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- FontAwesome and Chart.js -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,8 +17,7 @@
     /* HEADER (White Theme) */
     .admin-header {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       background: #fff;
       color: #333;
@@ -33,25 +32,13 @@
       font-size: 0.9rem;
     }
     .admin-header .left-section {
-      display: flex;
-      align-items: center;
+      display: flex; align-items: center;
     }
-    .hamburger {
-      font-size: 1.5rem;
-      cursor: pointer;
-      margin-right: 8px;
-      color: #333;
-    }
+    .hamburger { font-size: 1.5rem; cursor: pointer; margin-right: 8px; color: #333; }
     .page-title { font-size: 1.1rem; font-weight: bold; color: #333; }
     .admin-header .actions button {
-      background: #007bff;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      color: #fff;
-      cursor: pointer;
-      margin-left: 8px;
-      transition: background 0.3s;
+      background: #007bff; border: none; padding: 4px 8px; border-radius: 4px;
+      color: #fff; cursor: pointer; margin-left: 8px; transition: background 0.3s;
       font-size: 0.85rem;
     }
     .admin-header .actions button:hover { background: #0056b3; }
@@ -60,10 +47,9 @@
     .sidebar {
       position: fixed;
       top: 50px;
-      left: -240px;
-      width: 240px;
-      /* Adjust height so it stops above the footer (footer height = 65px) */
-      height: calc(100% - 50px - 65px);
+      left: -200px;  /* Reduced width */
+      width: 200px;
+      height: calc(100% - 50px - 65px); /* Stop above footer (footer height = 65px) */
       background: #fff;
       border-right: 1px solid #ddd;
       padding-top: 10px;
@@ -74,14 +60,11 @@
     .sidebar.open { left: 0; }
     .sidebar ul { list-style: none; }
     .sidebar ul li {
-      padding: 10px 15px;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      transition: background 0.3s;
+      padding: 10px 15px; border-bottom: 1px solid #eee;
+      cursor: pointer; display: flex; align-items: center; transition: background 0.3s;
     }
-    .sidebar ul li i { margin-right: 10px; font-size: 1rem; color: #333; }
+    /* Increased gap between icon and text */
+    .sidebar ul li i { margin-right: 12px; font-size: 1rem; color: #333; }
     .sidebar ul li:hover { background: #f7f7f7; }
     .overlay {
       position: fixed;
@@ -119,23 +102,13 @@
       transition: transform 0.2s, box-shadow 0.2s;
       font-size: 0.9rem;
     }
-    .summary-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
+    .summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
     .card-sales    { background: linear-gradient(135deg, #007bff, #00c6ff); }
     .card-orders   { background: linear-gradient(135deg, #28a745, #85e085); }
     .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
     .card-customers{ background: linear-gradient(135deg, #fd7e14, #ff9f59); }
-    .summary-card h3 {
-      margin-bottom: 4px;
-      font-size: 1rem;
-      font-weight: 600;
-    }
-    .summary-card p {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
+    .summary-card h3 { margin-bottom: 4px; font-size: 1rem; font-weight: 600; }
+    .summary-card p { font-size: 1.2rem; font-weight: bold; }
     .chart-section {
       background: #fff;
       padding: 10px;
@@ -143,12 +116,7 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
       margin-bottom: 15px;
     }
-    .chart-section h2 {
-      font-size: 1rem;
-      margin-bottom: 8px;
-      text-align: center;
-      color: #333;
-    }
+    .chart-section h2 { font-size: 1rem; margin-bottom: 8px; text-align: center; color: #333; }
     .chart-container { height: 200px; }
     .recent-activity {
       background: #fff;
@@ -157,18 +125,13 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
     .recent-activity h4 { font-size: 1rem; margin-bottom: 8px; color: #333; }
-    .activity-item {
-      padding: 6px 0;
-      border-bottom: 1px solid #eee;
-      font-size: 0.85rem;
-      color: #333;
-    }
+    .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
     .activity-item:last-child { border-bottom: none; }
 
     /* FOOTER (Fixed, White, Horizontally Scrollable with Arrows) */
     .footer-container {
       position: fixed;
-      bottom: 0;
+      bottom: 0; 
       left: 0;
       width: 100%;
       background: #fff;
@@ -214,9 +177,7 @@
       margin: 0 2px;
       text-align: center;
     }
-    .admin-footer a i {
-      font-size: 1.1rem;
-    }
+    .admin-footer a i { font-size: 1.1rem; }
     .admin-footer a.active {
       font-weight: bold;
       pointer-events: none;
@@ -298,7 +259,7 @@
     </div>
   </main>
 
-  <!-- FOOTER (Fixed, White, with Horizontally Scrollable Icons with Text Underneath) -->
+  <!-- FOOTER (Fixed, White, with Horizontally Scrollable Icons & Text Underneath) -->
   <footer class="footer-container">
     <button class="scroll-btn left" id="scrollLeft"><i class="fas fa-angle-double-left"></i></button>
     <div class="footer-scroll" id="footerScroll">
