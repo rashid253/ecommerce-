@@ -1,150 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Admin Header</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- FontAwesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; }
-    /* Header styling */
-    .admin-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: #222;
-      color: #fff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
-    .admin-header .hamburger {
-      font-size: 1.8rem;
-      cursor: pointer;
-      color: #fff;
-    }
-    .admin-header .page-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-left: 10px;
-    }
-    .admin-header .actions button {
-      background: #007bff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      color: #fff;
-      cursor: pointer;
-      margin-left: 10px;
-      transition: background 0.3s;
-    }
-    .admin-header .actions button:hover {
-      background: #0056b3;
-    }
-    /* Sidebar styling */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: -250px;
-      width: 250px;
-      height: 100%;
-      background: #333;
-      color: #fff;
-      padding-top: 60px;
-      transition: left 0.3s ease;
-      z-index: 1100;
-    }
-    .sidebar.open {
-      left: 0;
-    }
-    .sidebar ul {
-      list-style: none;
-    }
-    .sidebar ul li {
-      padding: 15px 20px;
-      border-bottom: 1px solid #444;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .sidebar ul li:hover {
-      background: #444;
-    }
-    /* Overlay styling */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      z-index: 1050;
-    }
-    .overlay.show {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <header class="admin-header">
-    <div class="left-section">
-      <span class="hamburger" id="hamburger"><i class="fas fa-bars"></i></span>
-      <span class="page-title" id="adminPageTitle">Dashboard</span>
-    </div>
-    <div class="actions">
-      <button onclick="goHome()">Home</button>
-      <button onclick="logout()">Logout</button>
-    </div>
-  </header>
-  
-  <!-- Sidebar Navigation -->
-  <nav class="sidebar" id="sidebar">
-    <ul>
-      <li onclick="navigate('admin_dashboard.html')">Dashboard</li>
-      <li onclick="navigate('home_admin.html')">Home</li>
-      <li onclick="navigate('header_admin.html')">Header</li>
-      <li onclick="navigate('ecommerce_admin.html')">Shop</li>
-      <li onclick="navigate('details_admin.html')">Details</li>
-      <li onclick="navigate('payments_admin.html')">Payments</li>
-      <li onclick="navigate('checkout_admin.html')">Checkout</li>
-      <li onclick="navigate('delivery_admin.html')">Delivery</li>
-      <li onclick="navigate('support_admin.html')">Support</li>
-      <li onclick="navigate('contact_admin.html')">Contact</li>
-      <li onclick="navigate('analytics_admin.html')">Analytics</li>
-      <li onclick="navigate('about_admin.html')">About</li>
-    </ul>
-  </nav>
-  
-  <!-- Sidebar Overlay -->
-  <div class="overlay" id="overlay"></div>
-  
-  <script>
-    // Toggle sidebar and overlay
-    document.getElementById('hamburger').addEventListener('click', function() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('overlay').classList.toggle('show');
-    });
-    document.getElementById('overlay').addEventListener('click', function() {
-      document.getElementById('sidebar').classList.remove('open');
-      document.getElementById('overlay').classList.remove('show');
-    });
-    function navigate(page) {
-      window.location.href = page;
-    }
-    function goHome() {
-      window.location.href = 'admin_dashboard.html';
-    }
-    function logout() {
-      alert("Logging out...");
-      window.location.href = "../index.html";
-    }
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Header</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      /* Header Styles */
+      :root {
+        --header-height: 50px;
+      }
+      .admin-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--header-height);
+        background: #fff;
+        color: #333;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 12px;
+        z-index: 1000;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-bottom: 1px solid #ddd;
+        font-size: 0.9rem;
+      }
+      .admin-header .left-section {
+        display: flex;
+        align-items: center;
+      }
+      .hamburger {
+        font-size: 1.5rem;
+        cursor: pointer;
+        margin-right: 8px;
+        color: #333;
+      }
+      .page-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #333;
+      }
+      .admin-header .actions button {
+        background: #007bff;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        margin-left: 8px;
+        transition: background 0.3s;
+        font-size: 0.85rem;
+      }
+      .admin-header .actions button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="admin-header">
+      <div class="left-section">
+        <span class="hamburger" id="hamburger"><i class="fas fa-bars"></i></span>
+        <span class="page-title">Admin Master</span>
+      </div>
+      <div class="actions">
+        <button onclick="logout()">Logout</button>
+      </div>
+    </header>
+  </body>
 </html>
