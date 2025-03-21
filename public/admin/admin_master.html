@@ -2,23 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Master - Professional Panel</title>
+  <title>Admin Master - White Theme with Footer Text Below Icons</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- FontAwesome and Chart.js -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <style>
-    /* RESET & BASE STYLES */
+    /* RESET & BASE */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
     a { text-decoration: none; color: inherit; }
     
-    /* HEADER (White Theme Minimal) */
+    /* HEADER (White Theme) */
     .admin-header {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100%;
       background: #fff;
       color: #333;
@@ -30,24 +29,14 @@
       z-index: 1000;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       border-bottom: 1px solid #ddd;
+      font-size: 0.9rem;
     }
     .admin-header .left-section { display: flex; align-items: center; }
-    .hamburger {
-      font-size: 1.5rem;
-      cursor: pointer;
-      margin-right: 8px;
-      color: #333;
-    }
+    .hamburger { font-size: 1.5rem; cursor: pointer; margin-right: 8px; color: #333; }
     .page-title { font-size: 1.1rem; font-weight: bold; color: #333; }
     .admin-header .actions button {
-      background: #007bff;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      color: #fff;
-      cursor: pointer;
-      margin-left: 8px;
-      transition: background 0.3s;
+      background: #007bff; border: none; padding: 4px 8px; border-radius: 4px;
+      color: #fff; cursor: pointer; margin-left: 8px; transition: background 0.3s;
       font-size: 0.85rem;
     }
     .admin-header .actions button:hover { background: #0056b3; }
@@ -69,12 +58,8 @@
     .sidebar.open { left: 0; }
     .sidebar ul { list-style: none; }
     .sidebar ul li {
-      padding: 10px 15px;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      transition: background 0.3s;
+      padding: 10px 15px; border-bottom: 1px solid #eee;
+      cursor: pointer; display: flex; align-items: center; transition: background 0.3s;
     }
     .sidebar ul li i { margin-right: 8px; font-size: 1rem; color: #333; }
     .sidebar ul li:hover { background: #f7f7f7; }
@@ -106,52 +91,45 @@
       margin-bottom: 15px;
     }
     .summary-card {
-      border-radius: 6px;
-      padding: 10px;
-      text-align: center;
-      color: #fff;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
+      border-radius: 6px; padding: 10px; text-align: center; color: #fff;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1); transition: transform 0.2s, box-shadow 0.2s;
       font-size: 0.9rem;
     }
     .summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-    .card-sales { background: linear-gradient(135deg, #007bff, #00c6ff); }
-    .card-orders { background: linear-gradient(135deg, #28a745, #85e085); }
+    .card-sales    { background: linear-gradient(135deg, #007bff, #00c6ff); }
+    .card-orders   { background: linear-gradient(135deg, #28a745, #85e085); }
     .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
-    .card-customers { background: linear-gradient(135deg, #fd7e14, #ff9f59); }
+    .card-customers{ background: linear-gradient(135deg, #fd7e14, #ff9f59); }
     .summary-card h3 { margin-bottom: 4px; font-size: 1rem; font-weight: 600; }
     .summary-card p { font-size: 1.2rem; font-weight: bold; }
     .chart-section {
-      background: #fff;
-      padding: 10px;
-      border-radius: 6px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-      margin-bottom: 15px;
+      background: #fff; padding: 10px; border-radius: 6px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1); margin-bottom: 15px;
     }
     .chart-section h2 { font-size: 1rem; margin-bottom: 8px; text-align: center; color: #333; }
     .chart-container { height: 200px; }
     .recent-activity {
-      background: #fff;
-      padding: 10px;
-      border-radius: 6px;
+      background: #fff; padding: 10px; border-radius: 6px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
     .recent-activity h4 { font-size: 1rem; margin-bottom: 8px; color: #333; }
     .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
     .activity-item:last-child { border-bottom: none; }
     
-    /* FOOTER (Fixed, White Background, Scrollable with Arrows) */
+    /* FOOTER (Fixed, White, with Horizontal Scrolling & Arrow Buttons)
+       Icons with text below (column layout) and equal spacing.
+    */
     .footer-container {
       position: fixed;
-      bottom: 0;
-      left: 0;
+      bottom: 0; left: 0;
       width: 100%;
       background: #fff;
       border-top: 1px solid #ddd;
       display: flex;
       align-items: center;
       z-index: 1000;
-      height: 50px;
+      height: 60px;
+      padding: 0 5px;
     }
     .scroll-btn {
       background: #ddd;
@@ -170,24 +148,24 @@
       flex-grow: 1;
       -webkit-overflow-scrolling: touch;
       display: flex;
-      justify-content: space-around;
       align-items: center;
+      justify-content: space-evenly;
     }
     .footer-scroll::-webkit-scrollbar { display: none; }
     .admin-footer a {
-      display: inline-block;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
       color: #333;
       text-decoration: none;
-      text-align: center;
+      font-size: 0.75rem;
       padding: 0 10px;
       margin: 0 5px;
-      font-size: 0.8rem;
       white-space: nowrap;
     }
     .admin-footer a i {
-      display: block;
       font-size: 1.2rem;
-      margin-bottom: 2px;
     }
     .admin-footer a.active {
       font-weight: bold;
@@ -234,7 +212,7 @@
       <h1>Dashboard</h1>
       <p>Welcome, Admin. Manage your content and view analytics.</p>
     </div>
-    <!-- Summary Cards (2x2 grid) -->
+    <!-- Summary Cards (2×2 grid) -->
     <div class="card-grid">
       <div class="summary-card card-sales">
         <h3>Total Sales</h3>
@@ -270,21 +248,21 @@
     </div>
   </main>
 
-  <!-- FOOTER (Fixed, White Background, with Scroll Arrows) -->
+  <!-- FOOTER (Fixed, White, Horizontally Scrollable with Arrow Buttons) -->
   <footer class="footer-container">
     <button class="scroll-btn left" id="scrollLeft"><i class="fas fa-angle-double-left"></i></button>
     <div class="footer-scroll" id="footerScroll">
-      <a href="admin_dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-      <a href="home_admin.html"><i class="fas fa-home"></i> Home</a>
-      <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i> Shop</a>
-      <a href="details_admin.html"><i class="fas fa-info-circle"></i> Details</a>
-      <a href="payments_admin.html"><i class="fas fa-credit-card"></i> Payments</a>
-      <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i> Checkout</a>
-      <a href="delivery_admin.html"><i class="fas fa-truck"></i> Delivery</a>
-      <a href="support_admin.html"><i class="fas fa-headset"></i> Support</a>
-      <a href="contact_admin.html"><i class="fas fa-envelope"></i> Contact</a>
-      <a href="analytics_admin.html"><i class="fas fa-chart-line"></i> Analytics</a>
-      <a href="about_admin.html"><i class="fas fa-info"></i> About</a>
+      <a href="admin_dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+      <a href="home_admin.html"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i><span>Shop</span></a>
+      <a href="details_admin.html"><i class="fas fa-info-circle"></i><span>Details</span></a>
+      <a href="payments_admin.html"><i class="fas fa-credit-card"></i><span>Payments</span></a>
+      <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i><span>Checkout</span></a>
+      <a href="delivery_admin.html"><i class="fas fa-truck"></i><span>Delivery</span></a>
+      <a href="support_admin.html"><i class="fas fa-headset"></i><span>Support</span></a>
+      <a href="contact_admin.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
+      <a href="analytics_admin.html"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+      <a href="about_admin.html"><i class="fas fa-info"></i><span>About</span></a>
     </div>
     <button class="scroll-btn right" id="scrollRight"><i class="fas fa-angle-double-right"></i></button>
   </footer>
