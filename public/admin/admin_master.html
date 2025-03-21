@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Master - Refined Footer</title>
+  <title>Admin Master - Icons with Text Underneath</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- FontAwesome and Chart.js -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -48,9 +48,9 @@
       align-items: center;
     }
     .hamburger {
-      font-size: 1.5rem;
-      cursor: pointer;
-      margin-right: 8px;
+      font-size: 1.5rem; 
+      cursor: pointer; 
+      margin-right: 8px; 
       color: #333;
     }
     .page-title {
@@ -161,18 +161,10 @@
       transform: translateY(-3px);
       box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
-    .card-sales {
-      background: linear-gradient(135deg, #007bff, #00c6ff);
-    }
-    .card-orders {
-      background: linear-gradient(135deg, #28a745, #85e085);
-    }
-    .card-products {
-      background: linear-gradient(135deg, #6f42c1, #a285e6);
-    }
-    .card-customers {
-      background: linear-gradient(135deg, #fd7e14, #ff9f59);
-    }
+    .card-sales    { background: linear-gradient(135deg, #007bff, #00c6ff); }
+    .card-orders   { background: linear-gradient(135deg, #28a745, #85e085); }
+    .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
+    .card-customers{ background: linear-gradient(135deg, #fd7e14, #ff9f59); }
     .summary-card h3 {
       margin-bottom: 4px; 
       font-size: 1rem; 
@@ -219,7 +211,7 @@
       border-bottom: none;
     }
 
-    /* FOOTER (Fixed, White, 65px high, Icons with text below, horizontally scrollable) */
+    /* FOOTER (Fixed, White, with Icons + text below, horizontally scrollable, 65px high) */
     .footer-container {
       position: fixed;
       bottom: 0; 
@@ -230,7 +222,7 @@
       display: flex;
       align-items: center;
       z-index: 1000;
-      height: 65px; /* increased height for icon + text */
+      height: 65px; /* Enough room for icon + text below */
       padding: 0 5px;
     }
     .scroll-btn {
@@ -252,7 +244,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: 8px; /* spacing between each link */
+      gap: 12px; /* spacing between each link */
     }
     .footer-scroll::-webkit-scrollbar {
       display: none;
@@ -261,16 +253,18 @@
       display: inline-flex;
       flex-direction: column; 
       align-items: center;
-      gap: 2px;
+      justify-content: center;
+      gap: 3px;
       color: #333;
       text-decoration: none;
-      font-size: 0.65rem; /* smaller text under icons */
-      padding: 0 8px;
+      font-size: 0.7rem; /* text under icons */
+      padding: 0 10px;
       margin: 0 2px;
       white-space: nowrap;
+      text-align: center;
     }
     .admin-footer a i {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
     }
     .admin-footer a.active {
       font-weight: bold;
@@ -353,54 +347,76 @@
     </div>
   </main>
 
-  <!-- FOOTER (Fixed, White, Icons with text below, horizontally scrollable) -->
+  <!-- FOOTER (Icons with text below, horizontally scrollable) -->
   <footer class="footer-container">
     <button class="scroll-btn left" id="scrollLeft"><i class="fas fa-angle-double-left"></i></button>
     <div class="footer-scroll" id="footerScroll">
-      <a href="admin_dashboard.html" class="active admin-footer">
-        <i class="fas fa-tachometer-alt"></i>
-        <span>Dashboard</span>
-      </a>
-      <a href="home_admin.html" class="admin-footer">
-        <i class="fas fa-home"></i>
-        <span>Home</span>
-      </a>
-      <a href="ecommerce_admin.html" class="admin-footer">
-        <i class="fas fa-shopping-bag"></i>
-        <span>Shop</span>
-      </a>
-      <a href="details_admin.html" class="admin-footer">
-        <i class="fas fa-info-circle"></i>
-        <span>Details</span>
-      </a>
-      <a href="payments_admin.html" class="admin-footer">
-        <i class="fas fa-credit-card"></i>
-        <span>Payments</span>
-      </a>
-      <a href="checkout_admin.html" class="admin-footer">
-        <i class="fas fa-shopping-cart"></i>
-        <span>Checkout</span>
-      </a>
-      <a href="delivery_admin.html" class="admin-footer">
-        <i class="fas fa-truck"></i>
-        <span>Delivery</span>
-      </a>
-      <a href="support_admin.html" class="admin-footer">
-        <i class="fas fa-headset"></i>
-        <span>Support</span>
-      </a>
-      <a href="contact_admin.html" class="admin-footer">
-        <i class="fas fa-envelope"></i>
-        <span>Contact</span>
-      </a>
-      <a href="analytics_admin.html" class="admin-footer">
-        <i class="fas fa-chart-line"></i>
-        <span>Analytics</span>
-      </a>
-      <a href="about_admin.html" class="admin-footer">
-        <i class="fas fa-info"></i>
-        <span>About</span>
-      </a>
+      <div class="admin-footer">
+        <a href="admin_dashboard.html" class="active">
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="home_admin.html">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="ecommerce_admin.html">
+          <i class="fas fa-shopping-bag"></i>
+          <span>Shop</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="details_admin.html">
+          <i class="fas fa-info-circle"></i>
+          <span>Details</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="payments_admin.html">
+          <i class="fas fa-credit-card"></i>
+          <span>Payments</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="checkout_admin.html">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Checkout</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="delivery_admin.html">
+          <i class="fas fa-truck"></i>
+          <span>Delivery</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="support_admin.html">
+          <i class="fas fa-headset"></i>
+          <span>Support</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="contact_admin.html">
+          <i class="fas fa-envelope"></i>
+          <span>Contact</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="analytics_admin.html">
+          <i class="fas fa-chart-line"></i>
+          <span>Analytics</span>
+        </a>
+      </div>
+      <div class="admin-footer">
+        <a href="about_admin.html">
+          <i class="fas fa-info"></i>
+          <span>About</span>
+        </a>
+      </div>
     </div>
     <button class="scroll-btn right" id="scrollRight"><i class="fas fa-angle-double-right"></i></button>
   </footer>
@@ -457,7 +473,11 @@
           scales: {
             y: {
               beginAtZero: true,
-              ticks: { callback: function(value) { return '$' + value; } }
+              ticks: { 
+                callback: function(value) { 
+                  return '$' + value; 
+                } 
+              }
             }
           }
         }
