@@ -7,7 +7,6 @@
   <!-- FontAwesome for icons and Chart.js for graphs -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
   <style>
     /*========================================
       1. RESET & BASE STYLES
@@ -20,9 +19,7 @@
     ========================================*/
     .admin-header {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
+      top: 0; left: 0; width: 100%;
       background: #222;
       color: #fff;
       display: flex;
@@ -44,10 +41,7 @@
       color: #fff;
       margin-right: 8px;
     }
-    .page-title {
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
+    .page-title { font-size: 1.1rem; font-weight: bold; }
     .admin-header .actions button {
       background: #007bff;
       border: none;
@@ -59,9 +53,7 @@
       transition: background 0.3s;
       font-size: 0.85rem;
     }
-    .admin-header .actions button:hover {
-      background: #0056b3;
-    }
+    .admin-header .actions button:hover { background: #0056b3; }
 
     /*========================================
       3. SIDEBAR & OVERLAY
@@ -69,7 +61,7 @@
     ========================================*/
     .sidebar {
       position: fixed;
-      top: 50px; /* beneath header */
+      top: 50px;
       left: -240px;
       width: 240px;
       height: calc(100% - 50px);
@@ -83,25 +75,21 @@
     .sidebar.open { left: 0; }
     .sidebar ul { list-style: none; }
     .sidebar ul li {
-      display: flex;
-      align-items: center;
       padding: 10px 15px;
       border-bottom: 1px solid #444;
       cursor: pointer;
       transition: background 0.3s;
+      display: flex;
+      align-items: center;
+    }
+    .sidebar ul li i {
+      margin-right: 8px;
+      font-size: 1.1rem;
     }
     .sidebar ul li:hover { background: #444; }
-    /* Menu image in sidebar item */
-    .sidebar ul li img {
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-      border-radius: 3px;
-      object-fit: cover;
-    }
     .overlay {
       position: fixed;
-      top: 50px; /* below header */
+      top: 50px;
       left: 0;
       width: 100%;
       height: calc(100% - 50px);
@@ -124,11 +112,7 @@
       text-align: center;
       margin-bottom: 15px;
     }
-    .dashboard-header h1 {
-      font-size: 1.8rem;
-      margin-bottom: 6px;
-      color: #333;
-    }
+    .dashboard-header h1 { font-size: 1.8rem; margin-bottom: 6px; color: #333; }
     .dashboard-header p { font-size: 0.9rem; color: #555; }
     /* 2×2 grid for summary cards */
     .card-grid {
@@ -146,17 +130,14 @@
       transition: transform 0.2s, box-shadow 0.2s;
       font-size: 0.9rem;
     }
-    .summary-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-    .card-sales    { background: linear-gradient(135deg, #007bff, #00c6ff); }
-    .card-orders   { background: linear-gradient(135deg, #28a745, #85e085); }
+    .summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+    .card-sales { background: linear-gradient(135deg, #007bff, #00c6ff); }
+    .card-orders { background: linear-gradient(135deg, #28a745, #85e085); }
     .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
-    .card-customers{ background: linear-gradient(135deg, #fd7e14, #ff9f59); }
+    .card-customers { background: linear-gradient(135deg, #fd7e14, #ff9f59); }
     .summary-card h3 { margin-bottom: 4px; font-size: 1rem; font-weight: 600; }
     .summary-card p { font-size: 1.2rem; font-weight: bold; }
-    /* Chart section */
+    /* Chart Section */
     .chart-section {
       background: #fff;
       padding: 10px;
@@ -164,12 +145,7 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
       margin-bottom: 15px;
     }
-    .chart-section h2 {
-      font-size: 1rem;
-      margin-bottom: 8px;
-      text-align: center;
-      color: #333;
-    }
+    .chart-section h2 { font-size: 1rem; margin-bottom: 8px; text-align: center; color: #333; }
     .chart-container { height: 200px; }
     /* Recent Activity Section */
     .recent-activity {
@@ -179,38 +155,36 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
     .recent-activity h4 { font-size: 1rem; margin-bottom: 8px; color: #333; }
-    .activity-item {
-      padding: 6px 0;
-      border-bottom: 1px solid #eee;
-      font-size: 0.85rem;
-      color: #333;
-    }
+    .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
     .activity-item:last-child { border-bottom: none; }
 
     /*========================================
       5. FOOTER (Horizontally Scrollable with Arrow Buttons)
     ========================================*/
     .footer-container {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #222;
-      overflow: hidden;
-      z-index: 1000;
       display: flex;
       align-items: center;
+      overflow: hidden;
+      background: #222;
+    }
+    .scroll-btn {
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      padding: 4px 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 50%;
+      z-index: 1010;
+      margin: 0 5px;
     }
     .footer-scroll {
       overflow-x: auto;
       white-space: nowrap;
       flex-grow: 1;
-      padding: 6px 0;
       -webkit-overflow-scrolling: touch;
     }
-    .footer-scroll::-webkit-scrollbar {
-      display: none;
-    }
+    .footer-scroll::-webkit-scrollbar { display: none; }
     .admin-footer a {
       display: inline-block;
       color: #fff;
@@ -226,19 +200,6 @@
       font-size: 1.1rem;
       margin-bottom: 2px;
     }
-    /* Arrow buttons */
-    .scroll-btn {
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      border: none;
-      padding: 4px 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 50%;
-      z-index: 1010;
-    }
-    .scroll-btn.left { margin-left: 5px; }
-    .scroll-btn.right { margin-right: 5px; }
   </style>
 </head>
 <body>
@@ -257,42 +218,18 @@
   <!-- SIDEBAR & OVERLAY -->
   <nav class="sidebar" id="sidebar">
     <ul>
-      <li onclick="navigate('admin_dashboard.html')">
-        <img src="https://via.placeholder.com/20" alt="Dashboard"> Dashboard
-      </li>
-      <li onclick="navigate('home_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Home"> Home
-      </li>
-      <li onclick="navigate('header_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Header"> Header
-      </li>
-      <li onclick="navigate('ecommerce_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Shop"> Shop
-      </li>
-      <li onclick="navigate('details_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Details"> Details
-      </li>
-      <li onclick="navigate('payments_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Payments"> Payments
-      </li>
-      <li onclick="navigate('checkout_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Checkout"> Checkout
-      </li>
-      <li onclick="navigate('delivery_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Delivery"> Delivery
-      </li>
-      <li onclick="navigate('support_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Support"> Support
-      </li>
-      <li onclick="navigate('contact_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Contact"> Contact
-      </li>
-      <li onclick="navigate('analytics_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="Analytics"> Analytics
-      </li>
-      <li onclick="navigate('about_admin.html')">
-        <img src="https://via.placeholder.com/20" alt="About"> About
-      </li>
+      <li onclick="navigate('admin_dashboard.html')"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+      <li onclick="navigate('home_admin.html')"><i class="fas fa-home"></i> Home</li>
+      <li onclick="navigate('header_admin.html')"><i class="fas fa-columns"></i> Header</li>
+      <li onclick="navigate('ecommerce_admin.html')"><i class="fas fa-shopping-bag"></i> Shop</li>
+      <li onclick="navigate('details_admin.html')"><i class="fas fa-info-circle"></i> Details</li>
+      <li onclick="navigate('payments_admin.html')"><i class="fas fa-credit-card"></i> Payments</li>
+      <li onclick="navigate('checkout_admin.html')"><i class="fas fa-shopping-cart"></i> Checkout</li>
+      <li onclick="navigate('delivery_admin.html')"><i class="fas fa-truck"></i> Delivery</li>
+      <li onclick="navigate('support_admin.html')"><i class="fas fa-headset"></i> Support</li>
+      <li onclick="navigate('contact_admin.html')"><i class="fas fa-envelope"></i> Contact</li>
+      <li onclick="navigate('analytics_admin.html')"><i class="fas fa-chart-line"></i> Analytics</li>
+      <li onclick="navigate('about_admin.html')"><i class="fas fa-info"></i> About</li>
     </ul>
   </nav>
   <div class="overlay" id="overlay"></div>
@@ -303,7 +240,6 @@
       <h1>Dashboard</h1>
       <p>Welcome, Admin. Manage your content and view analytics.</p>
     </div>
-
     <!-- Summary Cards (2x2 grid) -->
     <div class="card-grid">
       <div class="summary-card card-sales">
@@ -323,7 +259,6 @@
         <p>78</p>
       </div>
     </div>
-
     <!-- Chart Section -->
     <div class="chart-section">
       <h2>Sales Overview</h2>
@@ -331,7 +266,6 @@
         <canvas id="salesChart"></canvas>
       </div>
     </div>
-
     <!-- Recent Activity Section -->
     <div class="recent-activity">
       <h4>Recent Activity</h4>
@@ -342,23 +276,21 @@
     </div>
   </main>
 
-  <!-- FOOTER with Scroll Buttons -->
-  <footer class="admin-footer">
+  <!-- FOOTER with Horizontal Scrolling and Arrow Buttons -->
+  <footer class="footer-container">
     <button class="scroll-btn left" id="scrollLeft"><i class="fas fa-angle-double-left"></i></button>
-    <div class="footer-container">
-      <div class="footer-scroll" id="footerScroll">
-        <a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i>Dash</a>
-        <a href="home_admin.html"><i class="fas fa-home"></i>Home</a>
-        <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i>Shop</a>
-        <a href="details_admin.html"><i class="fas fa-info-circle"></i>Info</a>
-        <a href="payments_admin.html"><i class="fas fa-credit-card"></i>Pay</a>
-        <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i>Chkout</a>
-        <a href="delivery_admin.html"><i class="fas fa-truck"></i>Dlvry</a>
-        <a href="support_admin.html"><i class="fas fa-headset"></i>Sup</a>
-        <a href="contact_admin.html"><i class="fas fa-envelope"></i>Cntct</a>
-        <a href="analytics_admin.html"><i class="fas fa-chart-line"></i>Analyt</a>
-        <a href="about_admin.html"><i class="fas fa-info"></i>About</a>
-      </div>
+    <div class="footer-scroll" id="footerScroll">
+      <a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i> Dash</a>
+      <a href="home_admin.html"><i class="fas fa-home"></i> Home</a>
+      <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i> Shop</a>
+      <a href="details_admin.html"><i class="fas fa-info-circle"></i> Info</a>
+      <a href="payments_admin.html"><i class="fas fa-credit-card"></i> Pay</a>
+      <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i> Chkout</a>
+      <a href="delivery_admin.html"><i class="fas fa-truck"></i> Dlvry</a>
+      <a href="support_admin.html"><i class="fas fa-headset"></i> Sup</a>
+      <a href="contact_admin.html"><i class="fas fa-envelope"></i> Cntct</a>
+      <a href="analytics_admin.html"><i class="fas fa-chart-line"></i> Analyt</a>
+      <a href="about_admin.html"><i class="fas fa-info"></i> About</a>
     </div>
     <button class="scroll-btn right" id="scrollRight"><i class="fas fa-angle-double-right"></i></button>
   </footer>
