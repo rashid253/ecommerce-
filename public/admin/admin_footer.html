@@ -1,7 +1,125 @@
-<footer class="footer-container">
-  <div class="footer-scroll">
-    <a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
-    <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i> <span>Shop</span></a>
-    <a href="payments_admin.html"><i class="fas fa-credit-card"></i> <span>Payments</span></a>
-  </div>
-</footer>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Footer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root { --footer-height: 65px; }
+    .footer-container {
+      width: 100%;
+      height: var(--footer-height);
+      background: #fff;
+      border-top: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      padding: 0 5px;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    }
+    .scroll-btn {
+      background: #ddd;
+      border: none;
+      color: #333;
+      padding: 4px 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 50%;
+      margin: 0 5px;
+      flex-shrink: 0;
+    }
+    .footer-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      gap: 12px;
+    }
+    .footer-scroll::-webkit-scrollbar { display: none; }
+    .admin-footer a {
+      display: inline-flex;
+      flex-direction: column; /* Icon on top, text below */
+      align-items: center;
+      gap: 3px;
+      color: #333;
+      text-decoration: none;
+      font-size: 0.7rem;
+      padding: 0 10px;
+      margin: 0 2px;
+      text-align: center;
+    }
+    .admin-footer a i { font-size: 1.1rem; }
+    .admin-footer a.active {
+      font-weight: bold;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <footer class="footer-container">
+    <button class="scroll-btn left" id="scrollLeft"><i class="fas fa-angle-double-left"></i></button>
+    <div class="footer-scroll admin-footer" id="footerScroll">
+      <a href="admin_dashboard.html" class="active">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="home_admin.html">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="ecommerce_admin.html">
+        <i class="fas fa-shopping-bag"></i>
+        <span>Shop</span>
+      </a>
+      <a href="details_admin.html">
+        <i class="fas fa-info-circle"></i>
+        <span>Details</span>
+      </a>
+      <a href="payments_admin.html">
+        <i class="fas fa-credit-card"></i>
+        <span>Payments</span>
+      </a>
+      <a href="checkout_admin.html">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Checkout</span>
+      </a>
+      <a href="delivery_admin.html">
+        <i class="fas fa-truck"></i>
+        <span>Delivery</span>
+      </a>
+      <a href="support_admin.html">
+        <i class="fas fa-headset"></i>
+        <span>Support</span>
+      </a>
+      <a href="contact_admin.html">
+        <i class="fas fa-envelope"></i>
+        <span>Contact</span>
+      </a>
+      <a href="analytics_admin.html">
+        <i class="fas fa-chart-line"></i>
+        <span>Analytics</span>
+      </a>
+      <a href="about_admin.html">
+        <i class="fas fa-info"></i>
+        <span>About</span>
+      </a>
+    </div>
+    <button class="scroll-btn right" id="scrollRight"><i class="fas fa-angle-double-right"></i></button>
+  </footer>
+  
+  <script>
+    const footerScroll = document.getElementById("footerScroll");
+    const scrollLeftBtn = document.getElementById("scrollLeft");
+    const scrollRightBtn = document.getElementById("scrollRight");
+    scrollLeftBtn.addEventListener("click", () => {
+      footerScroll.scrollBy({ left: -100, behavior: "smooth" });
+    });
+    scrollRightBtn.addEventListener("click", () => {
+      footerScroll.scrollBy({ left: 100, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
