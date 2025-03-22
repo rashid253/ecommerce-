@@ -6,20 +6,17 @@
   <title>Admin Header</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    :root {
-      --header-height: 50px;
-    }
+    :root { --header-height: 50px; }
     .admin-header {
       width: 100%;
       height: var(--header-height);
       background: #fff;
-      color: #333;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 12px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       border-bottom: 1px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       font-size: 0.9rem;
     }
     .admin-header .left-section {
@@ -57,11 +54,17 @@
   <header class="admin-header">
     <div class="left-section">
       <span class="hamburger" id="hamburger"><i class="fas fa-bars"></i></span>
-      <span class="page-title">Admin Master</span>
+      <span class="page-title">Admin Panel</span>
     </div>
     <div class="actions">
       <button onclick="logout()">Logout</button>
     </div>
   </header>
+  <script>
+    // Note: Hamburger toggle event will be attached in the parent page.
+    function logout() {
+      alert("Logging out...");
+    }
+  </script>
 </body>
 </html>
