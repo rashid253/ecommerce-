@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Header</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
       --header-height: 50px;
@@ -12,7 +12,7 @@
       --text-color: #333;
       --bg-white: #fff;
     }
-    /* Header container */
+    /* Header */
     .admin-header {
       position: fixed;
       top: 0;
@@ -57,11 +57,10 @@
     .admin-header .actions button:hover {
       background: #0056b3;
     }
-
-    /* Compact drop-down overlay menu */
+    /* Mobile Drop-down Overlay Menu */
     .mobile-nav {
-      position: absolute;
-      top: var(--header-height);
+      position: fixed;
+      top: var(--header-height); /* immediately below header */
       left: 0;
       width: 180px; /* fixed width overlay */
       background: var(--nav-bg);
@@ -84,8 +83,7 @@
     .mobile-nav a:hover {
       background: rgba(255,255,255,0.1);
     }
-
-    /* Show hamburger only on mobile; hide on larger screens */
+    /* Hide hamburger on larger screens */
     @media (min-width: 577px) {
       .hamburger { display: none; }
       .mobile-nav { display: none !important; }
@@ -102,8 +100,7 @@
       <button onclick="logout()">Logout</button>
     </div>
   </header>
-
-  <!-- Compact drop-down overlay menu -->
+  <!-- Mobile drop-down overlay menu -->
   <nav class="mobile-nav" id="mobileNav">
     <a href="admin_dashboard.html">Dashboard</a>
     <a href="home_admin.html">Home</a>
@@ -118,10 +115,8 @@
     <a href="analytics_admin.html">Analytics</a>
     <a href="about_admin.html">About</a>
   </nav>
-
   <script>
-    // We'll attach the event listener in the main page, or you can do it here:
-    // But if you load this via fetch() and insert as innerHTML, scripts won't auto-run
+    // A simple logout function; event listener for hamburger is attached in the parent page.
     function logout() {
       alert("Logging out...");
     }
