@@ -15,7 +15,11 @@
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
-    main { padding: 60px 10px 70px; margin-top: var(--header-height); min-height: calc(100vh - 120px); }
+    main {
+      padding: 60px 10px 70px;
+      margin-top: var(--header-height);
+      min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    }
     .dashboard-header { text-align: center; margin-bottom: 15px; }
     .dashboard-header h1 { font-size: 1.8rem; margin-bottom: 6px; color: #333; }
     .dashboard-header p { font-size: 0.9rem; color: #555; }
@@ -111,18 +115,31 @@
     // Load external header
     fetch('admin_header.html')
       .then(response => response.text())
-      .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        // After loading header, attach hamburger toggle
+        const hamburger = document.getElementById("hamburger");
+        const mobileNav = document.getElementById("mobileNav");
+        // Check if mobileNav exists – if not, nothing to toggle
+        if (hamburger && mobileNav) {
+          hamburger.addEventListener("click", () => {
+            mobileNav.classList.toggle("open");
+          });
+        }
+      })
       .catch(err => console.error('Error loading header:', err));
       
     // Load external footer
     fetch('admin_footer.html')
       .then(response => response.text())
-      .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+      })
       .catch(err => console.error('Error loading footer:', err));
   </script>
   
   <script>
-    // Initialize Chart.js
+    // Initialize Chart.js for Sales Overview
     document.addEventListener("DOMContentLoaded", function() {
       const ctx = document.getElementById('salesChart').getContext('2d');
       new Chart(ctx, {
