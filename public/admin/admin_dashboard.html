@@ -112,7 +112,7 @@
   <div id="footer-placeholder"></div>
   
   <script>
-    // Load external header and attach hamburger event
+    // Load external header
     fetch('admin_header.html')
       .then(response => response.text())
       .then(html => {
@@ -120,31 +120,24 @@
         // Attach hamburger toggle for mobile drop-down menu
         const hamburger = document.getElementById("hamburger");
         const mobileNav = document.getElementById("mobileNav");
-        // If mobileNav is not found, create it from header content (if needed)
-        if (hamburger) {
-          // If the mobile navigation element isn't already loaded from the header,
-          // you can check and create it here. For this solution, ensure admin_header.html includes it.
-          hamburger.addEventListener("click", () => {
-            if(mobileNav) {
-              mobileNav.classList.toggle("open");
+        if (hamburger && mobileNav) {
+          hamburger.addEventListener("click", (e) => {
+            mobileNav.classList.toggle("open");
+            e.stopPropagation();
+          });
+          document.addEventListener("click", function(e) {
+            if (!e.target.closest(".admin-header") && !e.target.closest(".mobile-nav")) {
+              mobileNav.classList.remove("open");
             }
           });
         }
-        // Additionally, click anywhere outside the mobileNav to close it
-        document.addEventListener("click", function(e) {
-          if(mobileNav && !e.target.closest(".admin-header") && !e.target.closest(".mobile-nav")){
-            mobileNav.classList.remove("open");
-          }
-        });
       })
       .catch(err => console.error('Error loading header:', err));
-    
+      
     // Load external footer
     fetch('admin_footer.html')
       .then(response => response.text())
-      .then(html => {
-        document.getElementById('footer-placeholder').innerHTML = html;
-      })
+      .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
       .catch(err => console.error('Error loading footer:', err));
   </script>
   
