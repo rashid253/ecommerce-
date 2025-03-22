@@ -14,9 +14,6 @@
     }
     /* Header container */
     .admin-header {
-      position: fixed;
-      top: 0;
-      left: 0;
       width: 100%;
       height: var(--header-height);
       background: var(--bg-white);
@@ -57,8 +54,7 @@
     .admin-header .actions button:hover {
       background: #0056b3;
     }
-    
-    /* Mobile drop-down navigation menu */
+    /* Mobile drop-down menu */
     .mobile-nav {
       display: none;
       flex-direction: column;
@@ -70,14 +66,15 @@
       z-index: 999;
     }
     .mobile-nav a {
-      color: #fff;
       padding: 10px;
+      color: #fff;
       border-top: 1px solid rgba(255,255,255,0.3);
       text-align: center;
       font-size: 0.95rem;
     }
-    .mobile-nav.open { display: flex; }
-    
+    .mobile-nav.open {
+      display: flex;
+    }
     /* Show hamburger only on mobile */
     @media (min-width: 577px) {
       .hamburger { display: none; }
@@ -95,8 +92,7 @@
       <button onclick="logout()">Logout</button>
     </div>
   </header>
-  
-  <!-- Mobile drop-down navigation menu -->
+  <!-- Mobile drop-down menu -->
   <nav class="mobile-nav" id="mobileNav">
     <a href="admin_dashboard.html">Dashboard</a>
     <a href="home_admin.html">Home</a>
@@ -111,18 +107,11 @@
     <a href="analytics_admin.html">Analytics</a>
     <a href="about_admin.html">About</a>
   </nav>
-  
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const hamburger = document.getElementById("hamburger");
-      const mobileNav = document.getElementById("mobileNav");
-      hamburger.addEventListener("click", function() {
-        mobileNav.classList.toggle("open");
-      });
-      window.logout = function() {
-        alert("Logging out...");
-      }
-    });
+    // Note: No event listener here – we will attach it in the main page.
+    function logout() {
+      alert("Logging out...");
+    }
   </script>
 </body>
 </html>
