@@ -65,11 +65,6 @@
   <!-- External Header -->
   <div id="header-placeholder"></div>
   
-  <!-- Sidebar is loaded via the header drop-down on mobile; for larger screens, you can optionally load a sidebar externally -->
-  
-  <!-- Overlay (if needed for sidebar; here not used for drop-down menu) -->
-  <div class="overlay" id="overlay"></div>
-  
   <!-- Main Content -->
   <main>
     <div class="dashboard-header">
@@ -118,7 +113,7 @@
       .then(response => response.text())
       .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
       .catch(err => console.error('Error loading header:', err));
-    
+      
     // Load external footer
     fetch('admin_footer.html')
       .then(response => response.text())
@@ -127,7 +122,7 @@
   </script>
   
   <script>
-    // Initialize Chart.js for Sales Overview
+    // Initialize Chart.js
     document.addEventListener("DOMContentLoaded", function() {
       const ctx = document.getElementById('salesChart').getContext('2d');
       new Chart(ctx, {
@@ -159,7 +154,7 @@
   </script>
   
   <script>
-    // Footer Scrolling Buttons
+    // Footer scrolling buttons
     const footerScroll = document.getElementById("footerScroll");
     const scrollLeftBtn = document.getElementById("scrollLeft");
     const scrollRightBtn = document.getElementById("scrollRight");
