@@ -6,17 +6,27 @@
   <title>Admin Header</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    :root { --header-height: 50px; }
+    :root {
+      --header-height: 50px;
+      --nav-bg: #007bff;
+      --text-color: #333;
+      --bg-white: #fff;
+    }
+    /* Header container */
     .admin-header {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: var(--header-height);
-      background: #fff;
+      background: var(--bg-white);
+      border-bottom: 1px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 12px;
-      border-bottom: 1px solid #ddd;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       font-size: 0.9rem;
     }
     .admin-header .left-section {
@@ -27,27 +37,50 @@
       font-size: 1.5rem;
       cursor: pointer;
       margin-right: 8px;
-      color: #333;
+      color: var(--text-color);
     }
     .page-title {
       font-size: 1.1rem;
       font-weight: bold;
-      color: #333;
+      color: var(--text-color);
     }
     .admin-header .actions button {
-      background: #007bff;
+      background: var(--nav-bg);
       border: none;
-      padding: 4px 8px;
+      padding: 6px 10px;
       border-radius: 4px;
       color: #fff;
       cursor: pointer;
-      margin-left: 8px;
       transition: background 0.3s;
       font-size: 0.85rem;
     }
     .admin-header .actions button:hover {
       background: #0056b3;
     }
+    /* Mobile drop-down menu */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: var(--nav-bg);
+      width: 100%;
+      position: absolute;
+      top: var(--header-height);
+      left: 0;
+      z-index: 999;
+    }
+    .mobile-menu a {
+      padding: 10px;
+      color: #fff;
+      border-top: 1px solid rgba(255,255,255,0.3);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+    /* Show mobile menu on small screens */
+    @media (max-width: 576px) {
+      .mobile-menu { display: none; }
+      .mobile-menu.open { display: flex; }
+    }
+    /* On larger screens, you may include a horizontal nav if desired (not shown here) */
   </style>
 </head>
 <body>
@@ -60,8 +93,29 @@
       <button onclick="logout()">Logout</button>
     </div>
   </header>
+  <!-- Mobile drop-down menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="admin_dashboard.html">Dashboard</a>
+    <a href="home_admin.html">Home</a>
+    <a href="header_admin.html">Header</a>
+    <a href="ecommerce_admin.html">Shop</a>
+    <a href="details_admin.html">Details</a>
+    <a href="payments_admin.html">Payments</a>
+    <a href="checkout_admin.html">Checkout</a>
+    <a href="delivery_admin.html">Delivery</a>
+    <a href="support_admin.html">Support</a>
+    <a href="contact_admin.html">Contact</a>
+    <a href="analytics_admin.html">Analytics</a>
+    <a href="about_admin.html">About</a>
+  </div>
   <script>
-    // Note: Hamburger toggle event will be attached in the parent page.
+    document.addEventListener("DOMContentLoaded", function() {
+      const hamburger = document.getElementById("hamburger");
+      const mobileMenu = document.getElementById("mobileMenu");
+      hamburger.addEventListener("click", () => {
+        mobileMenu.classList.toggle("open");
+      });
+    });
     function logout() {
       alert("Logging out...");
     }
