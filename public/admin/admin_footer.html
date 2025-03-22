@@ -17,20 +17,19 @@
       border-top: 1px solid #ddd;
       display: flex;
       align-items: center;
-      padding: 0 5px;
+      padding: 0 10px;
       box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
       z-index: 1000;
     }
-    .scroll-btn {
-      background: #ddd;
-      border: none;
+    /* Single arrow icons (no circular background) */
+    .arrow-btn {
+      font-size: 1.2rem;
       color: #333;
-      padding: 4px 6px;
-      font-size: 1rem;
       cursor: pointer;
-      border-radius: 50%;
-      margin: 0 5px;
-      flex-shrink: 0;
+      padding: 5px;
+      /* Remove background and border */
+      background: none;
+      border: none;
     }
     .footer-scroll {
       overflow-x: auto;
@@ -38,20 +37,18 @@
       flex-grow: 1;
       display: flex;
       align-items: center;
-      justify-content: space-evenly;
       gap: 12px;
     }
     .footer-scroll::-webkit-scrollbar { display: none; }
     .admin-footer a {
       display: inline-flex;
-      flex-direction: column;
+      flex-direction: column; /* Icon above, text below */
       align-items: center;
       gap: 3px;
       color: #333;
       text-decoration: none;
       font-size: 0.7rem;
       padding: 0 10px;
-      margin: 0 2px;
       text-align: center;
     }
     .admin-footer a i { font-size: 1.1rem; }
@@ -64,7 +61,7 @@
 </head>
 <body>
   <footer class="footer-container">
-    <button class="scroll-btn left" id="scrollLeft"><i class="fas fa-angle-double-left"></i></button>
+    <button class="arrow-btn" id="scrollLeft"><i class="fas fa-arrow-left"></i></button>
     <div class="footer-scroll admin-footer" id="footerScroll">
       <a href="admin_dashboard.html" class="active">
         <i class="fas fa-tachometer-alt"></i>
@@ -111,8 +108,9 @@
         <span>About</span>
       </a>
     </div>
-    <button class="scroll-btn right" id="scrollRight"><i class="fas fa-angle-double-right"></i></button>
+    <button class="arrow-btn" id="scrollRight"><i class="fas fa-arrow-right"></i></button>
   </footer>
+  
   <script>
     const footerScroll = document.getElementById("footerScroll");
     const scrollLeftBtn = document.getElementById("scrollLeft");
