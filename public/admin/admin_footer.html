@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Footer</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root { --footer-height: 65px; }
+    body, html { margin: 0; padding: 0; }
     .footer-container {
       position: fixed;
       bottom: 0;
@@ -20,16 +20,18 @@
       padding: 0 10px;
       box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
       z-index: 1000;
+      font-family: Arial, sans-serif;
     }
-    /* Single arrow icons (no circular background) */
+    /* Plain single arrow signs */
     .arrow-btn {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       color: #333;
-      cursor: pointer;
-      padding: 5px;
-      /* Remove background and border */
       background: none;
       border: none;
+      cursor: pointer;
+      margin: 0 5px;
+      line-height: 1;
+      flex-shrink: 0;
     }
     .footer-scroll {
       overflow-x: auto;
@@ -37,12 +39,14 @@
       flex-grow: 1;
       display: flex;
       align-items: center;
+      justify-content: flex-start;
       gap: 12px;
+      scroll-behavior: smooth; /* optional, for smooth scrolling */
     }
     .footer-scroll::-webkit-scrollbar { display: none; }
     .admin-footer a {
       display: inline-flex;
-      flex-direction: column; /* Icon above, text below */
+      flex-direction: column; /* icon above, text below */
       align-items: center;
       gap: 3px;
       color: #333;
@@ -61,7 +65,8 @@
 </head>
 <body>
   <footer class="footer-container">
-    <button class="arrow-btn" id="scrollLeft"><i class="fas fa-arrow-left"></i></button>
+    <!-- Left arrow (single bracket) -->
+    <button class="arrow-btn" id="scrollLeft">&lsaquo;</button>
     <div class="footer-scroll admin-footer" id="footerScroll">
       <a href="admin_dashboard.html" class="active">
         <i class="fas fa-tachometer-alt"></i>
@@ -108,13 +113,16 @@
         <span>About</span>
       </a>
     </div>
-    <button class="arrow-btn" id="scrollRight"><i class="fas fa-arrow-right"></i></button>
+    <!-- Right arrow (single bracket) -->
+    <button class="arrow-btn" id="scrollRight">&rsaquo;</button>
   </footer>
-  
+
   <script>
+    // Horizontal scroll logic
     const footerScroll = document.getElementById("footerScroll");
     const scrollLeftBtn = document.getElementById("scrollLeft");
     const scrollRightBtn = document.getElementById("scrollRight");
+
     scrollLeftBtn.addEventListener("click", () => {
       footerScroll.scrollBy({ left: -100, behavior: "smooth" });
     });
