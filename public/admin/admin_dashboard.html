@@ -15,10 +15,24 @@
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
-    main { padding: 60px 10px 70px; margin-top: var(--header-height); min-height: calc(100vh - var(--header-height) - var(--footer-height)); }
-    .dashboard-header { text-align: center; margin-bottom: 15px; }
-    .dashboard-header h1 { font-size: 1.8rem; margin-bottom: 6px; color: #333; }
-    .dashboard-header p { font-size: 0.9rem; color: #555; }
+    main {
+      padding: 60px 10px 70px;
+      margin-top: var(--header-height);
+      min-height: calc(100vh - var(--header-height) - var(--footer-height));
+    }
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .dashboard-header h1 {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+      color: #333;
+    }
+    .dashboard-header p {
+      font-size: 0.9rem;
+      color: #555;
+    }
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -34,13 +48,23 @@
       transition: transform 0.2s, box-shadow 0.2s;
       font-size: 0.9rem;
     }
-    .summary-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+    .summary-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
     .card-sales { background: linear-gradient(135deg, #007bff, #00c6ff); }
     .card-orders { background: linear-gradient(135deg, #28a745, #85e085); }
     .card-products { background: linear-gradient(135deg, #6f42c1, #a285e6); }
     .card-customers { background: linear-gradient(135deg, #fd7e14, #ff9f59); }
-    .summary-card h3 { margin-bottom: 4px; font-size: 1rem; font-weight: 600; }
-    .summary-card p { font-size: 1.2rem; font-weight: bold; }
+    .summary-card h3 {
+      margin-bottom: 4px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .summary-card p {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
     .chart-section {
       background: #fff;
       padding: 10px;
@@ -48,7 +72,12 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
       margin-bottom: 15px;
     }
-    .chart-section h2 { font-size: 1rem; margin-bottom: 8px; text-align: center; color: #333; }
+    .chart-section h2 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      text-align: center;
+      color: #333;
+    }
     .chart-container { height: 200px; }
     .recent-activity {
       background: #fff;
@@ -56,8 +85,17 @@
       border-radius: 6px;
       box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
-    .recent-activity h4 { font-size: 1rem; margin-bottom: 8px; color: #333; }
-    .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
+    .recent-activity h4 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    .activity-item {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.85rem;
+      color: #333;
+    }
     .activity-item:last-child { border-bottom: none; }
   </style>
 </head>
@@ -113,7 +151,7 @@
       .then(response => response.text())
       .then(html => {
         document.getElementById('header-placeholder').innerHTML = html;
-        // Attach hamburger toggle for mobile drop-down menu
+        // Attach hamburger toggle event now that header is loaded
         const hamburger = document.getElementById("hamburger");
         const mobileNav = document.getElementById("mobileNav");
         if (hamburger && mobileNav) {
@@ -157,7 +195,7 @@
           scales: {
             y: {
               beginAtZero: true,
-              ticks: { callback: value => '$' + value }
+              ticks: { callback: (value) => '$' + value }
             }
           }
         }
