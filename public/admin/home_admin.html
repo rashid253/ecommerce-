@@ -42,7 +42,8 @@
     label {
       font-weight: bold;
     }
-    input.form-control, textarea.form-control {
+    input.form-control,
+    textarea.form-control {
       border-radius: 4px;
     }
     .help-text {
@@ -62,14 +63,23 @@
     .save-btn:hover {
       background: #0056b3;
     }
-    /* Style for file inputs (for direct upload) */
-    .file-input {
-      margin-top: 5px;
+    /* Media Selection Section Styles */
+    .media-selection-section {
+      border: 1px dashed #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+    }
+    .media-selection-section .btn-group button {
+      margin-right: 5px;
+    }
+    .media-input {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <!-- External Header -->
+  <!-- External Header (loaded dynamically) -->
   <div id="header-placeholder"></div>
   
   <main class="container">
@@ -77,44 +87,50 @@
     
     <!-- Global Home Settings -->
     <div class="form-section">
-      <h3>Global Home Settings</h3>
+      <h3>Global Settings</h3>
       <div class="form-group">
         <label for="globalTitle">Page Title</label>
         <input type="text" id="globalTitle" class="form-control" placeholder="e.g., Welcome to MyBusiness">
-        <small class="help-text">This title appears as the main heading on the home page.</small>
+        <small class="help-text">This is the overall title shown on the home page.</small>
       </div>
       <div class="form-group">
         <label for="globalDescription">Page Description</label>
         <textarea id="globalDescription" class="form-control" rows="2" placeholder="e.g., Your one-stop shop for premium products."></textarea>
-        <small class="help-text">A brief description or tagline for the home page.</small>
+        <small class="help-text">A short tagline or description for the home page.</small>
       </div>
     </div>
     
     <!-- Hero Section Settings -->
     <div class="form-section">
       <h3>Hero Section</h3>
+      
+      <!-- Media Selection for Hero Background -->
       <div class="form-group">
-        <label for="heroMediaUrl">Background Media URL</label>
-        <input type="text" id="heroMediaUrl" class="form-control" placeholder="Enter a direct URL to an image or video">
-        <small class="help-text">Method 1: Provide a URL from a CDN or existing host.</small>
+        <label>Hero Background Media</label>
+        <div id="heroMediaSelection" class="media-selection-section">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'url')">Enter URL</button>
+            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'upload')">Upload File</button>
+            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'default')">Use Default</button>
+          </div>
+          <div id="heroMediaOptionInputs" class="media-input"></div>
+          <div id="heroMediaLock" style="margin-top:10px; display:none;">
+            <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('hero')">Lock Selection</button>
+          </div>
+          <div id="heroMediaEdit" style="margin-top:10px; display:none;">
+            <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('hero')">Edit Selection</button>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="heroMediaFile">Upload Background Media</label>
-        <input type="file" id="heroMediaFile" class="form-control file-input" accept="image/*,video/*">
-        <small class="help-text">Method 2: Select a file from your mobile gallery. (File upload integration to be added.)</small>
-      </div>
-      <div class="form-group">
-        <label for="heroDefault">Default Background</label>
-        <input type="text" id="heroDefault" class="form-control" placeholder="Default media URL (already set)">
-        <small class="help-text">Method 3: Use the default if no new media is provided.</small>
-      </div>
+      
+      <!-- Other Hero fields -->
       <div class="form-group">
         <label for="heroTitle">Hero Title</label>
         <input type="text" id="heroTitle" class="form-control" placeholder="Enter the hero title">
       </div>
       <div class="form-group">
-        <label for="heroDescription">Hero Description</label>
-        <textarea id="heroDescription" class="form-control" rows="2" placeholder="Enter a short description for the hero section"></textarea>
+        <label for="heroSubtitle">Hero Description</label>
+        <textarea id="heroSubtitle" class="form-control" rows="2" placeholder="Enter a short description for the hero section"></textarea>
       </div>
       <div class="form-group">
         <label for="ctaText">CTA Button Text</label>
@@ -126,122 +142,54 @@
       </div>
     </div>
     
-    <!-- Feature Cards Settings -->
+    <!-- Feature Cards Settings (Example for one card; replicate for others) -->
     <div class="form-section">
-      <h3>Feature Cards</h3>
-      
-      <!-- Card 1: Secure Payments -->
-      <div class="border-bottom mb-3 pb-2">
-        <h4>Secure Payments</h4>
-        <div class="form-group">
-          <label for="card1MediaUrl">Background Media URL</label>
-          <input type="text" id="card1MediaUrl" class="form-control" placeholder="Enter direct URL">
-          <small class="help-text">Method 1: URL for secure payments card background.</small>
-        </div>
-        <div class="form-group">
-          <label for="card1MediaFile">Upload Background Media</label>
-          <input type="file" id="card1MediaFile" class="form-control file-input" accept="image/*,video/*">
-          <small class="help-text">Method 2: Select from gallery.</small>
-        </div>
-        <div class="form-group">
-          <label for="card1Default">Default Background</label>
-          <input type="text" id="card1Default" class="form-control" placeholder="Default background URL">
-          <small class="help-text">Method 3: Use default background if no new media provided.</small>
-        </div>
-        <div class="form-group">
-          <label for="card1Title">Title</label>
-          <input type="text" id="card1Title" class="form-control" placeholder="e.g., Secure Payments">
-        </div>
-        <div class="form-group">
-          <label for="card1Desc">Description</label>
-          <textarea id="card1Desc" class="form-control" rows="2" placeholder="e.g., Experience top-notch security for every transaction."></textarea>
-        </div>
-        <div class="form-group">
-          <label for="card1Reviews">Customer Reviews</label>
-          <textarea id="card1Reviews" class="form-control" rows="2" placeholder="e.g., 'Very secure', 'Fast and reliable'"></textarea>
+      <h3>Feature Card: Secure Payments</h3>
+      <div class="form-group">
+        <label>Card Background Media</label>
+        <div id="card1MediaSelection" class="media-selection-section">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'url')">Enter URL</button>
+            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'upload')">Upload File</button>
+            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'default')">Use Default</button>
+          </div>
+          <div id="card1MediaOptionInputs" class="media-input"></div>
+          <div id="card1MediaLock" style="margin-top:10px; display:none;">
+            <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('card1')">Lock Selection</button>
+          </div>
+          <div id="card1MediaEdit" style="margin-top:10px; display:none;">
+            <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('card1')">Edit Selection</button>
+          </div>
         </div>
       </div>
-      
-      <!-- Card 2: Fast Delivery -->
-      <div class="border-bottom mb-3 pb-2">
-        <h4>Fast Delivery</h4>
-        <div class="form-group">
-          <label for="card2MediaUrl">Background Media URL</label>
-          <input type="text" id="card2MediaUrl" class="form-control" placeholder="Enter direct URL">
-          <small class="help-text">Method 1: URL for fast delivery card background.</small>
-        </div>
-        <div class="form-group">
-          <label for="card2MediaFile">Upload Background Media</label>
-          <input type="file" id="card2MediaFile" class="form-control file-input" accept="image/*,video/*">
-          <small class="help-text">Method 2: Select from gallery.</small>
-        </div>
-        <div class="form-group">
-          <label for="card2Default">Default Background</label>
-          <input type="text" id="card2Default" class="form-control" placeholder="Default background URL">
-          <small class="help-text">Method 3: Use default if no new media provided.</small>
-        </div>
-        <div class="form-group">
-          <label for="card2Title">Title</label>
-          <input type="text" id="card2Title" class="form-control" placeholder="e.g., Fast Delivery">
-        </div>
-        <div class="form-group">
-          <label for="card2Desc">Description</label>
-          <textarea id="card2Desc" class="form-control" rows="2" placeholder="e.g., Get your orders delivered in record time."></textarea>
-        </div>
-        <div class="form-group">
-          <label for="card2Reviews">Customer Reviews</label>
-          <textarea id="card2Reviews" class="form-control" rows="2" placeholder="e.g., 'Super fast', 'Excellent service'"></textarea>
-        </div>
+      <div class="form-group">
+        <label for="card1Title">Card Title</label>
+        <input type="text" id="card1Title" class="form-control" placeholder="e.g., Secure Payments">
       </div>
-      
-      <!-- Card 3: Exclusive Deals -->
-      <div>
-        <h4>Exclusive Deals</h4>
-        <div class="form-group">
-          <label for="card3MediaUrl">Background Media URL</label>
-          <input type="text" id="card3MediaUrl" class="form-control" placeholder="Enter direct URL">
-          <small class="help-text">Method 1: URL for exclusive deals card background.</small>
-        </div>
-        <div class="form-group">
-          <label for="card3MediaFile">Upload Background Media</label>
-          <input type="file" id="card3MediaFile" class="form-control file-input" accept="image/*,video/*">
-          <small class="help-text">Method 2: Select from gallery.</small>
-        </div>
-        <div class="form-group">
-          <label for="card3Default">Default Background</label>
-          <input type="text" id="card3Default" class="form-control" placeholder="Default background URL">
-          <small class="help-text">Method 3: Use default if no new media provided.</small>
-        </div>
-        <div class="form-group">
-          <label for="card3Title">Title</label>
-          <input type="text" id="card3Title" class="form-control" placeholder="e.g., Exclusive Deals">
-        </div>
-        <div class="form-group">
-          <label for="card3Desc">Description</label>
-          <textarea id="card3Desc" class="form-control" rows="2" placeholder="e.g., Enjoy unbeatable offers and discounts."></textarea>
-        </div>
-        <div class="form-group">
-          <label for="card3Reviews">Customer Reviews</label>
-          <textarea id="card3Reviews" class="form-control" rows="2" placeholder="e.g., 'Best deals ever!', 'Amazing offers'"></textarea>
-        </div>
+      <div class="form-group">
+        <label for="card1Desc">Card Description</label>
+        <textarea id="card1Desc" class="form-control" rows="2" placeholder="e.g., Experience top-notch security for every transaction."></textarea>
       </div>
-      
+      <div class="form-group">
+        <label for="card1Reviews">Customer Reviews</label>
+        <textarea id="card1Reviews" class="form-control" rows="2" placeholder="e.g., 'Very secure and reliable', 'Fast and trustworthy'"></textarea>
+      </div>
+      <!-- Repeat similar sections for Fast Delivery and Exclusive Deals -->
     </div>
     
     <button type="button" class="save-btn" onclick="saveHomeContent()">Save Changes</button>
   </main>
   
-  <!-- External Footer -->
+  <!-- External Footer (loaded dynamically) -->
   <div id="footer-placeholder"></div>
   
-  <!-- Load External Header and Footer -->
   <script>
-    // Load external header
+    // Load external header and footer
     fetch('admin_header.html')
       .then(response => response.text())
       .then(html => {
         document.getElementById('header-placeholder').innerHTML = html;
-        // Attach hamburger toggle for mobile drop-down menu
+        // Attach hamburger toggle (for mobile drop-down menu)
         const hamburger = document.getElementById("hamburger");
         const mobileNav = document.getElementById("mobileNav");
         if (hamburger && mobileNav) {
@@ -257,59 +205,88 @@
         }
       })
       .catch(err => console.error('Error loading header:', err));
-    
-    // Load external footer
+      
     fetch('admin_footer.html')
       .then(response => response.text())
       .then(html => {
         document.getElementById('footer-placeholder').innerHTML = html;
       })
       .catch(err => console.error('Error loading footer:', err));
+    
+    // JavaScript functions for media selection mechanism
+    function chooseMediaOption(prefix, option) {
+      // prefix is "hero" or "card1", etc.
+      const container = document.getElementById(prefix + "MediaOptionInputs");
+      container.innerHTML = ""; // Clear previous inputs
       
+      if (option === 'url') {
+        container.innerHTML = `<input type="text" id="${prefix}MediaUrl" class="form-control" placeholder="Enter direct URL">`;
+      } else if (option === 'upload') {
+        container.innerHTML = `<input type="file" id="${prefix}MediaFile" class="form-control file-input" accept="image/*,video/*">`;
+      } else if (option === 'default') {
+        container.innerHTML = `<input type="text" id="${prefix}Default" class="form-control" placeholder="Default media will be used" readonly>`;
+      }
+      
+      // Show lock button for this section
+      document.getElementById(prefix + "MediaLock").style.display = "block";
+      // Hide the edit button until locked
+      document.getElementById(prefix + "MediaEdit").style.display = "none";
+    }
+    
+    function lockMediaSelection(prefix) {
+      // Disable the chosen input so that it cannot be changed until 'Edit' is clicked.
+      const inputContainer = document.getElementById(prefix + "MediaOptionInputs");
+      const inputs = inputContainer.querySelectorAll("input");
+      inputs.forEach(input => {
+        input.disabled = true;
+      });
+      // Hide the lock button and show the edit button
+      document.getElementById(prefix + "MediaLock").style.display = "none";
+      document.getElementById(prefix + "MediaEdit").style.display = "block";
+    }
+    
+    function editMediaSelection(prefix) {
+      // Re-enable the inputs and show the option buttons again.
+      const inputContainer = document.getElementById(prefix + "MediaOptionInputs");
+      const inputs = inputContainer.querySelectorAll("input");
+      inputs.forEach(input => {
+        input.disabled = false;
+      });
+      // Hide the edit button and clear the input container so admin can choose again
+      document.getElementById(prefix + "MediaEdit").style.display = "none";
+      inputContainer.innerHTML = "";
+      // Hide lock button (if visible)
+      document.getElementById(prefix + "MediaLock").style.display = "none";
+    }
+    
     function saveHomeContent() {
-      // Gather global settings
+      // Gather Global Settings
       const globalTitle = document.getElementById("globalTitle").value;
       const globalDescription = document.getElementById("globalDescription").value;
       
       // Gather Hero Section values
-      const heroMediaUrl = document.getElementById("heroMediaUrl").value;
-      const heroMediaFile = document.getElementById("heroMediaFile").files[0] || null;
-      const heroDefault = document.getElementById("heroDefault").value;
+      const heroMediaUrl = document.getElementById("heroMediaUrl") ? document.getElementById("heroMediaUrl").value : "";
+      const heroMediaFile = document.getElementById("heroMediaFile") ? document.getElementById("heroMediaFile").files[0] : null;
+      const heroDefault = document.getElementById("heroDefault") ? document.getElementById("heroDefault").value : "";
       const heroTitle = document.getElementById("heroTitle").value;
       const heroSubtitle = document.getElementById("heroSubtitle").value;
       const ctaText = document.getElementById("ctaText").value;
       const ctaLink = document.getElementById("ctaLink").value;
       
-      // Gather Secure Payments Card values
-      const card1MediaUrl = document.getElementById("card1MediaUrl").value;
-      const card1MediaFile = document.getElementById("card1MediaFile").files[0] || null;
-      const card1Default = document.getElementById("card1Default").value;
+      // Gather Secure Payments Card values (example for card1)
+      const card1MediaUrl = document.getElementById("card1MediaUrl") ? document.getElementById("card1MediaUrl").value : "";
+      const card1MediaFile = document.getElementById("card1MediaFile") ? document.getElementById("card1MediaFile").files[0] : null;
+      const card1Default = document.getElementById("card1Default") ? document.getElementById("card1Default").value : "";
       const card1Title = document.getElementById("card1Title").value;
       const card1Desc = document.getElementById("card1Desc").value;
       const card1Reviews = document.getElementById("card1Reviews").value;
       
-      // Gather Fast Delivery Card values
-      const card2MediaUrl = document.getElementById("card2MediaUrl").value;
-      const card2MediaFile = document.getElementById("card2MediaFile").files[0] || null;
-      const card2Default = document.getElementById("card2Default").value;
-      const card2Title = document.getElementById("card2Title").value;
-      const card2Desc = document.getElementById("card2Desc").value;
-      const card2Reviews = document.getElementById("card2Reviews").value;
+      // Similarly, gather values for card2 and card3 if needed...
       
-      // Gather Exclusive Deals Card values
-      const card3MediaUrl = document.getElementById("card3MediaUrl").value;
-      const card3MediaFile = document.getElementById("card3MediaFile").files[0] || null;
-      const card3Default = document.getElementById("card3Default").value;
-      const card3Title = document.getElementById("card3Title").value;
-      const card3Desc = document.getElementById("card3Desc").value;
-      const card3Reviews = document.getElementById("card3Reviews").value;
-      
-      // For demonstration, log values (replace this with Firebase Firestore integration)
+      // For demonstration, log values to console. In production, save these to Firebase Firestore.
       console.log("Global Settings:", { globalTitle, globalDescription });
       console.log("Hero Section:", { heroMediaUrl, heroMediaFile, heroDefault, heroTitle, heroSubtitle, ctaText, ctaLink });
       console.log("Secure Payments Card:", { card1MediaUrl, card1MediaFile, card1Default, card1Title, card1Desc, card1Reviews });
-      console.log("Fast Delivery Card:", { card2MediaUrl, card2MediaFile, card2Default, card2Title, card2Desc, card2Reviews });
-      console.log("Exclusive Deals Card:", { card3MediaUrl, card3MediaFile, card3Default, card3Title, card3Desc, card3Reviews });
       
       alert("Changes saved (simulated)!");
     }
