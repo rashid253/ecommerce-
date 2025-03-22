@@ -12,7 +12,6 @@
     :root {
       --header-height: 50px;
       --footer-height: 65px;
-      --sidebar-width: 200px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
@@ -60,39 +59,15 @@
     .recent-activity h4 { font-size: 1rem; margin-bottom: 8px; color: #333; }
     .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
     .activity-item:last-child { border-bottom: none; }
-    
-    /* Sidebar (if inline) and overlay */
-    #sidebar-placeholder {
-      position: fixed;
-      top: var(--header-height);
-      left: 0;
-      width: var(--sidebar-width);
-      height: calc(100% - var(--header-height) - var(--footer-height));
-      z-index: 1100;
-    }
-    /* We load the sidebar inline from our external file (see below) */
-    
-    .overlay {
-      position: fixed;
-      top: var(--header-height);
-      left: 0;
-      width: 100%;
-      height: calc(100% - var(--header-height) - var(--footer-height));
-      background: rgba(0,0,0,0.3);
-      display: none;
-      z-index: 1050;
-    }
-    .overlay.show { display: block; }
   </style>
 </head>
 <body>
   <!-- External Header -->
   <div id="header-placeholder"></div>
   
-  <!-- Sidebar Placeholder (loads external sidebar inline) -->
-  <div id="sidebar-placeholder"></div>
+  <!-- Sidebar is loaded via the header drop-down on mobile; for larger screens, you can optionally load a sidebar externally -->
   
-  <!-- Overlay for Sidebar -->
+  <!-- Overlay (if needed for sidebar; here not used for drop-down menu) -->
   <div class="overlay" id="overlay"></div>
   
   <!-- Main Content -->
@@ -137,51 +112,18 @@
   <!-- External Footer -->
   <div id="footer-placeholder"></div>
   
-  <!-- Script to load external header, sidebar, and footer -->
   <script>
     // Load external header
     fetch('admin_header.html')
       .then(response => response.text())
-      .then(html => {
-        document.getElementById('header-placeholder').innerHTML = html;
-        attachHamburger(); // Attach hamburger functionality after header loads
-      })
+      .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
       .catch(err => console.error('Error loading header:', err));
-      
-    // Load external sidebar
-    fetch('admin_sidebar.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('sidebar-placeholder').innerHTML = html;
-      })
-      .catch(err => console.error('Error loading sidebar:', err));
-      
+    
     // Load external footer
     fetch('admin_footer.html')
       .then(response => response.text())
-      .then(html => {
-        document.getElementById('footer-placeholder').innerHTML = html;
-      })
+      .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
       .catch(err => console.error('Error loading footer:', err));
-      
-    // Attach hamburger toggle after header loads
-    function attachHamburger() {
-      const hamburger = document.getElementById("hamburger");
-      const sidebar = document.getElementById("sidebar");
-      const overlay = document.getElementById("overlay");
-      if (hamburger && sidebar && overlay) {
-        hamburger.addEventListener("click", () => {
-          sidebar.classList.toggle("open");
-          overlay.classList.toggle("show");
-        });
-        overlay.addEventListener("click", () => {
-          sidebar.classList.remove("open");
-          overlay.classList.remove("show");
-        });
-      } else {
-        console.error("Hamburger, sidebar, or overlay not found.");
-      }
-    }
   </script>
   
   <script>
@@ -208,7 +150,7 @@
           scales: {
             y: {
               beginAtZero: true,
-              ticks: { callback: value => '$' + value }
+              ticks: { callback: (value) => '$' + value }
             }
           }
         }
@@ -217,7 +159,7 @@
   </script>
   
   <script>
-    // Footer scrolling buttons
+    // Footer Scrolling Buttons
     const footerScroll = document.getElementById("footerScroll");
     const scrollLeftBtn = document.getElementById("scrollLeft");
     const scrollRightBtn = document.getElementById("scrollRight");
