@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <title>Admin Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap, FontAwesome, and Chart.js -->
+  <!-- Bootstrap, FontAwesome, Chart.js -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
   <style>
     :root {
       --header-height: 50px;
       --footer-height: 65px;
+      --sidebar-width: 200px;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: Arial, sans-serif; background: #f0f2f5; }
@@ -60,13 +60,41 @@
     .recent-activity h4 { font-size: 1rem; margin-bottom: 8px; color: #333; }
     .activity-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #333; }
     .activity-item:last-child { border-bottom: none; }
+    
+    /* Sidebar (if inline) and overlay */
+    #sidebar-placeholder {
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      width: var(--sidebar-width);
+      height: calc(100% - var(--header-height) - var(--footer-height));
+      z-index: 1100;
+    }
+    /* We load the sidebar inline from our external file (see below) */
+    
+    .overlay {
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      width: 100%;
+      height: calc(100% - var(--header-height) - var(--footer-height));
+      background: rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1050;
+    }
+    .overlay.show { display: block; }
   </style>
 </head>
 <body>
   <!-- External Header -->
   <div id="header-placeholder"></div>
-  <!-- External Sidebar -->
+  
+  <!-- Sidebar Placeholder (loads external sidebar inline) -->
   <div id="sidebar-placeholder"></div>
+  
+  <!-- Overlay for Sidebar -->
+  <div class="overlay" id="overlay"></div>
+  
   <!-- Main Content -->
   <main>
     <div class="dashboard-header">
@@ -105,29 +133,30 @@
       <div class="activity-item">User feedback received</div>
     </div>
   </main>
+  
   <!-- External Footer -->
   <div id="footer-placeholder"></div>
   
-  <!-- Load External Components -->
+  <!-- Script to load external header, sidebar, and footer -->
   <script>
-    // Load Header
+    // Load external header
     fetch('admin_header.html')
       .then(response => response.text())
       .then(html => {
         document.getElementById('header-placeholder').innerHTML = html;
-        attachHamburger(); // Attach hamburger toggle after header loads
+        attachHamburger(); // Attach hamburger functionality after header loads
       })
       .catch(err => console.error('Error loading header:', err));
-    
-    // Load Sidebar
+      
+    // Load external sidebar
     fetch('admin_sidebar.html')
       .then(response => response.text())
       .then(html => {
         document.getElementById('sidebar-placeholder').innerHTML = html;
       })
       .catch(err => console.error('Error loading sidebar:', err));
-    
-    // Load Footer
+      
+    // Load external footer
     fetch('admin_footer.html')
       .then(response => response.text())
       .then(html => {
@@ -135,7 +164,7 @@
       })
       .catch(err => console.error('Error loading footer:', err));
       
-    // Attach Hamburger Toggle after header loads
+    // Attach hamburger toggle after header loads
     function attachHamburger() {
       const hamburger = document.getElementById("hamburger");
       const sidebar = document.getElementById("sidebar");
@@ -156,7 +185,7 @@
   </script>
   
   <script>
-    // Initialize Chart.js
+    // Initialize Chart.js for Sales Overview
     document.addEventListener("DOMContentLoaded", function() {
       const ctx = document.getElementById('salesChart').getContext('2d');
       new Chart(ctx, {
@@ -179,7 +208,7 @@
           scales: {
             y: {
               beginAtZero: true,
-              ticks: { callback: function(value) { return '$' + value; } }
+              ticks: { callback: value => '$' + value }
             }
           }
         }
@@ -188,7 +217,7 @@
   </script>
   
   <script>
-    // Footer Scrolling Buttons
+    // Footer scrolling buttons
     const footerScroll = document.getElementById("footerScroll");
     const scrollLeftBtn = document.getElementById("scrollLeft");
     const scrollRightBtn = document.getElementById("scrollRight");
