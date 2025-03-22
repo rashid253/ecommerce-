@@ -7,6 +7,12 @@
   <!-- Bootstrap & FontAwesome -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Firebase SDKs (using compat for simplicity) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  
   <style>
     :root {
       --header-height: 50px;
@@ -42,8 +48,7 @@
     label {
       font-weight: bold;
     }
-    input.form-control,
-    textarea.form-control {
+    input.form-control, textarea.form-control {
       border-radius: 4px;
     }
     .help-text {
@@ -63,23 +68,28 @@
     .save-btn:hover {
       background: #0056b3;
     }
-    /* Media Selection Section Styles */
+    /* Media Selection Section */
     .media-selection-section {
       border: 1px dashed #ccc;
       padding: 10px;
       margin-bottom: 15px;
       border-radius: 4px;
     }
-    .media-selection-section .btn-group button {
+    .btn-group button {
       margin-right: 5px;
     }
     .media-input {
       margin-top: 10px;
     }
+    .lock-edit-buttons {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
   </style>
 </head>
 <body>
-  <!-- External Header (loaded dynamically) -->
+  <!-- External Header -->
   <div id="header-placeholder"></div>
   
   <main class="container">
@@ -91,7 +101,7 @@
       <div class="form-group">
         <label for="globalTitle">Page Title</label>
         <input type="text" id="globalTitle" class="form-control" placeholder="e.g., Welcome to MyBusiness">
-        <small class="help-text">This is the overall title shown on the home page.</small>
+        <small class="help-text">This title appears as the main heading on the home page.</small>
       </div>
       <div class="form-group">
         <label for="globalDescription">Page Description</label>
@@ -103,8 +113,7 @@
     <!-- Hero Section Settings -->
     <div class="form-section">
       <h3>Hero Section</h3>
-      
-      <!-- Media Selection for Hero Background -->
+      <!-- Media selection -->
       <div class="form-group">
         <label>Hero Background Media</label>
         <div id="heroMediaSelection" class="media-selection-section">
@@ -114,16 +123,13 @@
             <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'default')">Use Default</button>
           </div>
           <div id="heroMediaOptionInputs" class="media-input"></div>
-          <div id="heroMediaLock" style="margin-top:10px; display:none;">
+          <div id="heroMediaLock" class="lock-edit-buttons" style="display:none;">
             <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('hero')">Lock Selection</button>
-          </div>
-          <div id="heroMediaEdit" style="margin-top:10px; display:none;">
-            <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('hero')">Edit Selection</button>
+            <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('hero')">Edit</button>
           </div>
         </div>
       </div>
-      
-      <!-- Other Hero fields -->
+      <!-- Other hero fields -->
       <div class="form-group">
         <label for="heroTitle">Hero Title</label>
         <input type="text" id="heroTitle" class="form-control" placeholder="Enter the hero title">
@@ -142,54 +148,74 @@
       </div>
     </div>
     
-    <!-- Feature Cards Settings (Example for one card; replicate for others) -->
+    <!-- Feature Cards Settings -->
     <div class="form-section">
-      <h3>Feature Card: Secure Payments</h3>
-      <div class="form-group">
-        <label>Card Background Media</label>
-        <div id="card1MediaSelection" class="media-selection-section">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'url')">Enter URL</button>
-            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'upload')">Upload File</button>
-            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'default')">Use Default</button>
-          </div>
-          <div id="card1MediaOptionInputs" class="media-input"></div>
-          <div id="card1MediaLock" style="margin-top:10px; display:none;">
-            <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('card1')">Lock Selection</button>
-          </div>
-          <div id="card1MediaEdit" style="margin-top:10px; display:none;">
-            <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('card1')">Edit Selection</button>
+      <h3>Feature Cards</h3>
+      
+      <!-- Card 1: Secure Payments -->
+      <div class="border-bottom mb-3 pb-2">
+        <h4>Secure Payments</h4>
+        <div class="form-group">
+          <label>Card Background Media</label>
+          <div id="card1MediaSelection" class="media-selection-section">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'url')">Enter URL</button>
+              <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'upload')">Upload File</button>
+              <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'default')">Use Default</button>
+            </div>
+            <div id="card1MediaOptionInputs" class="media-input"></div>
+            <div id="card1MediaLock" class="lock-edit-buttons" style="display:none;">
+              <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('card1')">Lock Selection</button>
+              <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('card1')">Edit</button>
+            </div>
           </div>
         </div>
+        <div class="form-group">
+          <label for="card1Title">Card Title</label>
+          <input type="text" id="card1Title" class="form-control" placeholder="e.g., Secure Payments">
+        </div>
+        <div class="form-group">
+          <label for="card1Desc">Card Description</label>
+          <textarea id="card1Desc" class="form-control" rows="2" placeholder="e.g., Experience top-notch security for every transaction."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="card1Reviews">Customer Reviews</label>
+          <textarea id="card1Reviews" class="form-control" rows="2" placeholder="e.g., 'Very secure and reliable', 'Fast and trustworthy'"></textarea>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="card1Title">Card Title</label>
-        <input type="text" id="card1Title" class="form-control" placeholder="e.g., Secure Payments">
-      </div>
-      <div class="form-group">
-        <label for="card1Desc">Card Description</label>
-        <textarea id="card1Desc" class="form-control" rows="2" placeholder="e.g., Experience top-notch security for every transaction."></textarea>
-      </div>
-      <div class="form-group">
-        <label for="card1Reviews">Customer Reviews</label>
-        <textarea id="card1Reviews" class="form-control" rows="2" placeholder="e.g., 'Very secure and reliable', 'Fast and trustworthy'"></textarea>
-      </div>
-      <!-- Repeat similar sections for Fast Delivery and Exclusive Deals -->
+      
+      <!-- Repeat similar sections for Card 2 (Fast Delivery) and Card 3 (Exclusive Deals) -->
+      <!-- For brevity, only Card 1 is shown in full -->
     </div>
     
     <button type="button" class="save-btn" onclick="saveHomeContent()">Save Changes</button>
   </main>
   
-  <!-- External Footer (loaded dynamically) -->
+  <!-- External Footer -->
   <div id="footer-placeholder"></div>
   
   <script>
-    // Load external header and footer
+    // Firebase configuration (as provided)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
+      authDomain: "e-commerce-pk.firebaseapp.com",
+      projectId: "e-commerce-pk",
+      storageBucket: "e-commerce-pk.firebasestorage.app",
+      messagingSenderId: "126517093225",
+      appId: "1:126517093225:web:c2352620c6d32c582513f8",
+      measurementId: "G-2G2DNCNNT3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const firestore = firebase.firestore();
+    const storage = firebase.storage();
+  </script>
+  
+  <script>
+    // Load external header and attach hamburger toggle
     fetch('admin_header.html')
       .then(response => response.text())
       .then(html => {
         document.getElementById('header-placeholder').innerHTML = html;
-        // Attach hamburger toggle (for mobile drop-down menu)
         const hamburger = document.getElementById("hamburger");
         const mobileNav = document.getElementById("mobileNav");
         if (hamburger && mobileNav) {
@@ -206,57 +232,42 @@
       })
       .catch(err => console.error('Error loading header:', err));
       
+    // Load external footer
     fetch('admin_footer.html')
       .then(response => response.text())
       .then(html => {
         document.getElementById('footer-placeholder').innerHTML = html;
       })
       .catch(err => console.error('Error loading footer:', err));
-    
-    // JavaScript functions for media selection mechanism
-    function chooseMediaOption(prefix, option) {
-      // prefix is "hero" or "card1", etc.
-      const container = document.getElementById(prefix + "MediaOptionInputs");
-      container.innerHTML = ""; // Clear previous inputs
       
+    // Functions for media selection mechanism
+    function chooseMediaOption(prefix, option) {
+      const container = document.getElementById(prefix + "MediaOptionInputs");
+      container.innerHTML = "";
       if (option === 'url') {
         container.innerHTML = `<input type="text" id="${prefix}MediaUrl" class="form-control" placeholder="Enter direct URL">`;
       } else if (option === 'upload') {
-        container.innerHTML = `<input type="file" id="${prefix}MediaFile" class="form-control file-input" accept="image/*,video/*">`;
+        container.innerHTML = `<input type="file" id="${prefix}MediaFile" class="form-control" accept="image/*,video/*">`;
       } else if (option === 'default') {
-        container.innerHTML = `<input type="text" id="${prefix}Default" class="form-control" placeholder="Default media will be used" readonly>`;
+        container.innerHTML = `<input type="text" id="${prefix}Default" class="form-control" value="DEFAULT" readonly>`;
       }
-      
-      // Show lock button for this section
-      document.getElementById(prefix + "MediaLock").style.display = "block";
-      // Hide the edit button until locked
-      document.getElementById(prefix + "MediaEdit").style.display = "none";
+      document.getElementById(prefix + "MediaLock").style.display = "flex";
     }
     
     function lockMediaSelection(prefix) {
-      // Disable the chosen input so that it cannot be changed until 'Edit' is clicked.
       const inputContainer = document.getElementById(prefix + "MediaOptionInputs");
       const inputs = inputContainer.querySelectorAll("input");
-      inputs.forEach(input => {
-        input.disabled = true;
-      });
-      // Hide the lock button and show the edit button
+      inputs.forEach(input => { input.disabled = true; });
       document.getElementById(prefix + "MediaLock").style.display = "none";
       document.getElementById(prefix + "MediaEdit").style.display = "block";
     }
     
     function editMediaSelection(prefix) {
-      // Re-enable the inputs and show the option buttons again.
       const inputContainer = document.getElementById(prefix + "MediaOptionInputs");
       const inputs = inputContainer.querySelectorAll("input");
-      inputs.forEach(input => {
-        input.disabled = false;
-      });
-      // Hide the edit button and clear the input container so admin can choose again
+      inputs.forEach(input => { input.disabled = false; });
       document.getElementById(prefix + "MediaEdit").style.display = "none";
       inputContainer.innerHTML = "";
-      // Hide lock button (if visible)
-      document.getElementById(prefix + "MediaLock").style.display = "none";
     }
     
     function saveHomeContent() {
@@ -264,7 +275,7 @@
       const globalTitle = document.getElementById("globalTitle").value;
       const globalDescription = document.getElementById("globalDescription").value;
       
-      // Gather Hero Section values
+      // Gather Hero Section Values
       const heroMediaUrl = document.getElementById("heroMediaUrl") ? document.getElementById("heroMediaUrl").value : "";
       const heroMediaFile = document.getElementById("heroMediaFile") ? document.getElementById("heroMediaFile").files[0] : null;
       const heroDefault = document.getElementById("heroDefault") ? document.getElementById("heroDefault").value : "";
@@ -273,7 +284,7 @@
       const ctaText = document.getElementById("ctaText").value;
       const ctaLink = document.getElementById("ctaLink").value;
       
-      // Gather Secure Payments Card values (example for card1)
+      // Gather Secure Payments Card Values (for card1)
       const card1MediaUrl = document.getElementById("card1MediaUrl") ? document.getElementById("card1MediaUrl").value : "";
       const card1MediaFile = document.getElementById("card1MediaFile") ? document.getElementById("card1MediaFile").files[0] : null;
       const card1Default = document.getElementById("card1Default") ? document.getElementById("card1Default").value : "";
@@ -281,9 +292,9 @@
       const card1Desc = document.getElementById("card1Desc").value;
       const card1Reviews = document.getElementById("card1Reviews").value;
       
-      // Similarly, gather values for card2 and card3 if needed...
+      // (Similarly, gather values for card2 and card3 if implemented)
       
-      // For demonstration, log values to console. In production, save these to Firebase Firestore.
+      // Simulated saving – In production, use firestore.collection("pages").doc("home") to save.
       console.log("Global Settings:", { globalTitle, globalDescription });
       console.log("Hero Section:", { heroMediaUrl, heroMediaFile, heroDefault, heroTitle, heroSubtitle, ctaText, ctaLink });
       console.log("Secure Payments Card:", { card1MediaUrl, card1MediaFile, card1Default, card1Title, card1Desc, card1Reviews });
