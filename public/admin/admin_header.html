@@ -11,7 +11,7 @@
       --nav-bg: #007bff;
       --text-color: #fff;
       --bg-white: #fff;
-      --menu-width: 180px;
+      --mobile-menu-width: 100%;
     }
     /* Header container */
     .admin-header {
@@ -29,6 +29,7 @@
       justify-content: space-between;
       padding: 0 12px;
       font-size: 0.9rem;
+      color: #333;
     }
     .admin-header .left-section {
       display: flex;
@@ -50,7 +51,7 @@
       border: none;
       padding: 6px 10px;
       border-radius: 4px;
-      color: #fff;
+      color: var(--text-color);
       cursor: pointer;
       transition: background 0.3s;
       font-size: 0.85rem;
@@ -58,12 +59,12 @@
     .admin-header .actions button:hover {
       background: #0056b3;
     }
-    /* Mobile drop-down overlay menu */
+    /* Mobile drop-down overlay menu with icons and text */
     .mobile-nav {
       position: fixed;
       top: var(--header-height);
       left: 0;
-      width: var(--menu-width);
+      width: 180px;
       background: var(--nav-bg);
       border: 1px solid rgba(0,0,0,0.2);
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -75,16 +76,22 @@
       display: flex;
     }
     .mobile-nav a {
-      padding: 10px;
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
       color: var(--text-color);
       font-size: 0.9rem;
       border-bottom: 1px solid rgba(255,255,255,0.2);
       text-decoration: none;
     }
+    .mobile-nav a i {
+      margin-right: 8px;
+      font-size: 1.1rem;
+    }
     .mobile-nav a:hover {
       background: rgba(255,255,255,0.1);
     }
-    /* Only show hamburger on mobile */
+    /* Hide hamburger and mobile menu on larger screens */
     @media (min-width: 577px) {
       .hamburger { display: none; }
       .mobile-nav { display: none !important; }
@@ -103,21 +110,34 @@
   </header>
   <!-- Mobile drop-down menu -->
   <nav class="mobile-nav" id="mobileNav">
-    <a href="admin_dashboard.html">Dashboard</a>
-    <a href="home_admin.html">Home</a>
-    <a href="header_admin.html">Header</a>
-    <a href="ecommerce_admin.html">Shop</a>
-    <a href="details_admin.html">Details</a>
-    <a href="payments_admin.html">Payments</a>
-    <a href="checkout_admin.html">Checkout</a>
-    <a href="delivery_admin.html">Delivery</a>
-    <a href="support_admin.html">Support</a>
-    <a href="contact_admin.html">Contact</a>
-    <a href="analytics_admin.html">Analytics</a>
-    <a href="about_admin.html">About</a>
+    <a href="admin_dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+    <a href="home_admin.html"><i class="fas fa-home"></i><span>Home</span></a>
+    <a href="header_admin.html"><i class="fas fa-columns"></i><span>Header</span></a>
+    <a href="ecommerce_admin.html"><i class="fas fa-shopping-bag"></i><span>Shop</span></a>
+    <a href="details_admin.html"><i class="fas fa-info-circle"></i><span>Details</span></a>
+    <a href="payments_admin.html"><i class="fas fa-credit-card"></i><span>Payments</span></a>
+    <a href="checkout_admin.html"><i class="fas fa-shopping-cart"></i><span>Checkout</span></a>
+    <a href="delivery_admin.html"><i class="fas fa-truck"></i><span>Delivery</span></a>
+    <a href="support_admin.html"><i class="fas fa-headset"></i><span>Support</span></a>
+    <a href="contact_admin.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
+    <a href="analytics_admin.html"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+    <a href="about_admin.html"><i class="fas fa-info"></i><span>About</span></a>
   </nav>
   <script>
-    // Simple logout function
+    document.addEventListener("DOMContentLoaded", function() {
+      const hamburger = document.getElementById("hamburger");
+      const mobileNav = document.getElementById("mobileNav");
+      hamburger.addEventListener("click", function(e) {
+        mobileNav.classList.toggle("open");
+        e.stopPropagation();
+      });
+      // Close mobile menu if clicking outside the header or mobile menu
+      document.addEventListener("click", function(e) {
+        if (!e.target.closest(".admin-header") && !e.target.closest(".mobile-nav")) {
+          mobileNav.classList.remove("open");
+        }
+      });
+    });
     function logout() {
       alert("Logging out...");
     }
