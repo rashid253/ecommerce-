@@ -27,7 +27,7 @@
     }
     main {
       margin-top: var(--header-height);
-      padding: 20px;
+      padding: 20px 20px 80px; /* Added extra bottom padding (80px) so button doesn't overlap footer */
       min-height: calc(100vh - var(--header-height) - var(--footer-height));
       perspective: 800px;
     }
@@ -85,14 +85,14 @@
     .input-group .btn {
       cursor: pointer;
     }
-    /* Save Button */
+    /* Save Button (reduced padding and size) */
     .save-btn {
       background: #007bff;
       border: none;
       color: #fff;
-      padding: 10px 20px;
+      padding: 8px 16px;
       border-radius: 4px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       transition: transform var(--transition-speed), box-shadow var(--transition-speed);
       display: block;
@@ -102,7 +102,7 @@
       transform: translateY(-3px) scale(1.02);
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
-    /* Media Selection Section */
+    /* Media Selection Section Styles */
     .media-selection-section {
       border: 1px dashed #ccc;
       padding: 10px;
@@ -131,7 +131,7 @@
   </style>
 </head>
 <body>
-  <!-- External Header (loaded via fetch) -->
+  <!-- External Header -->
   <div id="header-placeholder"></div>
   
   <main class="container">
@@ -329,7 +329,7 @@
             <button type="button" id="defaultBtn_card2Reviews" class="btn btn-outline-secondary" onclick="applyDefault('card2Reviews')">Default</button>
             <button type="button" id="editBtn_card2Reviews" class="btn btn-outline-secondary d-none" onclick="editField('card2Reviews')">Edit</button>
           </div>
-          <small class="help-text">Default: "Very fast and efficient delivery."</small>
+          <small class="help-text">Default: "Very fast and efficient."</small>
         </div>
       </div>
       
@@ -381,11 +381,11 @@
             <button type="button" id="defaultBtn_card3Reviews" class="btn btn-outline-secondary" onclick="applyDefault('card3Reviews')">Default</button>
             <button type="button" id="editBtn_card3Reviews" class="btn btn-outline-secondary d-none" onclick="editField('card3Reviews')">Edit</button>
           </div>
-          <small class="help-text">Default: "Amazing deals, very satisfied customers."</small>
+          <small class="help-text">Default: "Amazing deals, highly recommended."</small>
         </div>
       </div>
       
-      <!-- Card 4: Additional Feature (Example) -->
+      <!-- Card 4: Feature Card 4 -->
       <div class="border-bottom mb-3 pb-2">
         <h4>Feature Card 4</h4>
         <div class="form-group">
@@ -434,7 +434,7 @@
         </div>
       </div>
       
-      <!-- Card 5: Additional Feature (Example) -->
+      <!-- Card 5: Feature Card 5 -->
       <div>
         <h4>Feature Card 5</h4>
         <div class="form-group">
@@ -491,7 +491,7 @@
   <div id="footer-placeholder"></div>
   
   <script>
-    // Firebase configuration (from your provided details)
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
@@ -608,7 +608,7 @@
       document.getElementById(prefix + "MediaLock").style.display = "none";
       document.getElementById(prefix + "MediaEdit").style.display = "block";
       
-      // For URL input, validate and show preview
+      // Validate URL method
       const urlInput = document.getElementById(prefix + "MediaUrl");
       if (urlInput) {
         const url = urlInput.value;
@@ -619,7 +619,7 @@
         }
       }
       
-      // For file input, show preview using FileReader
+      // File preview for upload
       const fileInput = document.getElementById(prefix + "MediaFile");
       if (fileInput && fileInput.files[0]) {
         const file = fileInput.files[0];
@@ -660,7 +660,7 @@
       const globalTitle = document.getElementById("globalTitle").value;
       const globalDescription = document.getElementById("globalDescription").value;
       
-      // Gather Hero Section Values
+      // Gather Hero Section values
       const heroMediaUrl = document.getElementById("heroMediaUrl") ? document.getElementById("heroMediaUrl").value : "";
       const heroMediaFile = document.getElementById("heroMediaFile") ? document.getElementById("heroMediaFile").files[0] : null;
       const heroDefault = document.getElementById("heroDefault") ? document.getElementById("heroDefault").value : "";
@@ -709,7 +709,6 @@
       const card5Desc = document.getElementById("card5Desc").value;
       const card5Reviews = document.getElementById("card5Reviews").value;
       
-      // Log values (in production, save to Firebase Firestore and Storage)
       console.log("Global Settings:", { globalTitle, globalDescription });
       console.log("Hero Section:", { heroMediaUrl, heroMediaFile, heroDefault, heroTitle, heroSubtitle, ctaText, ctaLink });
       console.log("Card 1 (Secure Payments):", { card1MediaUrl, card1MediaFile, card1Default, card1Title, card1Desc, card1Reviews });
