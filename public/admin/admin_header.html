@@ -9,10 +9,11 @@
     :root {
       --header-height: 50px;
       --nav-bg: #007bff;
-      --text-color: #333;
+      --text-color: #fff;
       --bg-white: #fff;
+      --menu-width: 180px;
     }
-    /* Header */
+    /* Header container */
     .admin-header {
       position: fixed;
       top: 0;
@@ -37,12 +38,12 @@
       font-size: 1.5rem;
       cursor: pointer;
       margin-right: 8px;
-      color: var(--text-color);
+      color: #333;
     }
     .page-title {
       font-size: 1.1rem;
       font-weight: bold;
-      color: var(--text-color);
+      color: #333;
     }
     .admin-header .actions button {
       background: var(--nav-bg);
@@ -57,12 +58,12 @@
     .admin-header .actions button:hover {
       background: #0056b3;
     }
-    /* Mobile Drop-down Overlay Menu */
+    /* Mobile drop-down overlay menu */
     .mobile-nav {
       position: fixed;
-      top: var(--header-height); /* immediately below header */
+      top: var(--header-height);
       left: 0;
-      width: 180px; /* fixed width overlay */
+      width: var(--menu-width);
       background: var(--nav-bg);
       border: 1px solid rgba(0,0,0,0.2);
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -74,16 +75,16 @@
       display: flex;
     }
     .mobile-nav a {
-      color: #fff;
       padding: 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      text-align: left;
+      color: var(--text-color);
       font-size: 0.9rem;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      text-decoration: none;
     }
     .mobile-nav a:hover {
       background: rgba(255,255,255,0.1);
     }
-    /* Hide hamburger on larger screens */
+    /* Only show hamburger on mobile */
     @media (min-width: 577px) {
       .hamburger { display: none; }
       .mobile-nav { display: none !important; }
@@ -100,7 +101,7 @@
       <button onclick="logout()">Logout</button>
     </div>
   </header>
-  <!-- Mobile drop-down overlay menu -->
+  <!-- Mobile drop-down menu -->
   <nav class="mobile-nav" id="mobileNav">
     <a href="admin_dashboard.html">Dashboard</a>
     <a href="home_admin.html">Home</a>
@@ -116,7 +117,7 @@
     <a href="about_admin.html">About</a>
   </nav>
   <script>
-    // A simple logout function; event listener for hamburger is attached in the parent page.
+    // Simple logout function
     function logout() {
       alert("Logging out...");
     }
