@@ -2,20 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Home Admin - Edit Home Page</title>
+  <title>Home Admin – Edit Home Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Bootstrap & FontAwesome -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Firebase SDKs (compat versions) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
   <style>
     :root {
       --header-height: 50px;
       --footer-height: 65px;
-      --transition-speed: 0.3s;
     }
     body {
       margin: 0;
@@ -47,64 +42,12 @@
     label {
       font-weight: bold;
     }
-    input.form-control, textarea.form-control {
-      border-radius: 4px;
-      transition: border-color var(--transition-speed);
-    }
-    input.form-control:focus, textarea.form-control:focus {
-      border-color: #007bff;
-    }
     .help-text {
       font-size: 0.8rem;
       color: #888;
     }
-    .error-msg {
-      color: #d9534f;
+    .input-group .btn {
       font-size: 0.8rem;
-      margin-top: 5px;
-    }
-    .save-btn {
-      background: #007bff;
-      border: none;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 4px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background var(--transition-speed);
-    }
-    .save-btn:hover {
-      background: #0056b3;
-    }
-    /* Media Selection Section */
-    .media-selection-section {
-      border: 1px dashed #ccc;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 4px;
-      transition: all var(--transition-speed);
-    }
-    .btn-group button {
-      margin-right: 5px;
-    }
-    .media-input {
-      margin-top: 10px;
-    }
-    .lock-edit-buttons {
-      margin-top: 10px;
-      display: none;
-      gap: 10px;
-    }
-    .lock-edit-buttons button {
-      font-size: 0.85rem;
-    }
-    /* Preview styles */
-    .media-preview {
-      margin-top: 10px;
-      max-width: 100%;
-      max-height: 200px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
     }
   </style>
 </head>
@@ -115,94 +58,83 @@
   <main class="container">
     <h1 class="mb-4">Edit Home Page Content</h1>
     
-    <!-- Global Home Settings -->
+    <!-- Global Home Settings Section -->
     <div class="form-section">
       <h3>Global Settings</h3>
+      
+      <!-- Global Title Field -->
       <div class="form-group">
         <label for="globalTitle">Page Title</label>
-        <input type="text" id="globalTitle" class="form-control" placeholder="e.g., Welcome to MyBusiness">
-        <small class="help-text">This title appears as the main heading on the home page.</small>
+        <div class="input-group">
+          <input type="text" id="globalTitle" class="form-control" placeholder="Enter page title">
+          <button type="button" id="defaultBtn_globalTitle" class="btn btn-outline-secondary" onclick="applyDefault('globalTitle')">Default</button>
+          <button type="button" id="editBtn_globalTitle" class="btn btn-outline-secondary d-none" onclick="editField('globalTitle')">Edit</button>
+        </div>
+        <small class="help-text">If you click "Default", the current title (e.g. "MyBusiness Premium") will be applied and locked.</small>
       </div>
+      
+      <!-- Global Description Field -->
       <div class="form-group">
         <label for="globalDescription">Page Description</label>
-        <textarea id="globalDescription" class="form-control" rows="2" placeholder="e.g., Your one-stop shop for premium products."></textarea>
-        <small class="help-text">A short tagline for the home page.</small>
+        <div class="input-group">
+          <input type="text" id="globalDescription" class="form-control" placeholder="Enter page description">
+          <button type="button" id="defaultBtn_globalDescription" class="btn btn-outline-secondary" onclick="applyDefault('globalDescription')">Default</button>
+          <button type="button" id="editBtn_globalDescription" class="btn btn-outline-secondary d-none" onclick="editField('globalDescription')">Edit</button>
+        </div>
+        <small class="help-text">Click "Default" to use the current description from index.html.</small>
       </div>
     </div>
     
     <!-- Hero Section Settings -->
     <div class="form-section">
       <h3>Hero Section</h3>
-      <!-- Media Selection for Hero Background -->
-      <div class="form-group">
-        <label>Hero Background Media</label>
-        <div id="heroMediaSelection" class="media-selection-section">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'url')">Enter URL</button>
-            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'upload')">Upload File</button>
-            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'default')">Use Default</button>
-          </div>
-          <div id="heroMediaOptionInputs" class="media-input"></div>
-          <div id="heroMediaPreview" class="media-input"></div>
-          <div id="heroMediaLock" class="lock-edit-buttons">
-            <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('hero')">Lock Selection</button>
-            <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('hero')">Edit</button>
-          </div>
-          <div id="heroMediaError" class="error-msg"></div>
-        </div>
-      </div>
-      <!-- Other hero fields -->
+      
+      <!-- Hero Title Field -->
       <div class="form-group">
         <label for="heroTitle">Hero Title</label>
-        <input type="text" id="heroTitle" class="form-control" placeholder="Enter the hero title">
+        <div class="input-group">
+          <input type="text" id="heroTitle" class="form-control" placeholder="Enter hero title">
+          <button type="button" id="defaultBtn_heroTitle" class="btn btn-outline-secondary" onclick="applyDefault('heroTitle')">Default</button>
+          <button type="button" id="editBtn_heroTitle" class="btn btn-outline-secondary d-none" onclick="editField('heroTitle')">Edit</button>
+        </div>
+        <small class="help-text">Default value might be "Premium Business Solutions".</small>
       </div>
+      
+      <!-- Hero Description Field -->
       <div class="form-group">
         <label for="heroSubtitle">Hero Description</label>
-        <textarea id="heroSubtitle" class="form-control" rows="2" placeholder="Enter a short description for the hero section"></textarea>
+        <div class="input-group">
+          <input type="text" id="heroSubtitle" class="form-control" placeholder="Enter hero description">
+          <button type="button" id="defaultBtn_heroSubtitle" class="btn btn-outline-secondary" onclick="applyDefault('heroSubtitle')">Default</button>
+          <button type="button" id="editBtn_heroSubtitle" class="btn btn-outline-secondary d-none" onclick="editField('heroSubtitle')">Edit</button>
+        </div>
+        <small class="help-text">Default may be "Experience secure transactions, exclusive offers, and a seamless interface."</small>
       </div>
+      
+      <!-- CTA Button Text Field -->
       <div class="form-group">
         <label for="ctaText">CTA Button Text</label>
-        <input type="text" id="ctaText" class="form-control" placeholder="e.g., Shop Now">
+        <div class="input-group">
+          <input type="text" id="ctaText" class="form-control" placeholder="Enter CTA button text">
+          <button type="button" id="defaultBtn_ctaText" class="btn btn-outline-secondary" onclick="applyDefault('ctaText')">Default</button>
+          <button type="button" id="editBtn_ctaText" class="btn btn-outline-secondary d-none" onclick="editField('ctaText')">Edit</button>
+        </div>
+        <small class="help-text">Default may be "Shop Now".</small>
       </div>
+      
+      <!-- CTA Button Link Field -->
       <div class="form-group">
         <label for="ctaLink">CTA Button Link</label>
-        <input type="text" id="ctaLink" class="form-control" placeholder="e.g., ecommerce.html">
+        <div class="input-group">
+          <input type="text" id="ctaLink" class="form-control" placeholder="Enter CTA button link">
+          <button type="button" id="defaultBtn_ctaLink" class="btn btn-outline-secondary" onclick="applyDefault('ctaLink')">Default</button>
+          <button type="button" id="editBtn_ctaLink" class="btn btn-outline-secondary d-none" onclick="editField('ctaLink')">Edit</button>
+        </div>
+        <small class="help-text">Default might be "ecommerce.html".</small>
       </div>
     </div>
     
-    <!-- Feature Cards Settings (Example: Secure Payments) -->
-    <div class="form-section">
-      <h3>Feature Card: Secure Payments</h3>
-      <div class="form-group">
-        <label>Card Background Media</label>
-        <div id="card1MediaSelection" class="media-selection-section">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'url')">Enter URL</button>
-            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'upload')">Upload File</button>
-            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'default')">Use Default</button>
-          </div>
-          <div id="card1MediaOptionInputs" class="media-input"></div>
-          <div id="card1MediaPreview" class="media-input"></div>
-          <div id="card1MediaLock" class="lock-edit-buttons">
-            <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('card1')">Lock Selection</button>
-            <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('card1')">Edit</button>
-          </div>
-          <div id="card1MediaError" class="error-msg"></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="card1Title">Card Title</label>
-        <input type="text" id="card1Title" class="form-control" placeholder="e.g., Secure Payments">
-      </div>
-      <div class="form-group">
-        <label for="card1Desc">Card Description</label>
-        <textarea id="card1Desc" class="form-control" rows="2" placeholder="e.g., Experience top-notch security for every transaction."></textarea>
-      </div>
-      <div class="form-group">
-        <label for="card1Reviews">Customer Reviews</label>
-        <textarea id="card1Reviews" class="form-control" rows="2" placeholder="e.g., 'Very secure', 'Fast and reliable'"></textarea>
-      </div>
-    </div>
+    <!-- (Additional sections such as media selection for Hero Background and Feature Cards would be implemented similarly.) -->
     
     <button type="button" class="save-btn" onclick="saveHomeContent()">Save Changes</button>
   </main>
@@ -211,155 +143,66 @@
   <div id="footer-placeholder"></div>
   
   <script>
-    // Firebase configuration (as provided)
-    const firebaseConfig = {
-      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
-      authDomain: "e-commerce-pk.firebaseapp.com",
-      projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.firebasestorage.app",
-      messagingSenderId: "126517093225",
-      appId: "1:126517093225:web:c2352620c6d32c582513f8",
-      measurementId: "G-2G2DNCNNT3"
+    // Simulated default values from index.html – in production, load these from Firestore.
+    const defaultValues = {
+      globalTitle: "MyBusiness Premium",
+      globalDescription: "Welcome to our online store. Experience premium quality!",
+      heroTitle: "Premium Business Solutions",
+      heroSubtitle: "Experience secure transactions, exclusive offers, and a seamless interface.",
+      ctaText: "Shop Now",
+      ctaLink: "ecommerce.html"
     };
-    firebase.initializeApp(firebaseConfig);
-    const firestore = firebase.firestore();
-    const storage = firebase.storage();
-  </script>
-  
-  <script>
-    // Load external header and attach hamburger toggle
-    fetch('admin_header.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('header-placeholder').innerHTML = html;
-        const hamburger = document.getElementById("hamburger");
-        const mobileNav = document.getElementById("mobileNav");
-        if (hamburger && mobileNav) {
-          hamburger.addEventListener("click", (e) => {
-            mobileNav.classList.toggle("open");
-            e.stopPropagation();
-          });
-          document.addEventListener("click", function(e) {
-            if (!e.target.closest(".admin-header") && !e.target.closest(".mobile-nav")) {
-              mobileNav.classList.remove("open");
-            }
-          });
-        }
-      })
-      .catch(err => console.error('Error loading header:', err));
-      
-    // Load external footer
-    fetch('admin_footer.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('footer-placeholder').innerHTML = html;
-      })
-      .catch(err => console.error('Error loading footer:', err));
-      
-    // Functions for media selection mechanism
-    function chooseMediaOption(prefix, option) {
-      const container = document.getElementById(prefix + "MediaOptionInputs");
-      const previewContainer = document.getElementById(prefix + "MediaPreview");
-      const errorContainer = document.getElementById(prefix + "MediaError");
-      container.innerHTML = "";
-      previewContainer.innerHTML = "";
-      errorContainer.innerText = "";
-      
-      if (option === 'url') {
-        container.innerHTML = `<input type="text" id="${prefix}MediaUrl" class="form-control" placeholder="Enter direct URL">`;
-        document.getElementById(prefix + "MediaLock").style.display = "flex";
-      } else if (option === 'upload') {
-        container.innerHTML = `<input type="file" id="${prefix}MediaFile" class="form-control" accept="image/*,video/*">`;
-        document.getElementById(prefix + "MediaLock").style.display = "flex";
-      } else if (option === 'default') {
-        container.innerHTML = `<input type="text" id="${prefix}Default" class="form-control" value="DEFAULT" readonly>`;
-        document.getElementById(prefix + "MediaLock").style.display = "flex";
+
+    function applyDefault(fieldId) {
+      const field = document.getElementById(fieldId);
+      const defaultBtn = document.getElementById("defaultBtn_" + fieldId);
+      const editBtn = document.getElementById("editBtn_" + fieldId);
+      if (defaultValues[fieldId]) {
+        field.value = defaultValues[fieldId];
+        field.disabled = true;
+        defaultBtn.classList.add("d-none");
+        editBtn.classList.remove("d-none");
       }
     }
     
-    function lockMediaSelection(prefix) {
-      const inputContainer = document.getElementById(prefix + "MediaOptionInputs");
-      const inputs = inputContainer.querySelectorAll("input");
-      inputs.forEach(input => { input.disabled = true; });
-      document.getElementById(prefix + "MediaLock").style.display = "none";
-      document.getElementById(prefix + "MediaEdit").style.display = "block";
-      // Show preview if URL is entered
-      if (document.getElementById(prefix + "MediaUrl")) {
-        const url = document.getElementById(prefix + "MediaUrl").value;
-        if (validateURL(url)) {
-          showPreview(prefix, url);
-        } else {
-          document.getElementById(prefix + "MediaError").innerText = "Invalid URL format.";
-        }
-      } else if (document.getElementById(prefix + "MediaFile")) {
-        // For file upload, generate a preview
-        const file = document.getElementById(prefix + "MediaFile").files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            showPreview(prefix, e.target.result, file.type);
-          };
-          reader.readAsDataURL(file);
-        }
-      }
-    }
-    
-    function editMediaSelection(prefix) {
-      const inputContainer = document.getElementById(prefix + "MediaOptionInputs");
-      const inputs = inputContainer.querySelectorAll("input");
-      inputs.forEach(input => { input.disabled = false; });
-      document.getElementById(prefix + "MediaEdit").style.display = "none";
-      inputContainer.innerHTML = "";
-      document.getElementById(prefix + "MediaPreview").innerHTML = "";
-    }
-    
-    function showPreview(prefix, mediaUrl, mediaType = "") {
-      const previewContainer = document.getElementById(prefix + "MediaPreview");
-      previewContainer.innerHTML = "";
-      // Simple check: if mediaType includes 'video' or if URL ends with mp4, treat as video; otherwise image.
-      if ((mediaType && mediaType.includes("video")) || mediaUrl.toLowerCase().endsWith(".mp4")) {
-        previewContainer.innerHTML = `<video src="${mediaUrl}" controls style="max-width:100%; max-height:200px;"></video>`;
-      } else {
-        previewContainer.innerHTML = `<img src="${mediaUrl}" alt="Media Preview" class="media-preview">`;
-      }
-    }
-    
-    function validateURL(url) {
-      // Basic URL validation regex
-      const pattern = /^(https?:\/\/)[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/;
-      return pattern.test(url);
+    function editField(fieldId) {
+      const field = document.getElementById(fieldId);
+      const defaultBtn = document.getElementById("defaultBtn_" + fieldId);
+      const editBtn = document.getElementById("editBtn_" + fieldId);
+      field.disabled = false;
+      defaultBtn.classList.remove("d-none");
+      editBtn.classList.add("d-none");
     }
     
     function saveHomeContent() {
-      // Gather Global Settings
+      // Gather global settings
       const globalTitle = document.getElementById("globalTitle").value;
       const globalDescription = document.getElementById("globalDescription").value;
-      
-      // Gather Hero Section values
-      const heroMediaUrl = document.getElementById("heroMediaUrl") ? document.getElementById("heroMediaUrl").value : "";
-      const heroMediaFile = document.getElementById("heroMediaFile") ? document.getElementById("heroMediaFile").files[0] : null;
-      const heroDefault = document.getElementById("heroDefault") ? document.getElementById("heroDefault").value : "";
+      // Gather hero section fields
       const heroTitle = document.getElementById("heroTitle").value;
       const heroSubtitle = document.getElementById("heroSubtitle").value;
       const ctaText = document.getElementById("ctaText").value;
       const ctaLink = document.getElementById("ctaLink").value;
       
-      // Gather Secure Payments Card values (for card1)
-      const card1MediaUrl = document.getElementById("card1MediaUrl") ? document.getElementById("card1MediaUrl").value : "";
-      const card1MediaFile = document.getElementById("card1MediaFile") ? document.getElementById("card1MediaFile").files[0] : null;
-      const card1Default = document.getElementById("card1Default") ? document.getElementById("card1Default").value : "";
-      const card1Title = document.getElementById("card1Title").value;
-      const card1Desc = document.getElementById("card1Desc").value;
-      const card1Reviews = document.getElementById("card1Reviews").value;
-      
-      // Here, you would add validations and then save to Firebase Firestore and Storage.
-      // For demonstration, we log the values:
       console.log("Global Settings:", { globalTitle, globalDescription });
-      console.log("Hero Section:", { heroMediaUrl, heroMediaFile, heroDefault, heroTitle, heroSubtitle, ctaText, ctaLink });
-      console.log("Secure Payments Card:", { card1MediaUrl, card1MediaFile, card1Default, card1Title, card1Desc, card1Reviews });
+      console.log("Hero Section:", { heroTitle, heroSubtitle, ctaText, ctaLink });
       
+      // Here, you would add saving to Firebase Firestore.
       alert("Changes saved (simulated)!");
     }
+  </script>
+  
+  <!-- Load external header and footer -->
+  <script>
+    fetch('admin_header.html')
+      .then(response => response.text())
+      .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
+      .catch(err => console.error('Error loading header:', err));
+      
+    fetch('admin_footer.html')
+      .then(response => response.text())
+      .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
+      .catch(err => console.error('Error loading footer:', err));
   </script>
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
