@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Home Admin - Edit Home Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap, FontAwesome, and (optionally) Chart.js if needed -->
+  <!-- Bootstrap & FontAwesome (for icons) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -15,8 +15,8 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
       background: #f0f2f5;
+      font-family: Arial, sans-serif;
     }
     main {
       margin-top: var(--header-height);
@@ -33,6 +33,8 @@
     .form-section h3 {
       margin-bottom: 15px;
       font-size: 1.2rem;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
     }
     .form-group {
       margin-bottom: 15px;
@@ -44,6 +46,10 @@
     textarea.form-control {
       border-radius: 4px;
     }
+    .help-text {
+      font-size: 0.8rem;
+      color: #888;
+    }
     .save-btn {
       background: #007bff;
       border: none;
@@ -52,6 +58,7 @@
       border-radius: 4px;
       font-size: 1rem;
       cursor: pointer;
+      transition: background 0.3s;
     }
     .save-btn:hover {
       background: #0056b3;
@@ -65,32 +72,38 @@
   <main class="container">
     <h1 class="mb-4">Edit Home Page Content</h1>
     
-    <!-- Hero Section Form -->
+    <!-- HERO SECTION -->
     <div class="form-section">
       <h3>Hero Section</h3>
       <div class="form-group">
         <label for="heroMedia">Background Media URL</label>
-        <input type="text" id="heroMedia" class="form-control" placeholder="Enter background image/video URL">
+        <input type="text" id="heroMedia" class="form-control" placeholder="e.g., https://yourdomain.com/path/to/hero-video.mp4">
+        <small class="help-text">Enter a video URL. If unavailable, a default image will be used.</small>
+      </div>
+      <div class="form-group">
+        <label for="heroImageFallback">Hero Fallback Image URL</label>
+        <input type="text" id="heroImageFallback" class="form-control" placeholder="e.g., https://yourdomain.com/path/to/hero-image.jpg">
+        <small class="help-text">This image is used if the video fails to load.</small>
       </div>
       <div class="form-group">
         <label for="heroTitle">Hero Title</label>
-        <input type="text" id="heroTitle" class="form-control" placeholder="Enter hero title">
+        <input type="text" id="heroTitle" class="form-control" placeholder="Enter the main heading">
       </div>
       <div class="form-group">
         <label for="heroSubtitle">Hero Subtitle</label>
-        <input type="text" id="heroSubtitle" class="form-control" placeholder="Enter hero subtitle">
+        <input type="text" id="heroSubtitle" class="form-control" placeholder="Enter the sub-heading">
       </div>
       <div class="form-group">
         <label for="ctaText">CTA Button Text</label>
-        <input type="text" id="ctaText" class="form-control" placeholder="Enter call-to-action text">
+        <input type="text" id="ctaText" class="form-control" placeholder="e.g., Shop Now">
       </div>
       <div class="form-group">
         <label for="ctaLink">CTA Button Link</label>
-        <input type="text" id="ctaLink" class="form-control" placeholder="Enter URL for CTA button">
+        <input type="text" id="ctaLink" class="form-control" placeholder="e.g., ecommerce.html">
       </div>
     </div>
     
-    <!-- Category Navigation Form -->
+    <!-- CATEGORY NAVIGATION -->
     <div class="form-section">
       <h3>Category Navigation</h3>
       <div class="row">
@@ -101,7 +114,7 @@
           </div>
           <div class="form-group">
             <label for="cat1Link">Category 1 Link</label>
-            <input type="text" id="cat1Link" class="form-control" placeholder="Enter URL for category 1">
+            <input type="text" id="cat1Link" class="form-control" placeholder="e.g., category1.html">
           </div>
         </div>
         <div class="col-md-6">
@@ -111,7 +124,7 @@
           </div>
           <div class="form-group">
             <label for="cat2Link">Category 2 Link</label>
-            <input type="text" id="cat2Link" class="form-control" placeholder="Enter URL for category 2">
+            <input type="text" id="cat2Link" class="form-control" placeholder="e.g., category2.html">
           </div>
         </div>
       </div>
@@ -123,7 +136,7 @@
           </div>
           <div class="form-group">
             <label for="cat3Link">Category 3 Link</label>
-            <input type="text" id="cat3Link" class="form-control" placeholder="Enter URL for category 3">
+            <input type="text" id="cat3Link" class="form-control" placeholder="e.g., category3.html">
           </div>
         </div>
         <div class="col-md-6">
@@ -133,22 +146,22 @@
           </div>
           <div class="form-group">
             <label for="cat4Link">Category 4 Link</label>
-            <input type="text" id="cat4Link" class="form-control" placeholder="Enter URL for category 4">
+            <input type="text" id="cat4Link" class="form-control" placeholder="e.g., category4.html">
           </div>
         </div>
       </div>
     </div>
     
-    <!-- Banner Settings Form -->
+    <!-- BANNER SETTINGS -->
     <div class="form-section">
       <h3>Banner Settings</h3>
       <div class="form-group">
         <label for="bannerImage">Banner Image URL</label>
-        <input type="text" id="bannerImage" class="form-control" placeholder="Enter banner image URL">
+        <input type="text" id="bannerImage" class="form-control" placeholder="e.g., https://yourdomain.com/path/to/banner.jpg">
       </div>
       <div class="form-group">
         <label for="bannerLink">Banner Link</label>
-        <input type="text" id="bannerLink" class="form-control" placeholder="Enter banner link URL">
+        <input type="text" id="bannerLink" class="form-control" placeholder="e.g., offers.html">
       </div>
     </div>
     
@@ -181,7 +194,7 @@
         }
       })
       .catch(err => console.error('Error loading header:', err));
-      
+    
     // Load external footer
     fetch('admin_footer.html')
       .then(response => response.text())
@@ -191,8 +204,9 @@
       .catch(err => console.error('Error loading footer:', err));
       
     function saveHomeContent() {
-      // Gather form values
+      // Gather form data
       const heroMedia = document.getElementById("heroMedia").value;
+      const heroImageFallback = document.getElementById("heroImageFallback").value;
       const heroTitle = document.getElementById("heroTitle").value;
       const heroSubtitle = document.getElementById("heroSubtitle").value;
       const ctaText = document.getElementById("ctaText").value;
@@ -208,8 +222,8 @@
       const bannerImage = document.getElementById("bannerImage").value;
       const bannerLink = document.getElementById("bannerLink").value;
       
-      // For demonstration, log values to console.
-      console.log("Hero Section:", { heroMedia, heroTitle, heroSubtitle, ctaText, ctaLink });
+      // Here you would save data to Firebase Firestore
+      console.log("Hero Section:", { heroMedia, heroImageFallback, heroTitle, heroSubtitle, ctaText, ctaLink });
       console.log("Category Navigation:", { cat1Label, cat1Link, cat2Label, cat2Link, cat3Label, cat3Link, cat4Label, cat4Link });
       console.log("Banner Settings:", { bannerImage, bannerLink });
       
