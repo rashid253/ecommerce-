@@ -27,7 +27,7 @@
     }
     main {
       margin-top: var(--header-height);
-      padding: 20px 20px 100px; /* extra bottom padding */
+      padding: 20px 20px 100px; /* extra bottom padding to avoid overlap */
       min-height: calc(100vh - var(--header-height) - var(--footer-height));
       perspective: 800px;
     }
@@ -160,9 +160,367 @@
       background: #0056b3;
     }
   </style>
+</head>
+<body>
+  <!-- External Header (loaded via fetch) -->
+  <div id="header-placeholder"></div>
+  
+  <main class="container">
+    <h1>Edit Home Page Content</h1>
+    
+    <!-- Global Home Settings -->
+    <div class="form-section">
+      <h3>Global Settings</h3>
+      <!-- Global Title -->
+      <div class="form-group">
+        <label for="globalTitle">Page Title</label>
+        <div class="input-group">
+          <input type="text" id="globalTitle" class="form-control" placeholder="Enter page title">
+          <button type="button" id="defaultBtn_globalTitle" class="btn btn-outline-secondary" onclick="applyDefault('globalTitle')">Default</button>
+          <button type="button" id="editBtn_globalTitle" class="btn btn-outline-secondary d-none" onclick="editField('globalTitle')">Edit</button>
+        </div>
+        <small class="help-text">Default: "MyBusiness Premium"</small>
+      </div>
+      <!-- Global Description -->
+      <div class="form-group">
+        <label for="globalDescription">Page Description</label>
+        <div class="input-group">
+          <input type="text" id="globalDescription" class="form-control" placeholder="Enter page description">
+          <button type="button" id="defaultBtn_globalDescription" class="btn btn-outline-secondary" onclick="applyDefault('globalDescription')">Default</button>
+          <button type="button" id="editBtn_globalDescription" class="btn btn-outline-secondary d-none" onclick="editField('globalDescription')">Edit</button>
+        </div>
+        <small class="help-text">Default: "Welcome to our online store. Experience premium quality!"</small>
+      </div>
+    </div>
+    
+    <!-- Hero Section Settings -->
+    <div class="form-section">
+      <h3>Hero Section</h3>
+      <!-- Media Selection for Hero Background -->
+      <div class="form-group">
+        <label>Hero Background Media</label>
+        <div id="heroMediaSelection" class="media-selection-section">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'url')">Enter URL</button>
+            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'upload')">Upload File</button>
+            <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('hero', 'default')">Use Default</button>
+          </div>
+          <div id="heroMediaOptionInputs" class="media-input"></div>
+          <div id="heroMediaPreview" class="media-input"></div>
+          <div id="heroMediaLock" class="lock-edit-buttons">
+            <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('hero')">Lock Selection</button>
+            <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('hero')">Edit</button>
+          </div>
+          <div id="heroMediaError" class="error-msg"></div>
+        </div>
+      </div>
+      <!-- Hero Title -->
+      <div class="form-group">
+        <label for="heroTitle">Hero Title</label>
+        <div class="input-group">
+          <input type="text" id="heroTitle" class="form-control" placeholder="Enter hero title">
+          <button type="button" id="defaultBtn_heroTitle" class="btn btn-outline-secondary" onclick="applyDefault('heroTitle')">Default</button>
+          <button type="button" id="editBtn_heroTitle" class="btn btn-outline-secondary d-none" onclick="editField('heroTitle')">Edit</button>
+        </div>
+        <small class="help-text">Default: "Premium Business Solutions"</small>
+      </div>
+      <!-- Hero Description -->
+      <div class="form-group">
+        <label for="heroSubtitle">Hero Description</label>
+        <div class="input-group">
+          <input type="text" id="heroSubtitle" class="form-control" placeholder="Enter hero description">
+          <button type="button" id="defaultBtn_heroSubtitle" class="btn btn-outline-secondary" onclick="applyDefault('heroSubtitle')">Default</button>
+          <button type="button" id="editBtn_heroSubtitle" class="btn btn-outline-secondary d-none" onclick="editField('heroSubtitle')">Edit</button>
+        </div>
+        <small class="help-text">Default: "Experience secure transactions, exclusive offers, and a seamless interface."</small>
+      </div>
+      <!-- CTA Button Text -->
+      <div class="form-group">
+        <label for="ctaText">CTA Button Text</label>
+        <div class="input-group">
+          <input type="text" id="ctaText" class="form-control" placeholder="Enter CTA button text">
+          <button type="button" id="defaultBtn_ctaText" class="btn btn-outline-secondary" onclick="applyDefault('ctaText')">Default</button>
+          <button type="button" id="editBtn_ctaText" class="btn btn-outline-secondary d-none" onclick="editField('ctaText')">Edit</button>
+        </div>
+        <small class="help-text">Default: "Shop Now"</small>
+      </div>
+      <!-- CTA Button Link -->
+      <div class="form-group">
+        <label for="ctaLink">CTA Button Link</label>
+        <div class="input-group">
+          <input type="text" id="ctaLink" class="form-control" placeholder="Enter CTA button link">
+          <button type="button" id="defaultBtn_ctaLink" class="btn btn-outline-secondary" onclick="applyDefault('ctaLink')">Default</button>
+          <button type="button" id="editBtn_ctaLink" class="btn btn-outline-secondary d-none" onclick="editField('ctaLink')">Edit</button>
+        </div>
+        <small class="help-text">Default: "ecommerce.html"</small>
+      </div>
+    </div>
+    
+    <!-- Feature Cards (Sequential Navigation) -->
+    <div class="form-section">
+      <h3>Feature Cards</h3>
+      <div class="card-container" id="cardContainer">
+        <!-- Card 1: Secure Payments -->
+        <div class="feature-card active" data-index="0">
+          <h4>Secure Payments</h4>
+          <div class="form-group">
+            <label>Card Background Media</label>
+            <div id="card1MediaSelection" class="media-selection-section">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'url')">Enter URL</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'upload')">Upload File</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card1', 'default')">Use Default</button>
+              </div>
+              <div id="card1MediaOptionInputs" class="media-input"></div>
+              <div id="card1MediaPreview" class="media-input"></div>
+              <div id="card1MediaLock" class="lock-edit-buttons">
+                <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('card1')">Lock Selection</button>
+                <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('card1')">Edit</button>
+              </div>
+              <div id="card1MediaError" class="error-msg"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="card1Title">Card Title</label>
+            <div class="input-group">
+              <input type="text" id="card1Title" class="form-control" placeholder="Enter card title">
+              <button type="button" id="defaultBtn_card1Title" class="btn btn-outline-secondary" onclick="applyDefault('card1Title')">Default</button>
+              <button type="button" id="editBtn_card1Title" class="btn btn-outline-secondary d-none" onclick="editField('card1Title')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Secure Payments"</small>
+          </div>
+          <div class="form-group">
+            <label for="card1Desc">Card Description</label>
+            <div class="input-group">
+              <input type="text" id="card1Desc" class="form-control" placeholder="Enter card description">
+              <button type="button" id="defaultBtn_card1Desc" class="btn btn-outline-secondary" onclick="applyDefault('card1Desc')">Default</button>
+              <button type="button" id="editBtn_card1Desc" class="btn btn-outline-secondary d-none" onclick="editField('card1Desc')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Experience top-notch security for every transaction."</small>
+          </div>
+          <div class="form-group">
+            <label for="card1Reviews">Customer Reviews</label>
+            <div class="input-group">
+              <input type="text" id="card1Reviews" class="form-control" placeholder="Enter customer reviews">
+              <button type="button" id="defaultBtn_card1Reviews" class="btn btn-outline-secondary" onclick="applyDefault('card1Reviews')">Default</button>
+              <button type="button" id="editBtn_card1Reviews" class="btn btn-outline-secondary d-none" onclick="editField('card1Reviews')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Very secure and reliable, Fast and trustworthy."</small>
+          </div>
+        </div>
+        
+        <!-- Card 2: Fast Delivery -->
+        <div class="feature-card" data-index="1">
+          <h4>Fast Delivery</h4>
+          <div class="form-group">
+            <label>Card Background Media</label>
+            <div id="card2MediaSelection" class="media-selection-section">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card2', 'url')">Enter URL</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card2', 'upload')">Upload File</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card2', 'default')">Use Default</button>
+              </div>
+              <div id="card2MediaOptionInputs" class="media-input"></div>
+              <div id="card2MediaPreview" class="media-input"></div>
+              <div id="card2MediaLock" class="lock-edit-buttons">
+                <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('card2')">Lock Selection</button>
+                <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('card2')">Edit</button>
+              </div>
+              <div id="card2MediaError" class="error-msg"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="card2Title">Card Title</label>
+            <div class="input-group">
+              <input type="text" id="card2Title" class="form-control" placeholder="Enter card title">
+              <button type="button" id="defaultBtn_card2Title" class="btn btn-outline-secondary" onclick="applyDefault('card2Title')">Default</button>
+              <button type="button" id="editBtn_card2Title" class="btn btn-outline-secondary d-none" onclick="editField('card2Title')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Fast Delivery"</small>
+          </div>
+          <div class="form-group">
+            <label for="card2Desc">Card Description</label>
+            <div class="input-group">
+              <input type="text" id="card2Desc" class="form-control" placeholder="Enter card description">
+              <button type="button" id="defaultBtn_card2Desc" class="btn btn-outline-secondary" onclick="applyDefault('card2Desc')">Default</button>
+              <button type="button" id="editBtn_card2Desc" class="btn btn-outline-secondary d-none" onclick="editField('card2Desc')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Get your orders delivered in record time."</small>
+          </div>
+          <div class="form-group">
+            <label for="card2Reviews">Customer Reviews</label>
+            <div class="input-group">
+              <input type="text" id="card2Reviews" class="form-control" placeholder="Enter customer reviews">
+              <button type="button" id="defaultBtn_card2Reviews" class="btn btn-outline-secondary" onclick="applyDefault('card2Reviews')">Default</button>
+              <button type="button" id="editBtn_card2Reviews" class="btn btn-outline-secondary d-none" onclick="editField('card2Reviews')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Very fast and efficient."</small>
+          </div>
+        </div>
+        
+        <!-- Card 3: Exclusive Deals -->
+        <div class="feature-card" data-index="2">
+          <h4>Exclusive Deals</h4>
+          <div class="form-group">
+            <label>Card Background Media</label>
+            <div id="card3MediaSelection" class="media-selection-section">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card3', 'url')">Enter URL</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card3', 'upload')">Upload File</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card3', 'default')">Use Default</button>
+              </div>
+              <div id="card3MediaOptionInputs" class="media-input"></div>
+              <div id="card3MediaPreview" class="media-input"></div>
+              <div id="card3MediaLock" class="lock-edit-buttons">
+                <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('card3')">Lock Selection</button>
+                <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('card3')">Edit</button>
+              </div>
+              <div id="card3MediaError" class="error-msg"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="card3Title">Card Title</label>
+            <div class="input-group">
+              <input type="text" id="card3Title" class="form-control" placeholder="Enter card title">
+              <button type="button" id="defaultBtn_card3Title" class="btn btn-outline-secondary" onclick="applyDefault('card3Title')">Default</button>
+              <button type="button" id="editBtn_card3Title" class="btn btn-outline-secondary d-none" onclick="editField('card3Title')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Exclusive Deals"</small>
+          </div>
+          <div class="form-group">
+            <label for="card3Desc">Card Description</label>
+            <div class="input-group">
+              <input type="text" id="card3Desc" class="form-control" placeholder="Enter card description">
+              <button type="button" id="defaultBtn_card3Desc" class="btn btn-outline-secondary" onclick="applyDefault('card3Desc')">Default</button>
+              <button type="button" id="editBtn_card3Desc" class="btn btn-outline-secondary d-none" onclick="editField('card3Desc')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Enjoy unbeatable offers and discounts."</small>
+          </div>
+          <div class="form-group">
+            <label for="card3Reviews">Customer Reviews</label>
+            <div class="input-group">
+              <input type="text" id="card3Reviews" class="form-control" placeholder="Enter customer reviews">
+              <button type="button" id="defaultBtn_card3Reviews" class="btn btn-outline-secondary" onclick="applyDefault('card3Reviews')">Default</button>
+              <button type="button" id="editBtn_card3Reviews" class="btn btn-outline-secondary d-none" onclick="editField('card3Reviews')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Amazing deals, highly recommended."</small>
+          </div>
+        </div>
+        
+        <!-- Card 4: Feature Card 4 -->
+        <div class="feature-card" data-index="3">
+          <h4>Feature Card 4</h4>
+          <div class="form-group">
+            <label>Card Background Media</label>
+            <div id="card4MediaSelection" class="media-selection-section">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card4', 'url')">Enter URL</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card4', 'upload')">Upload File</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card4', 'default')">Use Default</button>
+              </div>
+              <div id="card4MediaOptionInputs" class="media-input"></div>
+              <div id="card4MediaPreview" class="media-input"></div>
+              <div id="card4MediaLock" class="lock-edit-buttons">
+                <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('card4')">Lock Selection</button>
+                <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('card4')">Edit</button>
+              </div>
+              <div id="card4MediaError" class="error-msg"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="card4Title">Card Title</label>
+            <div class="input-group">
+              <input type="text" id="card4Title" class="form-control" placeholder="Enter card title">
+              <button type="button" id="defaultBtn_card4Title" class="btn btn-outline-secondary" onclick="applyDefault('card4Title')">Default</button>
+              <button type="button" id="editBtn_card4Title" class="btn btn-outline-secondary d-none" onclick="editField('card4Title')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Feature 4"</small>
+          </div>
+          <div class="form-group">
+            <label for="card4Desc">Card Description</label>
+            <div class="input-group">
+              <input type="text" id="card4Desc" class="form-control" placeholder="Enter card description">
+              <button type="button" id="defaultBtn_card4Desc" class="btn btn-outline-secondary" onclick="applyDefault('card4Desc')">Default</button>
+              <button type="button" id="editBtn_card4Desc" class="btn btn-outline-secondary d-none" onclick="editField('card4Desc')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Description for feature 4."</small>
+          </div>
+          <div class="form-group">
+            <label for="card4Reviews">Customer Reviews</label>
+            <div class="input-group">
+              <input type="text" id="card4Reviews" class="form-control" placeholder="Enter customer reviews">
+              <button type="button" id="defaultBtn_card4Reviews" class="btn btn-outline-secondary" onclick="applyDefault('card4Reviews')">Default</button>
+              <button type="button" id="editBtn_card4Reviews" class="btn btn-outline-secondary d-none" onclick="editField('card4Reviews')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Customers love feature 4."</small>
+          </div>
+        </div>
+        
+        <!-- Card 5: Feature Card 5 -->
+        <div class="feature-card" data-index="4">
+          <h4>Feature Card 5</h4>
+          <div class="form-group">
+            <label>Card Background Media</label>
+            <div id="card5MediaSelection" class="media-selection-section">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card5', 'url')">Enter URL</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card5', 'upload')">Upload File</button>
+                <button type="button" class="btn btn-outline-primary" onclick="chooseMediaOption('card5', 'default')">Use Default</button>
+              </div>
+              <div id="card5MediaOptionInputs" class="media-input"></div>
+              <div id="card5MediaPreview" class="media-input"></div>
+              <div id="card5MediaLock" class="lock-edit-buttons">
+                <button type="button" class="btn btn-success btn-sm" onclick="lockMediaSelection('card5')">Lock Selection</button>
+                <button type="button" class="btn btn-warning btn-sm" onclick="editMediaSelection('card5')">Edit</button>
+              </div>
+              <div id="card5MediaError" class="error-msg"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="card5Title">Card Title</label>
+            <div class="input-group">
+              <input type="text" id="card5Title" class="form-control" placeholder="Enter card title">
+              <button type="button" id="defaultBtn_card5Title" class="btn btn-outline-secondary" onclick="applyDefault('card5Title')">Default</button>
+              <button type="button" id="editBtn_card5Title" class="btn btn-outline-secondary d-none" onclick="editField('card5Title')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Feature 5"</small>
+          </div>
+          <div class="form-group">
+            <label for="card5Desc">Card Description</label>
+            <div class="input-group">
+              <input type="text" id="card5Desc" class="form-control" placeholder="Enter card description">
+              <button type="button" id="defaultBtn_card5Desc" class="btn btn-outline-secondary" onclick="applyDefault('card5Desc')">Default</button>
+              <button type="button" id="editBtn_card5Desc" class="btn btn-outline-secondary d-none" onclick="editField('card5Desc')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Description for feature 5."</small>
+          </div>
+          <div class="form-group">
+            <label for="card5Reviews">Customer Reviews</label>
+            <div class="input-group">
+              <input type="text" id="card5Reviews" class="form-control" placeholder="Enter customer reviews">
+              <button type="button" id="defaultBtn_card5Reviews" class="btn btn-outline-secondary" onclick="applyDefault('card5Reviews')">Default</button>
+              <button type="button" id="editBtn_card5Reviews" class="btn btn-outline-secondary d-none" onclick="editField('card5Reviews')">Edit</button>
+            </div>
+            <small class="help-text">Default: "Customers are thrilled with feature 5."</small>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigation Buttons for Feature Cards -->
+      <div class="card-nav-buttons">
+        <button type="button" id="prevCard" class="btn btn-primary" onclick="prevCard()">Previous</button>
+        <button type="button" id="nextCard" class="btn btn-primary" onclick="nextCard()">Next</button>
+      </div>
+    </div>
+    
+    <button type="button" class="save-btn" onclick="saveHomeContent()">Save Changes</button>
+  </main>
+  
+  <!-- External Footer -->
+  <div id="footer-placeholder"></div>
   
   <script>
-    // Firebase configuration (same as index)
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
@@ -175,33 +533,63 @@
     firebase.initializeApp(firebaseConfig);
     const firestore = firebase.firestore();
     const storage = firebase.storage();
-    
-    // Default values (from index.html)
+  </script>
+  
+  <script>
+    // Load external header and attach hamburger toggle
+    fetch('admin_header.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('header-placeholder').innerHTML = html;
+        const hamburger = document.getElementById("hamburger");
+        const mobileNav = document.getElementById("mobileNav");
+        if (hamburger && mobileNav) {
+          hamburger.addEventListener("click", (e) => {
+            mobileNav.classList.toggle("open");
+            e.stopPropagation();
+          });
+          document.addEventListener("click", function(e) {
+            if (!e.target.closest(".admin-header") && !e.target.closest(".mobile-nav")) {
+              mobileNav.classList.remove("open");
+            }
+          });
+        }
+      })
+      .catch(err => console.error('Error loading header:', err));
+      
+    // Load external footer
+    fetch('admin_footer.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('footer-placeholder').innerHTML = html;
+      })
+      .catch(err => console.error('Error loading footer:', err));
+      
+    // Default/Edit functions for text fields
     const defaultValues = {
       globalTitle: "MyBusiness Premium",
       globalDescription: "Welcome to our online store. Experience premium quality!",
       heroTitle: "Premium Business Solutions",
-      heroSubtitle: "Experience secure transactions, exclusive offers, and a seamless interface with our next-generation mobile app.",
+      heroSubtitle: "Experience secure transactions, exclusive offers, and a seamless interface.",
       ctaText: "Shop Now",
       ctaLink: "ecommerce.html",
       card1Title: "Secure Payments",
-      card1Desc: "State-of-the-art security for your transactions.",
+      card1Desc: "Experience top-notch security for every transaction.",
       card1Reviews: "Very secure and reliable, Fast and trustworthy.",
       card2Title: "Fast Delivery",
-      card2Desc: "Reliable, door-to-door delivery service.",
+      card2Desc: "Get your orders delivered in record time.",
       card2Reviews: "Very fast and efficient.",
       card3Title: "Exclusive Deals",
-      card3Desc: "Premium discounts and seasonal offers.",
+      card3Desc: "Enjoy unbeatable offers and discounts.",
       card3Reviews: "Amazing deals, highly recommended.",
-      card4Title: "Feature Card 4",
+      card4Title: "Feature 4",
       card4Desc: "Description for feature 4.",
       card4Reviews: "Customers love feature 4.",
-      card5Title: "Feature Card 5",
+      card5Title: "Feature 5",
       card5Desc: "Description for feature 5.",
       card5Reviews: "Customers are thrilled with feature 5."
     };
     
-    // Default/Edit functions for text fields
     function applyDefault(fieldId) {
       const field = document.getElementById(fieldId);
       const defaultBtn = document.getElementById("defaultBtn_" + fieldId);
@@ -327,11 +715,13 @@
       showCard(0);
     });
     
-    // Save function: write to Firestore so that index.html can update
+    // Save function: write to Firestore and link with index.html
     function saveHomeContent() {
+      // Gather Global Settings
       const globalTitle = document.getElementById("globalTitle").value;
       const globalDescription = document.getElementById("globalDescription").value;
       
+      // Gather Hero Section values
       const heroMediaUrl = document.getElementById("heroMediaUrl") ? document.getElementById("heroMediaUrl").value : "";
       const heroMediaFile = document.getElementById("heroMediaFile") ? document.getElementById("heroMediaFile").files[0] : null;
       const heroDefault = document.getElementById("heroDefault") ? document.getElementById("heroDefault").value : "";
@@ -340,10 +730,12 @@
       const ctaText = document.getElementById("ctaText").value;
       const ctaLink = document.getElementById("ctaLink").value;
       
+      // Gather Feature Cards values
       const cardsData = [];
       for (let i = 0; i < featureCards.length; i++) {
         const prefix = "card" + (i + 1);
         const mediaUrl = document.getElementById(prefix + "MediaUrl") ? document.getElementById(prefix + "MediaUrl").value : "";
+        // For files, you might later upload to Firebase Storage
         const mediaFile = document.getElementById(prefix + "MediaFile") ? document.getElementById(prefix + "MediaFile").files[0] : null;
         const mediaDefault = document.getElementById(prefix + "Default") ? document.getElementById(prefix + "Default").value : "";
         const title = document.getElementById(prefix + "Title").value;
@@ -356,20 +748,25 @@
         globalTitle,
         globalDescription,
         hero: {
-          mediaUrl,
+          mediaUrl: heroMediaUrl,
           mediaDefault: heroDefault,
           title: heroTitle,
           subtitle: heroSubtitle,
-          cta: { text: ctaText, link: ctaLink }
+          cta: {
+            text: ctaText,
+            link: ctaLink
+          }
         },
         cards: cardsData,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
       
+      // Save to Firestore (document "home" in collection "pages")
       firestore.collection("pages").doc("home").set(homeData)
         .then(() => {
-          console.log("Home page content successfully saved.");
+          console.log("Home page content successfully saved to Firestore.");
           alert("Changes saved and updated!");
+          // Optionally, redirect or refresh index.html if needed
         })
         .catch((error) => {
           console.error("Error saving home page content: ", error);
