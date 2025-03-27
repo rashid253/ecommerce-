@@ -8,9 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- External Custom CSS -->
   <link rel="stylesheet" href="style.css">
-  <!-- Inline styles for layout, hero section, and features (same overall design as before) -->
   <style>
-    /* General Layout */
+    /* ===== General Layout ===== */
     html, body {
       height: 100%;
       margin: 0;
@@ -22,6 +21,7 @@
     #header-placeholder, #footer-placeholder {
       flex-shrink: 0;
     }
+    /* Added bottom padding to ensure content doesn't overlap with footer */
     main {
       flex: 1;
       position: relative;
@@ -29,7 +29,7 @@
       padding-bottom: 60px;
     }
     
-    /* Hero Section */
+    /* ===== Hero Section ===== */
     .hero {
       position: relative;
       overflow: hidden;
@@ -56,7 +56,7 @@
       text-align: center;
       color: #fff;
       padding: 10px;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
     }
     .hero-content h1 {
       font-size: 3rem;
@@ -109,7 +109,7 @@
       }
     }
     
-    /* Features Section */
+    /* ===== Features Section ===== */
     .features {
       padding: 20px 10px;
       background-color: #f8f9fa;
@@ -155,11 +155,11 @@
     }
   </style>
   
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDKs for index -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <script>
-    // Firebase configuration (as provided)
+    // Firebase configuration (must be identical to admin)
     const firebaseConfig = {
       apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
       authDomain: "e-commerce-pk.firebaseapp.com",
@@ -172,7 +172,7 @@
     firebase.initializeApp(firebaseConfig);
     const firestore = firebase.firestore();
     
-    // Default dummy data (editable template)
+    // Default dummy data in case Firestore doesn't have any updates
     const defaultHomeData = {
       globalTitle: "MyBusiness Premium",
       globalDescription: "Welcome to our online store. Experience premium quality!",
@@ -209,12 +209,11 @@
   <main>
     <!-- Hero Section -->
     <section class="hero">
-      <!-- Video element (for video backgrounds) -->
+      <!-- Video element for background video -->
       <video autoplay muted loop playsinline class="hero-video" id="heroVideo">
         <source src="https://i.imgur.com/OXCPyAw.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-      <!-- Hero content (title, subtitle, CTA) -->
       <div class="hero-content">
         <h1 id="heroTitleDisplay">Premium Business Solutions</h1>
         <p id="heroSubtitleDisplay">
@@ -272,15 +271,19 @@
       .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
       .catch(err => console.error('Error loading footer:', err));
       
-    // Firestore listener: load home data and update page, keeping dummy defaults if not set.
+    // Listen to Firestore for home page data
     firestore.collection("pages").doc("home")
       .onSnapshot((doc) => {
-        const data = doc.exists ? doc.data() : defaultHomeData;
-        // Global content could be used if needed; for now index.html primarily shows hero & features.
+        let data;
+        if (doc.exists) {
+          data = doc.data();
+        } else {
+          // Use dummy data if no document exists
+          data = defaultHomeData;
+        }
         
         // Update Hero Section
         const heroData = data.hero || defaultHomeData.hero;
-        // Update media: if mediaUrl ends with .mp4, use video element; else, use background image.
         if (heroData.mediaUrl) {
           if (heroData.mediaUrl.toLowerCase().endsWith(".mp4")) {
             const heroVideo = document.getElementById("heroVideo");
@@ -288,36 +291,26 @@
             heroVideo.style.display = "block";
             document.querySelector(".hero").style.backgroundImage = "";
           } else {
-            // Hide video element if visible and set background image
             document.getElementById("heroVideo").style.display = "none";
             document.querySelector(".hero").style.backgroundImage = `url(${heroData.mediaUrl})`;
             document.querySelector(".hero").style.backgroundSize = "cover";
             document.querySelector(".hero").style.backgroundPosition = "center";
           }
         }
-        // Update hero text
         document.getElementById("heroTitleDisplay").innerText = heroData.title || defaultHomeData.hero.title;
         document.getElementById("heroSubtitleDisplay").innerText = heroData.subtitle || defaultHomeData.hero.subtitle;
-        // Update CTA button text and link
         const ctaBtn = document.getElementById("ctaButtonDisplay");
         ctaBtn.innerText = (heroData.cta && heroData.cta.text) || defaultHomeData.hero.cta.text;
-        if (heroData.cta && heroData.cta.link) {
-          ctaBtn.setAttribute("onclick", `openPage('${heroData.cta.link}')`);
-        } else {
-          ctaBtn.setAttribute("onclick", `openPage('${defaultHomeData.hero.cta.link}')`);
-        }
+        ctaBtn.onclick = () => openPage((heroData.cta && heroData.cta.link) || defaultHomeData.hero.cta.link);
         
-        // Update Features Section
+        // Update Features Section (assuming three cards)
         const cards = data.cards && data.cards.length >= 3 ? data.cards : defaultHomeData.cards;
-        // Card 1
-        document.getElementById("feature1TitleDisplay").innerText = cards[0].title || "";
-        document.getElementById("feature1DescDisplay").innerText = cards[0].desc || "";
-        // Card 2
-        document.getElementById("feature2TitleDisplay").innerText = cards[1].title || "";
-        document.getElementById("feature2DescDisplay").innerText = cards[1].desc || "";
-        // Card 3
-        document.getElementById("feature3TitleDisplay").innerText = cards[2].title || "";
-        document.getElementById("feature3DescDisplay").innerText = cards[2].desc || "";
+        document.getElementById("feature1TitleDisplay").innerText = cards[0].title || "Secure Payments";
+        document.getElementById("feature1DescDisplay").innerText = cards[0].desc || "State-of-the-art security for your transactions.";
+        document.getElementById("feature2TitleDisplay").innerText = cards[1].title || "Fast Delivery";
+        document.getElementById("feature2DescDisplay").innerText = cards[1].desc || "Reliable, door-to-door delivery service.";
+        document.getElementById("feature3TitleDisplay").innerText = cards[2].title || "Exclusive Deals";
+        document.getElementById("feature3DescDisplay").innerText = cards[2].desc || "Premium discounts and seasonal offers.";
       }, (error) => {
         console.error("Error fetching home data:", error);
       });
