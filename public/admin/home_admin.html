@@ -27,7 +27,7 @@
     }
     main {
       margin-top: var(--header-height);
-      padding: 20px 20px 100px;
+      padding: 20px 20px 100px; /* extra bottom padding to avoid overlap */
       min-height: calc(100vh - var(--header-height) - var(--footer-height));
       perspective: 800px;
     }
@@ -635,7 +635,7 @@
       const inputs = inputContainer.querySelectorAll("input");
       inputs.forEach(input => { input.disabled = true; });
       document.getElementById(prefix + "MediaLock").style.display = "none";
-      document.getElementById(prefix + "MediaEdit").style.display = "block";
+      // Removed reference to missing element "MediaEdit"
       
       const urlInput = document.getElementById(prefix + "MediaUrl");
       if (urlInput) {
@@ -662,9 +662,8 @@
       const inputContainer = document.getElementById(prefix + "MediaOptionInputs");
       const inputs = inputContainer.querySelectorAll("input");
       inputs.forEach(input => { input.disabled = false; });
-      document.getElementById(prefix + "MediaEdit").style.display = "none";
-      inputContainer.innerHTML = "";
       document.getElementById(prefix + "MediaPreview").innerHTML = "";
+      inputContainer.innerHTML = "";
     }
     
     function showPreview(prefix, mediaUrl, mediaType = "") {
@@ -717,6 +716,7 @@
     
     // Save function: write to Firestore and link with index.html
     function saveHomeContent() {
+      console.log("Save function triggered");
       // Gather Global Settings
       const globalTitle = document.getElementById("globalTitle").value;
       const globalDescription = document.getElementById("globalDescription").value;
