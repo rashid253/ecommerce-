@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home Admin – Edit Home Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap & FontAwesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Firebase SDKs (compat versions) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  
+  <style>
+    :root {
+      --header-height: 50px;
+      --footer-height: 65px;
+      --transition-speed: 0.3s;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f0f2f5;
+      font-family: Arial, sans-serif;
+    }
+    main {
+      margin-top: var(--header-height);
+      padding: 20px 20px 100px; /* extra bottom padding */
+      min-height: calc(100vh - var(--header-height) - var(--footer-height));
+      perspective: 800px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      transition: transform var(--transition-speed);
+    }
+    h1:hover {
+      transform: rotateX(2deg);
+    }
+    .form-section {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    }
+    .form-section:hover {
+      transform: translateY(-3px) rotateX(1deg);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .form-section h3 {
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input.form-control,
+    textarea.form-control {
+      border-radius: 4px;
+      transition: border-color var(--transition-speed);
+    }
+    input.form-control:focus,
+    textarea.form-control:focus {
+      border-color: #007bff;
+    }
+    .help-text {
+      font-size: 0.8rem;
+      color: #888;
+    }
+    .error-msg {
+      color: #d9534f;
+      font-size: 0.8rem;
+      margin-top: 5px;
+    }
+    .input-group .btn {
+      cursor: pointer;
+    }
+    .save-btn {
+      background: #007bff;
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+      display: block;
+      margin: 20px auto;
+    }
+    .save-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    /* Media Selection Section */
+    .media-selection-section {
+      border: 1px dashed #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      transition: all var(--transition-speed);
+    }
+    .btn-group button {
+      margin-right: 5px;
+    }
+    .media-input {
+      margin-top: 10px;
+    }
+    .lock-edit-buttons {
+      margin-top: 10px;
+      display: none;
+      gap: 10px;
+    }
+    .media-preview {
+      margin-top: 10px;
+      max-width: 100%;
+      max-height: 200px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    /* Sequential Feature Cards Navigation */
+    .card-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .feature-card {
+      display: none;
+    }
+    .feature-card.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card-nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .card-nav-buttons button {
+      background: #007bff;
+      border: none;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .card-nav-buttons button:hover {
+      background: #0056b3;
+    }
+  </style>
+  
+  <script>
+    // Firebase configuration (same as index)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
+      authDomain: "e-commerce-pk.firebaseapp.com",
+      projectId: "e-commerce-pk",
+      storageBucket: "e-commerce-pk.firebasestorage.app",
+      messagingSenderId: "126517093225",
+      appId: "1:126517093225:web:c2352620c6d32c582513f8",
+      measurementId: "G-2G2DNCNNT3"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const firestore = firebase.firestore();
+    const storage = firebase.storage();
+    
+    // Default values (from index.html)
+    const defaultValues = {
+      globalTitle: "MyBusiness Premium",
+      globalDescription: "Welcome to our online store. Experience premium quality!",
+      heroTitle: "Premium Business Solutions",
+      heroSubtitle: "Experience secure transactions, exclusive offers, and a seamless interface with our next-generation mobile app.",
+      ctaText: "Shop Now",
+      ctaLink: "ecommerce.html",
+      card1Title: "Secure Payments",
+      card1Desc: "State-of-the-art security for your transactions.",
+      card1Reviews: "Very secure and reliable, Fast and trustworthy.",
+      card2Title: "Fast Delivery",
+      card2Desc: "Reliable, door-to-door delivery service.",
+      card2Reviews: "Very fast and efficient.",
+      card3Title: "Exclusive Deals",
+      card3Desc: "Premium discounts and seasonal offers.",
+      card3Reviews: "Amazing deals, highly recommended.",
+      card4Title: "Feature Card 4",
+      card4Desc: "Description for feature 4.",
+      card4Reviews: "Customers love feature 4.",
+      card5Title: "Feature Card 5",
+      card5Desc: "Description for feature 5.",
+      card5Reviews: "Customers are thrilled with feature 5."
+    };
+    
+    // Default/Edit functions for text fields
+    function applyDefault(fieldId) {
+      const field = document.getElementById(fieldId);
+      const defaultBtn = document.getElementById("defaultBtn_" + fieldId);
+      const editBtn = document.getElementById("editBtn_" + fieldId);
+      if (defaultValues[fieldId]) {
+        field.value = defaultValues[fieldId];
+        field.disabled = true;
+        defaultBtn.classList.add("d-none");
+        editBtn.classList.remove("d-none");
+      }
+    }
+    
+    function editField(fieldId) {
+      const field = document.getElementById(fieldId);
+      const defaultBtn = document.getElementById("defaultBtn_" + fieldId);
+      const editBtn = document.getElementById("editBtn_" + fieldId);
+      field.disabled = false;
+      defaultBtn.classList.remove("d-none");
+      editBtn.classList.add("d-none");
+    }
+    
+    // Media selection mechanism
+    function chooseMediaOption(prefix, option) {
+      const container = document.getElementById(prefix + "MediaOptionInputs");
+      const previewContainer = document.getElementById(prefix + "MediaPreview");
+      const errorContainer = document.getElementById(prefix + "MediaError");
+      container.innerHTML = "";
+      previewContainer.innerHTML = "";
+      errorContainer.innerText = "";
+      
+      if (option === 'url') {
+        container.innerHTML = `<input type="text" id="${prefix}MediaUrl" class="form-control" placeholder="Enter direct URL">`;
+      } else if (option === 'upload') {
+        container.innerHTML = `<input type="file" id="${prefix}MediaFile" class="form-control" accept="image/*,video/*">`;
+      } else if (option === 'default') {
+        container.innerHTML = `<input type="text" id="${prefix}Default" class="form-control" value="DEFAULT" readonly>`;
+      }
+      document.getElementById(prefix + "MediaLock").style.display = "flex";
+    }
+    
+    function lockMediaSelection(prefix) {
+      const inputContainer = document.getElementById(prefix + "MediaOptionInputs");
+      const inputs = inputContainer.querySelectorAll("input");
+      inputs.forEach(input => { input.disabled = true; });
+      document.getElementById(prefix + "MediaLock").style.display = "none";
+      document.getElementById(prefix + "MediaEdit").style.display = "block";
+      
+      const urlInput = document.getElementById(prefix + "MediaUrl");
+      if (urlInput) {
+        const url = urlInput.value;
+        if (validateURL(url)) {
+          showPreview(prefix, url);
+        } else {
+          document.getElementById(prefix + "MediaError").innerText = "Invalid URL format.";
+        }
+      }
+      
+      const fileInput = document.getElementById(prefix + "MediaFile");
+      if (fileInput && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          showPreview(prefix, e.target.result, file.type);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    function editMediaSelection(prefix) {
+      const inputContainer = document.getElementById(prefix + "MediaOptionInputs");
+      const inputs = inputContainer.querySelectorAll("input");
+      inputs.forEach(input => { input.disabled = false; });
+      document.getElementById(prefix + "MediaEdit").style.display = "none";
+      inputContainer.innerHTML = "";
+      document.getElementById(prefix + "MediaPreview").innerHTML = "";
+    }
+    
+    function showPreview(prefix, mediaUrl, mediaType = "") {
+      const previewContainer = document.getElementById(prefix + "MediaPreview");
+      previewContainer.innerHTML = "";
+      if ((mediaType && mediaType.includes("video")) || mediaUrl.toLowerCase().endsWith(".mp4")) {
+        previewContainer.innerHTML = `<video src="${mediaUrl}" controls style="max-width:100%; max-height:200px;"></video>`;
+      } else {
+        previewContainer.innerHTML = `<img src="${mediaUrl}" alt="Media Preview" class="media-preview">`;
+      }
+    }
+    
+    function validateURL(url) {
+      const pattern = /^(https?:\/\/)[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/;
+      return pattern.test(url);
+    }
+    
+    // Sequential Feature Card Navigation
+    let currentCardIndex = 0;
+    const featureCards = document.querySelectorAll(".feature-card");
+    
+    function showCard(index) {
+      featureCards.forEach((card, idx) => {
+        card.classList.toggle("active", idx === index);
+      });
+      currentCardIndex = index;
+      updateNavButtons();
+    }
+    
+    function nextCard() {
+      if (currentCardIndex < featureCards.length - 1) {
+        showCard(currentCardIndex + 1);
+      }
+    }
+    
+    function prevCard() {
+      if (currentCardIndex > 0) {
+        showCard(currentCardIndex - 1);
+      }
+    }
+    
+    function updateNavButtons() {
+      document.getElementById("prevCard").disabled = currentCardIndex === 0;
+      document.getElementById("nextCard").disabled = currentCardIndex === featureCards.length - 1;
+    }
+    
+    window.addEventListener("load", () => {
+      showCard(0);
+    });
+    
+    // Save function: write to Firestore so that index.html can update
+    function saveHomeContent() {
+      const globalTitle = document.getElementById("globalTitle").value;
+      const globalDescription = document.getElementById("globalDescription").value;
+      
+      const heroMediaUrl = document.getElementById("heroMediaUrl") ? document.getElementById("heroMediaUrl").value : "";
+      const heroMediaFile = document.getElementById("heroMediaFile") ? document.getElementById("heroMediaFile").files[0] : null;
+      const heroDefault = document.getElementById("heroDefault") ? document.getElementById("heroDefault").value : "";
+      const heroTitle = document.getElementById("heroTitle").value;
+      const heroSubtitle = document.getElementById("heroSubtitle").value;
+      const ctaText = document.getElementById("ctaText").value;
+      const ctaLink = document.getElementById("ctaLink").value;
+      
+      const cardsData = [];
+      for (let i = 0; i < featureCards.length; i++) {
+        const prefix = "card" + (i + 1);
+        const mediaUrl = document.getElementById(prefix + "MediaUrl") ? document.getElementById(prefix + "MediaUrl").value : "";
+        const mediaFile = document.getElementById(prefix + "MediaFile") ? document.getElementById(prefix + "MediaFile").files[0] : null;
+        const mediaDefault = document.getElementById(prefix + "Default") ? document.getElementById(prefix + "Default").value : "";
+        const title = document.getElementById(prefix + "Title").value;
+        const desc = document.getElementById(prefix + "Desc").value;
+        const reviews = document.getElementById(prefix + "Reviews").value;
+        cardsData.push({ mediaUrl, mediaFile, mediaDefault, title, desc, reviews });
+      }
+      
+      const homeData = {
+        globalTitle,
+        globalDescription,
+        hero: {
+          mediaUrl,
+          mediaDefault: heroDefault,
+          title: heroTitle,
+          subtitle: heroSubtitle,
+          cta: { text: ctaText, link: ctaLink }
+        },
+        cards: cardsData,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+      
+      firestore.collection("pages").doc("home").set(homeData)
+        .then(() => {
+          console.log("Home page content successfully saved.");
+          alert("Changes saved and updated!");
+        })
+        .catch((error) => {
+          console.error("Error saving home page content: ", error);
+          alert("Error saving changes. Please try again.");
+        });
+    }
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Load External Header and Footer -->
+  <script>
+    fetch('admin_header.html')
+      .then(response => response.text())
+      .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
+      .catch(err => console.error('Error loading header:', err));
+      
+    fetch('admin_footer.html')
+      .then(response => response.text())
+      .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
+      .catch(err => console.error('Error loading footer:', err));
+  </script>
+</body>
+</html>
