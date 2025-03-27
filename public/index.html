@@ -179,7 +179,7 @@
         firestore.collection("pages").doc("home").get().then((doc) => {
           if (doc.exists) {
             const data = doc.data();
-            // Update the document title if globalTitle exists
+            // Update document title if globalTitle exists
             if(data.globalTitle) {
               document.title = data.globalTitle;
             }
