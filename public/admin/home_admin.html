@@ -27,7 +27,7 @@
     }
     main {
       margin-top: var(--header-height);
-      padding: 20px 20px 100px; /* extra bottom padding to avoid overlap */
+      padding: 20px 20px 100px;
       min-height: calc(100vh - var(--header-height) - var(--footer-height));
       perspective: 800px;
     }
@@ -735,7 +735,6 @@
       for (let i = 0; i < featureCards.length; i++) {
         const prefix = "card" + (i + 1);
         const mediaUrl = document.getElementById(prefix + "MediaUrl") ? document.getElementById(prefix + "MediaUrl").value : "";
-        // For files, you might later upload to Firebase Storage
         const mediaFile = document.getElementById(prefix + "MediaFile") ? document.getElementById(prefix + "MediaFile").files[0] : null;
         const mediaDefault = document.getElementById(prefix + "Default") ? document.getElementById(prefix + "Default").value : "";
         const title = document.getElementById(prefix + "Title").value;
@@ -766,7 +765,6 @@
         .then(() => {
           console.log("Home page content successfully saved to Firestore.");
           alert("Changes saved and updated!");
-          // Optionally, redirect or refresh index.html if needed
         })
         .catch((error) => {
           console.error("Error saving home page content: ", error);
