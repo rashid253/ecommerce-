@@ -1,321 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyBusiness Premium</title>
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- External Custom CSS -->
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* ===== General Layout ===== */
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-    #header-placeholder, #footer-placeholder {
-      flex-shrink: 0;
-    }
-    /* Added bottom padding to ensure content doesn't overlap with footer */
-    main {
-      flex: 1;
-      position: relative;
-      overflow-y: auto;
-      padding-bottom: 60px;
-    }
-    
-    /* ===== Hero Section ===== */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      height: 100%;
-    }
-    .hero-video {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
-      z-index: -1;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-    }
-    .hero-content {
-      position: absolute;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1;
-      text-align: center;
-      color: #fff;
-      padding: 10px;
-      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
-    }
-    .hero-content h1 {
-      font-size: 3rem;
-      line-height: 1.2;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-    .hero-content p {
-      font-size: 1.25rem;
-      line-height: 1.4;
-      margin-bottom: 10px;
-    }
-    .cta-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: center;
-    }
-    .cta-buttons button {
-      width: 80%;
-      max-width: 300px;
-      padding: 10px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .cta-buttons button:first-child {
-      background-color: #007BFF;
-      color: #fff;
-    }
-    .cta-buttons button:last-child {
-      background-color: #28a745;
-      color: #fff;
-    }
-    @media (max-width: 768px) {
+  <head>
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>MyBusiness Premium</title>  
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- External Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Inline styles for layout, hero section, and features -->
+    <style>
+      /* ===== General Layout ===== */
+      html, body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      #header-placeholder, #footer-placeholder {
+        flex-shrink: 0;
+      }
+      /* Added bottom padding to ensure content doesn't overlap with footer */
+      main {
+        flex: 1;
+        position: relative;
+        overflow-y: auto;
+        padding-bottom: 60px;
+      }
+      
+      /* ===== Hero Section ===== */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+      }
+      .hero-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -1;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+      }
+      .hero-content {
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1;
+        text-align: center;
+        color: #fff;
+        padding: 10px;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+      }
       .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 3rem;
+        line-height: 1.2;
+        margin-bottom: 10px;
+        font-weight: bold;
       }
       .hero-content p {
-        font-size: 1.1rem;
+        font-size: 1.25rem;
+        line-height: 1.4;
+        margin-bottom: 10px;
       }
-    }
-    @media (max-width: 576px) {
-      .hero-content h1 {
-        font-size: 2rem;
+      .cta-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
       }
-      .hero-content p {
+      .cta-buttons button {
+        width: 80%;
+        max-width: 300px;
+        padding: 10px;
         font-size: 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
       }
-    }
-    
-    /* ===== Features Section ===== */
-    .features {
-      padding: 20px 10px;
-      background-color: #f8f9fa;
-    }
-    .features .container {
-      max-width: 1200px;
-      margin: auto;
-    }
-    .features-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      row-gap: 1.5rem;
-      justify-items: center;
-      margin-top: 20px;
-    }
-    .feature-item {
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      max-width: 320px;
-      width: 100%;
-      padding: 1.5rem;
-      text-align: center;
-      cursor: pointer;
-      transition: box-shadow 0.3s;
-    }
-    .feature-item:hover {
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-    .feature-item i {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: green;
-    }
-    .feature-item h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: #333;
-    }
-    .feature-item p {
-      font-size: 0.95rem;
-      color: #6c757d;
-    }
-  </style>
-  
-  <!-- Firebase SDKs for index -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script>
-    // Firebase configuration (must be identical to admin)
-    const firebaseConfig = {
-      apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
-      authDomain: "e-commerce-pk.firebaseapp.com",
-      projectId: "e-commerce-pk",
-      storageBucket: "e-commerce-pk.firebasestorage.app",
-      messagingSenderId: "126517093225",
-      appId: "1:126517093225:web:c2352620c6d32c582513f8",
-      measurementId: "G-2G2DNCNNT3"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const firestore = firebase.firestore();
-    
-    // Default dummy data in case Firestore doesn't have any updates
-    const defaultHomeData = {
-      globalTitle: "MyBusiness Premium",
-      globalDescription: "Welcome to our online store. Experience premium quality!",
-      hero: {
-        mediaUrl: "https://i.imgur.com/OXCPyAw.mp4",
-        title: "Premium Business Solutions",
-        subtitle: "Experience secure transactions, exclusive offers, and a seamless interface with our next-generation mobile app.",
-        cta: {
-          text: "Shop Now",
-          link: "ecommerce.html"
+      .cta-buttons button:first-child {
+        background-color: #007BFF;
+        color: #fff;
+      }
+      .cta-buttons button:last-child {
+        background-color: #28a745;
+        color: #fff;
+      }
+      @media (max-width: 768px) {
+        .hero-content h1 {
+          font-size: 2.5rem;
         }
-      },
-      cards: [
-        {
-          title: "Secure Payments",
-          desc: "State-of-the-art security for your transactions."
-        },
-        {
-          title: "Fast Delivery",
-          desc: "Reliable, door-to-door delivery service."
-        },
-        {
-          title: "Exclusive Deals",
-          desc: "Premium discounts and seasonal offers."
+        .hero-content p {
+          font-size: 1.1rem;
         }
-      ]
-    };
-  </script>
-</head>
-<body>
-  <!-- External Header -->
-  <div id="header-placeholder"></div>
-  
-  <main>
-    <!-- Hero Section -->
-    <section class="hero">
-      <!-- Video element for background video -->
-      <video autoplay muted loop playsinline class="hero-video" id="heroVideo">
-        <source src="https://i.imgur.com/OXCPyAw.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <div class="hero-content">
-        <h1 id="heroTitleDisplay">Premium Business Solutions</h1>
-        <p id="heroSubtitleDisplay">
-          Experience secure transactions, exclusive offers, and a seamless interface with our next-generation mobile app.
-        </p>
-        <div class="cta-buttons">
-          <button id="ctaButtonDisplay" onclick="openPage('ecommerce.html')">Shop Now</button>
-          <button onclick="openPage('about.html')">Learn More</button>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Features Section -->
-    <section class="features">
-      <div class="container">
-        <h2>Our Exclusive Features</h2>
-        <div class="features-grid">
-          <div class="feature-item" onclick="window.location.href='payments.html'">
-            <i class="fas fa-lock"></i>
-            <h3 id="feature1TitleDisplay">Secure Payments</h3>
-            <p id="feature1DescDisplay">State-of-the-art security for your transactions.</p>
-          </div>
-          <div class="feature-item" onclick="window.location.href='delivery.html'">
-            <i class="fas fa-truck"></i>
-            <h3 id="feature2TitleDisplay">Fast Delivery</h3>
-            <p id="feature2DescDisplay">Reliable, door-to-door delivery service.</p>
-          </div>
-          <div class="feature-item" onclick="window.location.href='ecommerce.html'">
-            <i class="fas fa-tags"></i>
-            <h3 id="feature3TitleDisplay">Exclusive Deals</h3>
-            <p id="feature3DescDisplay">Premium discounts and seasonal offers.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-  
-  <!-- External Footer -->
-  <div id="footer-placeholder"></div>
-  
-  <script>
-    // Navigation function
-    function openPage(page) {
-      window.location.href = page;
-    }
-    
-    // Load external header and footer
-    fetch('header.html')
-      .then(response => response.text())
-      .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
-      .catch(err => console.error('Error loading header:', err));
+      }
+      @media (max-width: 576px) {
+        .hero-content h1 {
+          font-size: 2rem;
+        }
+        .hero-content p {
+          font-size: 1rem;
+        }
+      }
       
-    fetch('footer.html')
-      .then(response => response.text())
-      .then(html => { document.getElementById('footer-placeholder').innerHTML = html; })
-      .catch(err => console.error('Error loading footer:', err));
+      /* ===== Features Section with Clickable Cards ===== */
+      .features {
+        padding: 20px 10px;
+        background-color: #f8f9fa;
+      }
+      .features .container {
+        max-width: 1200px;
+        margin: auto;
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        row-gap: 1.5rem;
+        justify-items: center;
+        margin-top: 20px;
+      }
+      .feature-item {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        max-width: 320px;
+        width: 100%;
+        padding: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+        transition: box-shadow 0.3s;
+      }
+      .feature-item:hover {
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      }
+      .feature-item i {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: green;
+      }
+      .feature-item h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+      .feature-item p {
+        font-size: 0.95rem;
+        color: #6c757d;
+      }
+    </style>
+    <script src="script.js" defer></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+      // Firebase configuration (same as in the admin page)
+      const firebaseConfig = {
+        apiKey: "AIzaSyBq9eDQru5rMMXZjQ4RYHcKSGkcgnnDJFw",
+        authDomain: "e-commerce-pk.firebaseapp.com",
+        projectId: "e-commerce-pk",
+        storageBucket: "e-commerce-pk.firebasestorage.app",
+        messagingSenderId: "126517093225",
+        appId: "1:126517093225:web:c2352620c6d32c582513f8",
+        measurementId: "G-2G2DNCNNT3"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const firestore = firebase.firestore();
       
-    // Listen to Firestore for home page data
-    firestore.collection("pages").doc("home")
-      .onSnapshot((doc) => {
-        let data;
-        if (doc.exists) {
-          data = doc.data();
-        } else {
-          // Use dummy data if no document exists
-          data = defaultHomeData;
-        }
-        
-        // Update Hero Section
-        const heroData = data.hero || defaultHomeData.hero;
-        if (heroData.mediaUrl) {
-          if (heroData.mediaUrl.toLowerCase().endsWith(".mp4")) {
-            const heroVideo = document.getElementById("heroVideo");
-            heroVideo.src = heroData.mediaUrl;
-            heroVideo.style.display = "block";
-            document.querySelector(".hero").style.backgroundImage = "";
+      // Load home page content from Firestore and update the page
+      function loadHomeContent() {
+        firestore.collection("pages").doc("home").get().then((doc) => {
+          if (doc.exists) {
+            const data = doc.data();
+            // Update the document title if globalTitle exists
+            if(data.globalTitle) {
+              document.title = data.globalTitle;
+            }
+            // Update Hero Section
+            if(data.hero) {
+              if(data.hero.title) {
+                document.getElementById("heroTitle").innerText = data.hero.title;
+              }
+              if(data.hero.subtitle) {
+                document.getElementById("heroSubtitle").innerText = data.hero.subtitle;
+              }
+              if(data.hero.cta) {
+                if(data.hero.cta.text) {
+                  const ctaBtn = document.getElementById("ctaButton");
+                  ctaBtn.innerText = data.hero.cta.text;
+                }
+                if(data.hero.cta.link) {
+                  document.getElementById("ctaButton").onclick = () => {
+                    window.location.href = data.hero.cta.link;
+                  };
+                }
+              }
+            }
+            // Update Features Section with the first three cards (if available)
+            if(data.cards && data.cards.length >= 3) {
+              // Feature 1
+              document.querySelector("#feature1 h3").innerText = data.cards[0].title || "Secure Payments";
+              document.querySelector("#feature1 p").innerText = data.cards[0].desc || "State-of-the-art security for your transactions.";
+              // Feature 2
+              document.querySelector("#feature2 h3").innerText = data.cards[1].title || "Fast Delivery";
+              document.querySelector("#feature2 p").innerText = data.cards[1].desc || "Reliable, door-to-door delivery service.";
+              // Feature 3
+              document.querySelector("#feature3 h3").innerText = data.cards[2].title || "Exclusive Deals";
+              document.querySelector("#feature3 p").innerText = data.cards[2].desc || "Premium discounts and seasonal offers.";
+            }
           } else {
-            document.getElementById("heroVideo").style.display = "none";
-            document.querySelector(".hero").style.backgroundImage = `url(${heroData.mediaUrl})`;
-            document.querySelector(".hero").style.backgroundSize = "cover";
-            document.querySelector(".hero").style.backgroundPosition = "center";
+            console.log("No home page data found in Firestore.");
           }
-        }
-        document.getElementById("heroTitleDisplay").innerText = heroData.title || defaultHomeData.hero.title;
-        document.getElementById("heroSubtitleDisplay").innerText = heroData.subtitle || defaultHomeData.hero.subtitle;
-        const ctaBtn = document.getElementById("ctaButtonDisplay");
-        ctaBtn.innerText = (heroData.cta && heroData.cta.text) || defaultHomeData.hero.cta.text;
-        ctaBtn.onclick = () => openPage((heroData.cta && heroData.cta.link) || defaultHomeData.hero.cta.link);
-        
-        // Update Features Section (assuming three cards)
-        const cards = data.cards && data.cards.length >= 3 ? data.cards : defaultHomeData.cards;
-        document.getElementById("feature1TitleDisplay").innerText = cards[0].title || "Secure Payments";
-        document.getElementById("feature1DescDisplay").innerText = cards[0].desc || "State-of-the-art security for your transactions.";
-        document.getElementById("feature2TitleDisplay").innerText = cards[1].title || "Fast Delivery";
-        document.getElementById("feature2DescDisplay").innerText = cards[1].desc || "Reliable, door-to-door delivery service.";
-        document.getElementById("feature3TitleDisplay").innerText = cards[2].title || "Exclusive Deals";
-        document.getElementById("feature3DescDisplay").innerText = cards[2].desc || "Premium discounts and seasonal offers.";
-      }, (error) => {
-        console.error("Error fetching home data:", error);
+        }).catch((error) => {
+          console.error("Error fetching home page content:", error);
+        });
+      }
+      
+      document.addEventListener("DOMContentLoaded", function() {
+        loadHomeContent();
       });
-  </script>
-  
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    </script>
+  </head>
+  <body>
+    <!-- External Header -->
+    <div id="header-placeholder"></div>
+    
+    <!-- Main Content -->
+    <main>
+      <!-- Hero Section with Video Background -->
+      <section class="hero">
+        <video autoplay muted loop playsinline class="hero-video">
+          <source src="https://i.imgur.com/OXCPyAw.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="hero-content">
+          <h1 id="heroTitle">Premium Business Solutions</h1>
+          <p id="heroSubtitle">
+            Experience secure transactions, exclusive offers, and a seamless interface with our next-generation mobile app.
+          </p>
+          <div class="cta-buttons">
+            <button id="ctaButton" onclick="openPage('ecommerce.html')">Shop Now</button>
+            <button onclick="openPage('about.html')">Learn More</button>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Features Section with Clickable Cards -->
+      <section class="features">
+        <div class="container">
+          <h2>Our Exclusive Features</h2>
+          <div class="features-grid">
+            <div class="feature-item" id="feature1" onclick="window.location.href='payments.html'">
+              <i class="fas fa-lock"></i>
+              <h3>Secure Payments</h3>
+              <p>State-of-the-art security for your transactions.</p>
+            </div>
+            <div class="feature-item" id="feature2" onclick="window.location.href='delivery.html'">
+              <i class="fas fa-truck"></i>
+              <h3>Fast Delivery</h3>
+              <p>Reliable, door-to-door delivery service.</p>
+            </div>
+            <div class="feature-item" id="feature3" onclick="window.location.href='ecommerce.html'">
+              <i class="fas fa-tags"></i>
+              <h3>Exclusive Deals</h3>
+              <p>Premium discounts and seasonal offers.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    
+    <!-- External Footer -->
+    <div id="footer-placeholder"></div>
+    
+    <!-- Inline Script to Load External Header, Footer, and Handle Video Fallback -->
+    <script>
+      function loadHTML(elementId, filePath) {
+        fetch(filePath)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error fetching ' + filePath);
+            }
+            return response.text();
+          })
+          .then(html => {
+            document.getElementById(elementId).innerHTML = html;
+          })
+          .catch(error => console.error(error));
+      }
+      
+      function openPage(page) {
+        window.location.href = page;
+      }
+      
+      document.addEventListener("DOMContentLoaded", function() {
+        loadHTML('header-placeholder', 'header.html');
+        loadHTML('footer-placeholder', 'footer.html');
+        
+        const heroVideo = document.querySelector('.hero-video');
+        const heroContainer = heroVideo.parentNode;
+        
+        if (heroVideo) {
+          heroVideo.addEventListener('error', function() {
+            heroVideo.style.display = 'none';
+            heroContainer.style.background = 'linear-gradient(135deg, #006400, #00FF00)';
+          });
+        }
+        
+        setTimeout(() => {
+          if (heroVideo && heroVideo.readyState < 3) {
+            heroVideo.style.display = 'none';
+            heroContainer.style.background = 'linear-gradient(135deg, #006400, #00FF00)';
+          }
+        }, 5000);
+      });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
